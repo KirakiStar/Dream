@@ -6,25 +6,16 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import inputs.KeyboardInputs;
-import inputs.MouseInputs;
 import static main.Game.GAME_WIDTH;
 import static main.Game.GAME_HEIGHT;
 
 public class GamePanel extends JPanel{
-	private MouseInputs mouseInputs;
 	private Game game;
 	
 	public GamePanel(Game game) {
-		mouseInputs = new MouseInputs();
 		this.game = game;
-		
 		setPanelSize();
 		addKeyListener(new KeyboardInputs(this));
-		
-		/*
-		addMouseListener(mouseInputs);
-		addMouseMotionListener(mouseInputs);
-		*/
 	}
 	
 	private void setPanelSize() {
@@ -40,7 +31,10 @@ public class GamePanel extends JPanel{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
+		
+		g2.translate(-game.getCamera().getX(), -game.getCamera().getY());
 		game.render(g2);
+		g2.translate(game.getCamera().getX(), game.getCamera().getY());
 	}
 	
 	public Game getGame() { return game; }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import entities.Player;
 import levels.LevelManager;
+import display.Camera;
 
 public class Game{
 	private GameWindow gameWindow;
@@ -16,6 +17,7 @@ public class Game{
 	private List<Integer> collisionData;
 	private int levelWidth;
 	private int levelHeight;
+	private Camera camera;
 	
 	public final static int TILES_DEFAULT_SIZE = 32;
 	public final static float SCALE = 2.0f;
@@ -24,6 +26,7 @@ public class Game{
 	public final static int TILES_SIZE = (int)(TILES_DEFAULT_SIZE * SCALE);
 	public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
 	public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
+	public final static float cameraYRatio = 0.3f;
 	
 	
 	public Game() {
@@ -40,6 +43,7 @@ public class Game{
 		levelManager = new LevelManager(this);
 		player = new Player(this, 100 * SCALE, 100 * SCALE, (int)(9*SCALE), (int)(24*SCALE), 11 * SCALE, 8 * SCALE);
 		loadLevelData(levelManager);
+		camera = new Camera(this);
 	}
 	
 	private void startGameLoop() {
@@ -50,6 +54,7 @@ public class Game{
 	public void update() {
 		player.update();
 		levelManager.update();
+		camera.update();
 	}
 	
 	public void render(Graphics2D g2) {
@@ -65,6 +70,7 @@ public class Game{
 	
 	public GamePanel getGamePanel() { return gamePanel; }
 	public Player getPlayer() { return player; }
+	public Camera getCamera() { return camera; }
 	public LevelManager getLevelManager() { return levelManager; }
 	public List<Integer> getCollisionData() { return collisionData; }
 	public int getLevelWidth() { return levelWidth; }
