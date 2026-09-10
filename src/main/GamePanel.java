@@ -34,7 +34,7 @@ public class GamePanel extends JPanel{
 		
 		g2.translate(-game.getCamera().getX(), -game.getCamera().getY());
 		game.render(g2);
-		g2.translate(game.getCamera().getX(), game.getCamera().getY());
+//		g2.translate(game.getCamera().getX(), game.getCamera().getY());
 	}
 	
 	public Game getGame() { return game; }

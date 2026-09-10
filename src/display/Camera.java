@@ -22,7 +22,7 @@ public class Camera {
 
 	public void update() {
 		float targetX = game.getPlayer().getX() - (width/2) + (game.getPlayer().getWidth() * Game.SCALE);
-		float targetY = game.getPlayer().getY() - (height/2) + Game.cameraYRatio * (game.getPlayer().getHeight() * Game.SCALE);
+		float targetY = game.getPlayer().getY() - (height/2) + Game.CAMERA_Y_RATIO * (game.getPlayer().getHeight() * Game.SCALE);
 
 		x += (targetX - this.x) * 0.1f;
 		y += (targetY - this.y) * 0.1f;

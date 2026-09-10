@@ -26,7 +26,7 @@ public class Game{
 	public final static int TILES_SIZE = (int)(TILES_DEFAULT_SIZE * SCALE);
 	public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
 	public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
-	public final static float cameraYRatio = 0.3f;
+	public final static float CAMERA_Y_RATIO = 0.3f;
 	
 	
 	public Game() {

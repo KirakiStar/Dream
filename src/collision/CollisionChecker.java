@@ -31,6 +31,14 @@ public final class CollisionChecker {
         }
         return false;
     }
+	
+//	public static int getXDistanceFromWall() {
+//		
+//	}
+//	
+//	public static int getYDistanceFromFloor() {
+//		
+//	}
 
     public static int getTileType(int tileX, int tileY, List<Integer> collisionData, int levelWidth, int levelHeight) {
         if (tileX < 0 || tileX >= levelWidth ||

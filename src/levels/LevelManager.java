@@ -12,6 +12,8 @@ public class LevelManager {
 	private BufferedImage[] tiles;
 	private Level level;
 	
+//	private String levelJson = ResourceLoader.TEST_MAP;
+//	private String levelImg = ResourceLoader.TEST_LEVEL;
 	private String levelJson = ResourceLoader.LEVEL1_MAP;
 	private String levelImg = ResourceLoader.LEVEL1_SET;
 	
