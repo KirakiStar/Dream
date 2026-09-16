@@ -12,6 +12,7 @@ import levels.LevelData;
 
 public class ResourceLoader {
 	public static final String ICON = "icon.png";
+	public static final String TITLESCREEN = "titlescreen.png";
 	public static final String PLAYER_SPRITES = "silver.png";
 
 	public static final String TEST_LEVEL = "testLevel.png";

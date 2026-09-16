@@ -32,7 +32,7 @@ public class GamePanel extends JPanel{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		
-		g2.translate(-game.getCamera().getX(), -game.getCamera().getY());
+//		g2.translate(-game.getPlaying().getCamera().getX(), -game.getPlaying().getCamera().getY());
 		game.render(g2);
 //		g2.translate(game.getCamera().getX(), game.getCamera().getY());
 	}

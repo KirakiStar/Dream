@@ -15,7 +15,7 @@ public class Constants {
 		public static final int DEATH = 10;
 		
 		public static int getAnimationAmount(int playerAction) {
-			return 0;
+			return 1;
 		}
 	}
 }

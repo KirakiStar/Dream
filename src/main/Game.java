@@ -1,23 +1,18 @@
 package main;
 
 import java.awt.Graphics2D;
-import java.util.List;
 
-import entities.Player;
-import levels.LevelManager;
-import display.Camera;
+import gamestates.Gamestate;
+import gamestates.Playing;
+import gamestates.TitleScreen;
 
 public class Game{
 	private GameWindow gameWindow;
 	private GamePanel gamePanel;
 	private GameLoop gameLoop;
 	
-	private Player player;
-	private static LevelManager levelManager;
-	private List<Integer> collisionData;
-	private int levelWidth;
-	private int levelHeight;
-	private Camera camera;
+	private TitleScreen titleScreen;
+	private Playing playing;
 	
 	public final static int TILES_DEFAULT_SIZE = 32;
 	public final static float SCALE = 2.0f;
@@ -40,10 +35,8 @@ public class Game{
 	}
 	
 	private void initializer() {
-		levelManager = new LevelManager(this);
-		player = new Player(this, 100 * SCALE, 100 * SCALE, (int)(9*SCALE), (int)(24*SCALE), 11 * SCALE, 8 * SCALE);
-		loadLevelData(levelManager);
-		camera = new Camera(this);
+		titleScreen = new TitleScreen(this);
+		playing = new Playing(this);
 	}
 	
 	private void startGameLoop() {
@@ -52,27 +45,28 @@ public class Game{
 	}
 	
 	public void update() {
-		player.update();
-		levelManager.update();
-		camera.update();
+		switch (Gamestate.state) {
+			case TITLESCREEN:
+				titleScreen.update();
+				break;
+			case PLAYING:
+				playing.update();
+				break;
+		}
 	}
 	
 	public void render(Graphics2D g2) {
-		levelManager.draw(g2);
-		player.draw(g2);
-	}
-	
-	public void loadLevelData(LevelManager levelManager) {
-		this.collisionData = levelManager.getCurrentLevel().getCollisionData();
-		this.levelWidth = levelManager.getCurrentLevel().getLevelWidth();
-		this.levelHeight = levelManager.getCurrentLevel().getLevelHeight();
+		switch (Gamestate.state) {
+			case TITLESCREEN:
+				titleScreen.draw(g2);
+				break;
+			case PLAYING:
+				playing.draw(g2);
+				break;
+		}
 	}
 	
 	public GamePanel getGamePanel() { return gamePanel; }
-	public Player getPlayer() { return player; }
-	public Camera getCamera() { return camera; }
-	public LevelManager getLevelManager() { return levelManager; }
-	public List<Integer> getCollisionData() { return collisionData; }
-	public int getLevelWidth() { return levelWidth; }
-	public int getLevelHeight() { return levelHeight; }
+	public Playing getPlaying() { return playing; }
+	public TitleScreen getTitleScreen() { return titleScreen; }
 }

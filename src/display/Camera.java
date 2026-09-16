@@ -1,5 +1,6 @@
 package display;
 
+import gamestates.Playing;
 import main.Game;
 
 public class Camera {
@@ -9,10 +10,10 @@ public class Camera {
 	private int height;
 	private int levelWidth;
 	private int levelHeight;
-	private Game game;
+	private Playing playing;
 
-	public Camera(Game game) {
-		this.game = game;
+	public Camera(Playing playing) {
+		this.playing = playing;
 		this.x = 0;
 		this.y = 0;
 		this.width = Game.GAME_WIDTH;
@@ -21,8 +22,8 @@ public class Camera {
 	}
 
 	public void update() {
-		float targetX = game.getPlayer().getX() - (width/2) + (game.getPlayer().getWidth() * Game.SCALE);
-		float targetY = game.getPlayer().getY() - (height/2) + Game.CAMERA_Y_RATIO * (game.getPlayer().getHeight() * Game.SCALE);
+		float targetX = playing.getPlayer().getX() - (width/2) + (playing.getPlayer().getWidth() * Game.SCALE);
+		float targetY = playing.getPlayer().getY() - (height/2) + Game.CAMERA_Y_RATIO * (playing.getPlayer().getHeight() * Game.SCALE);
 
 		x += (targetX - this.x) * 0.1f;
 		y += (targetY - this.y) * 0.1f;
@@ -34,8 +35,8 @@ public class Camera {
 	}
 
 	private void setLevelBounds() {
-		this.levelWidth = game.getLevelWidth() * Game.TILES_SIZE;
-		this.levelHeight = game.getLevelHeight() * Game.TILES_SIZE;
+		this.levelWidth = playing.getLevelWidth() * Game.TILES_SIZE;
+		this.levelHeight = playing.getLevelHeight() * Game.TILES_SIZE;
 	}
 
 	public float getX() { return x; }

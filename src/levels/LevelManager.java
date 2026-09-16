@@ -1,14 +1,14 @@
 package levels;
 
+import gamestates.Playing;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import main.Game;
 import helper.ResourceLoader;
 import static main.Game.TILES_SIZE;
 
 public class LevelManager {
-	private Game game;
+	private Playing playing;
 	private BufferedImage[] tiles;
 	private Level level;
 	
@@ -17,8 +17,8 @@ public class LevelManager {
 	private String levelJson = ResourceLoader.LEVEL1_MAP;
 	private String levelImg = ResourceLoader.LEVEL1_SET;
 	
-	public LevelManager(Game game) {
-		this.game = game;
+	public LevelManager(Playing playing) {
+		this.playing = playing;
 		level = new Level(levelJson);
 		setTiles(level.getTileRow() * level.getTileColumn(), level.getTileColumn());
 	}

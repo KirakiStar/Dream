@@ -7,11 +7,17 @@ import main.Game;
 import helper.ResourceLoader;
 import static main.Game.SCALE;
 import static collision.CollisionChecker.isSolid;
+import gamestates.Playing;
 
 public class Player extends Entity {
-	private Game game;
+	private Playing playing;
 	private BufferedImage[][] sprites;
 	private String playerPng = ResourceLoader.PLAYER_SPRITES;
+	private static final int WIDTH = (int)(16*Game.SCALE);
+	private static final int HEIGHT = (int)(36*Game.SCALE);
+	private static final float OFFSET_X = 23 * Game.SCALE;
+	private static final float OFFSET_Y = 27 * Game.SCALE;
+	
 	private boolean moving = false;
 	private boolean left;
 	private boolean right;
@@ -29,9 +35,9 @@ public class Player extends Entity {
 	private float jumpSpeed = -2.3f * SCALE;
 	private float fallSpeed = 0.5f * SCALE;
 
-	public Player(Game game, float x, float y, int width, int height, float offsetX, float offsetY) {
-		super(x, y, width, height, offsetX, offsetY);
-		this.game = game;
+	public Player(Playing playing, float x, float y) {
+		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y);
+		this.playing = playing;
 		loadAnimations();
 	}
 
@@ -41,7 +47,7 @@ public class Player extends Entity {
 	}
 
 	public void draw(Graphics2D g2) {
-		g2.drawImage(sprites[0][0], (int)x, (int)y, (int)(32*SCALE), (int)(32*SCALE), null);
+		g2.drawImage(sprites[0][0], (int)x, (int)y, (int)(64*SCALE), (int)(64*SCALE), null);
 		drawHitbox(g2);
 	}
 
@@ -55,14 +61,14 @@ public class Player extends Entity {
 		if (right) xSpeed += playerSpeed;
 		
 		if (!inAir) {
-            if (!isSolid(hitbox, x, y + 1, game.getCollisionData(), game.getLevelWidth(), game.getLevelHeight())) {
+            if (!isSolid(hitbox, x, y + 1, playing.getCollisionData(), playing.getLevelWidth(), playing.getLevelHeight())) {
                 inAir = true;
 				jumpCount = 1;
             }
         }
 
 		if (inAir) {
-			if(!isSolid(hitbox, x, y + airSpeed, game.getCollisionData(), game.getLevelWidth(), game.getLevelHeight())) {
+			if(!isSolid(hitbox, x, y + airSpeed, playing.getCollisionData(), playing.getLevelWidth(), playing.getLevelHeight())) {
 				airSpeed += gravity;
 				y += airSpeed;
 			}
@@ -94,7 +100,7 @@ public class Player extends Entity {
 	}
 	
 	private void updateXPos(float xSpeed) {
-		if (!isSolid(hitbox, x + xSpeed, y, game.getCollisionData(), game.getLevelWidth(), game.getLevelHeight())) {
+		if (!isSolid(hitbox, x + xSpeed, y, playing.getCollisionData(), playing.getLevelWidth(), playing.getLevelHeight())) {
 			this.x += xSpeed;
 			moving = true;
 		}
@@ -128,7 +134,7 @@ public class Player extends Entity {
 		sprites = new BufferedImage[4][4];
 		for(int i = 0; i < sprites.length; i++) {
 			for(int j = 0; j < sprites[i].length; j++) {
-				sprites[i][j] = img.getSubimage(j*32, i*32, 32, 32);
+				sprites[i][j] = img.getSubimage(j*64, i*64, 64, 64);
 			}
 		}
 	}
