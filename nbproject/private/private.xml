@@ -5,7 +5,8 @@
         <group>
             <file>file:/D:/my%20projects/Dream/src/helper/Constants.java</file>
             <file>file:/D:/my%20projects/Dream/src/entities/Player.java</file>
-            <file>file:/D:/my%20projects/Dream/src/resources/images/level1.png</file>
+            <file>file:/D:/my%20projects/Dream/src/gamestates/Gamestate.java</file>
+            <file>file:/D:/my%20projects/Dream/src/gamestates/Playing.java</file>
         </group>
     </open-files>
 </project-private>
