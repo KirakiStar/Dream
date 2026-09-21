@@ -4,6 +4,7 @@ dist/
 
 # NetBeans
 nbproject/private/
+nbproject/private/*
 
 # Java
 *.class
