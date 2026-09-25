@@ -5,6 +5,8 @@
   "tileHeight": 32,
   "tileSetColumn": 9,
   "tileSetRow": 5,
+  "spawnX": 110,
+  "spawnY": 150,
   "layers": [
     {
       "name": "background",

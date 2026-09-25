@@ -9,9 +9,6 @@ public class Level {
 	
 	public Level(String jsonFileName) {
 		this.levelData = ResourceLoader.LoadLevels(jsonFileName);
-		if (this.levelData == null) {
-			System.err.println("Failed to load level: " + jsonFileName);
-		}
 	}
 	
 	public int getLevelLayers() { return levelData.getLayers().size(); }
@@ -19,6 +16,8 @@ public class Level {
 	public int getLevelHeight() { return levelData.getHeight(); }
 	public int getTileColumn() { return levelData.getTileSetColumn(); }
 	public int getTileRow() { return levelData.getTileSetRow(); }
+	public float getSpawnX() { return levelData.getSpawnX(); }
+	public float getSpawnY() { return levelData.getSpawnY(); }
 	
 	public int getTileAt(int layerIndex, int tileIndex) {
 		return levelData.getLayers().get(layerIndex).getData().get(tileIndex);

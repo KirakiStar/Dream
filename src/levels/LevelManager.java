@@ -14,8 +14,9 @@ public class LevelManager {
 	
 //	private String levelJson = ResourceLoader.TEST_MAP;
 //	private String levelImg = ResourceLoader.TEST_LEVEL;
-	private String levelJson = ResourceLoader.LEVEL1_MAP;
 	private String levelImg = ResourceLoader.LEVEL1_SET;
+//	private String levelJson = ResourceLoader.LEVEL1_MAP;
+	private String levelJson = ResourceLoader.LEVEL1_1_MAP;
 	
 	public LevelManager(Playing playing) {
 		this.playing = playing;
@@ -47,9 +48,7 @@ public class LevelManager {
 		}
 	}
 	
-	public void update() {
-		
-	}
+	public void update() { }
 	
 	public Level getCurrentLevel() { return level; }
 }

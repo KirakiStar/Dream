@@ -20,12 +20,14 @@ public class Playing extends State implements StateMethods {
 	
 	public Playing(Game game) {
 		super(game);
-		initializer();
+		init();
 	}
 	
-	private void initializer() {
+	private void init() {
 		levelManager = new LevelManager(this);
-		player = new Player(this, 100 * Game.SCALE, 100 * Game.SCALE);
+		player = new Player(this,
+				levelManager.getCurrentLevel().getSpawnX() * Game.SCALE,
+				levelManager.getCurrentLevel().getSpawnY() * Game.SCALE);
 		loadLevelData(levelManager);
 		camera = new Camera(this);
 	}

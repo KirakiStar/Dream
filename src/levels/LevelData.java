@@ -9,6 +9,8 @@ public class LevelData {
 	private int tileHeight;
 	private int tileSetColumn;
 	private int tileSetRow;
+	private float spawnX;
+	private float spawnY;
 	private List<Layer> layers;
 
 	public int getWidth() { return width; }
@@ -17,6 +19,8 @@ public class LevelData {
 	public int getTileHeight() { return tileHeight; }
 	public int getTileSetColumn() { return tileSetColumn; }
 	public int getTileSetRow() { return tileSetRow; }
+	public float getSpawnX() { return spawnX; }
+	public float getSpawnY() { return spawnY; }
 	public List<Layer> getLayers() { return layers; }
 
 	public static class Layer {

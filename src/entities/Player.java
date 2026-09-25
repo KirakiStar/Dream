@@ -2,13 +2,14 @@ package entities;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import main.Game;
 import helper.ResourceLoader;
 import gamestates.Playing;
 import helper.Constants.PlayerState;
+import collision.CollisionChecker;
 import static main.Game.SCALE;
-import static collision.CollisionChecker.isSolid;
 import static helper.Constants.PlayerState.*;
 
 public class Player extends Entity {
@@ -29,12 +30,13 @@ public class Player extends Entity {
 	private static final float OFFSET_Y = 27 * Game.SCALE;
 	
 	private boolean moving = false;
+	private final float playerSpeed = 1.5f * SCALE;
 	private boolean left;
 	private boolean right;
 	private boolean up;
 	private boolean down;
-	private boolean jump;
-	private final float playerSpeed = 1.5f * SCALE;
+	private boolean jumping;
+	private boolean climbing;
 	
 	private boolean inAir = false;
 	private int jumpCount = 0;
@@ -52,9 +54,10 @@ public class Player extends Entity {
 		loadAnimations();
 	}
 
-	private void loadAnimations() {
+	@Override
+	protected void loadAnimations() {
 		BufferedImage img = ResourceLoader.ImagesLoader(playerPng);
-
+		
 		sprites = new BufferedImage[pngRow][pngCol];
 		for(int i = 0; i < pngRow; i++) {
 			for(int j = 0; j < pngCol; j++) {
@@ -63,7 +66,8 @@ public class Player extends Entity {
 		}
 	}
 	
-	private void updateAnimationTick() {
+	@Override
+	protected void updateAnimationTick() {
 		aniTick++;
 		if (aniTick >= aniSpeed) {
 			aniTick = 0;
@@ -107,6 +111,7 @@ public class Player extends Entity {
 		}
 	}
 
+	@Override
 	public void update() {
 		updatePosition();
 		updateHitbox();
@@ -114,6 +119,7 @@ public class Player extends Entity {
 		updatePlayerAction();
 	}
 
+	@Override
 	public void draw(Graphics2D g2) {
 		int drawX = (int) x;
 		int drawY = (int) y;
@@ -132,61 +138,99 @@ public class Player extends Entity {
 	private void updatePosition() {
 		moving = false;
 
+		List<Integer> cd = playing.getCollisionData();
+		int lw = playing.getLevelWidth();
+		int lh = playing.getLevelHeight();
+
+		if (CollisionChecker.isTouchWater(hitbox, cd, lw, lh)) {
+			die();
+			return;
+		}
+
+		climbable = CollisionChecker.isOnLadder(hitbox, cd, lw, lh);
+		if (climbable && (up || down)) {
+			climbing = true;
+			inAir = false;
+			airSpeed = 0;
+		} else if (!climbable) {
+			climbing = false;
+		}
+
+		if (climbing) {
+			float xSpeed = 0;
+			float ySpeed = 0;
+
+			if (up) ySpeed -= playerSpeed;
+			if (down) ySpeed += playerSpeed;
+			if (left) { xSpeed -= playerSpeed; facingLeft = true; }
+			if (right) { xSpeed += playerSpeed; facingLeft = false; }
+
+			if (ySpeed != 0 && !CollisionChecker.isSolid(hitbox, x, y + ySpeed, cd, lw, lh)) {
+				y += ySpeed;
+				moving = true;
+			}
+			if (xSpeed != 0) {
+				updateXPos(xSpeed, cd, lw, lh);
+			}
+			return;
+		}
+
 		float xSpeed = 0;
-		
-		if (jump) jump();
-		if (left) {
-			xSpeed -= playerSpeed;
-			facingLeft = true;
-		}
-		if (right) {
-			xSpeed += playerSpeed;
-			facingLeft = false;
-		}
-		
-		if (!inAir) {
-            if (!isSolid(hitbox, x, y + 1, playing.getCollisionData(), playing.getLevelWidth(), playing.getLevelHeight())) {
-                inAir = true;
+
+		if (jumping) jump();
+		if (left) { xSpeed -= playerSpeed; facingLeft = true; }
+		if (right) { xSpeed += playerSpeed; facingLeft = false; }
+
+		float slopeFloorY = CollisionChecker.getSlopeY(hitbox, x, y, cd, lw, lh);
+
+		if (slopeFloorY != -1) {
+			y = slopeFloorY - hitbox.getOffsetY() - hitbox.getHeight();
+			inAir = false;
+			airSpeed = 0;
+		} else if (!inAir) {
+			boolean solidGround = CollisionChecker.isSolid(hitbox, x, y + 1.0f, cd, lw, lh);
+			boolean platformGround = CollisionChecker.isPlatform(hitbox, y, y + 1.0f, 1.0f, cd, lw, lh);
+
+			if (!solidGround && !platformGround) {
+				inAir = true;
 				jumpCount = 1;
-            }
-        }
+			}
+		}
 
 		if (inAir) {
-			if(!isSolid(hitbox, x, y + airSpeed, playing.getCollisionData(), playing.getLevelWidth(), playing.getLevelHeight())) {
-				airSpeed += gravity;
-				y += airSpeed;
-			}
-			else {
-				if (airSpeed > 0)
-					resetInAir();
-				else
-					airSpeed = fallSpeed;
-			}
+			updateYPos(airSpeed, cd, lw, lh);
 		}
-		
-		if (xSpeed == 0)
-			return;
-		updateXPos(xSpeed);
-		moving = true;
-		
-//		updateXPos(xSpeed);
-//		updateYPos(ySpeed);
-		
-//		if (!isSolid(hitbox, x + xSpeed, y, game.getCollisionData(), game.getLevelWidth(), game.getLevelHeight())) {
-//			this.x += xSpeed;
-//			moving = true;
-//		}
-		
-//		if (!isSolid(hitbox, x, y + ySpeed, game.getCollisionData(), game.getLevelWidth(), game.getLevelHeight())) {
-//			this.y += ySpeed;
-//			moving = true;
-//		}
+
+		if (xSpeed != 0) {
+			updateXPos(xSpeed, cd, lw, lh);
+		}
 	}
 	
-	private void updateXPos(float xSpeed) {
-		if (!isSolid(hitbox, x + xSpeed, y, playing.getCollisionData(), playing.getLevelWidth(), playing.getLevelHeight())) {
+	private void updateXPos(float xSpeed, List<Integer> cd, int lw, int lh) {
+		if (!CollisionChecker.isSolid(hitbox, x + xSpeed, y, cd, lw, lh)) {
 			this.x += xSpeed;
 			moving = true;
+		}
+	}
+
+	private void updateYPos(float ySpeed, List<Integer> cd, int lw, int lh) {
+		boolean solidHit = CollisionChecker.isSolid(hitbox, x, y + ySpeed, cd, lw, lh);
+		boolean platformHit = CollisionChecker.isPlatform(hitbox, y, y + ySpeed, ySpeed, cd, lw, lh);
+
+		if (!solidHit && !platformHit) {
+			this.y += ySpeed;
+			if (inAir) {
+				airSpeed += gravity;
+			}
+			moving = true;
+		} else {
+			this.y = CollisionChecker.GetEntityYPosUnderRoofOrAboveFloor(hitbox, y + ySpeed, airSpeed);
+
+			if (airSpeed > 0) {
+				resetInAir();
+			} else {
+				airSpeed = fallSpeed;
+			}
 		}
 	}
 	
@@ -196,7 +240,7 @@ public class Player extends Entity {
 			inAir = true;
 			airSpeed = jumpSpeed;
 		}
-		jump = false;
+		jumping = false;
 	}
 	
 	private void resetInAir() {
@@ -204,19 +248,16 @@ public class Player extends Entity {
 		jumpCount = 0;
 		airSpeed = 0;
 	}
-	
-//	private void updateYPos(float ySpeed) {
-//		if (!isSolid(hitbox, x, y + ySpeed, game.getCollisionData(), game.getLevelWidth(), game.getLevelHeight())) {
-//			this.y += ySpeed;
-//			moving = true;
-//		}
-//	}
 
 	public void resetDirection() {
 		left = false;
 		right = false;
 		up = false;
 		down = false;
+	}
+	
+	private void die() {
+		System.out.println("Dead");
 	}
 
 	public void setLeft(boolean left) { this.left = left; }
@@ -231,6 +272,6 @@ public class Player extends Entity {
 	public void setDown(boolean down) { this.down = down; }
 	public boolean isDown() { return down; }
 
-	public void setJump(boolean jump) { this.jump = jump; }
-	public boolean isJump() { return jump; }
+	public void setJump(boolean jump) { this.jumping = jump; }
+	public boolean isJump() { return jumping; }
 }

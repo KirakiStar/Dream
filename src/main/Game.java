@@ -25,7 +25,7 @@ public class Game{
 	
 	
 	public Game() {
-		initializer();
+		init();
 		
 		gamePanel = new GamePanel(this);
 		gameWindow = new GameWindow(gamePanel);
@@ -34,7 +34,7 @@ public class Game{
 		startGameLoop();
 	}
 	
-	private void initializer() {
+	private void init() {
 		titleScreen = new TitleScreen(this);
 		playing = new Playing(this);
 	}

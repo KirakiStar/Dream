@@ -19,17 +19,17 @@ public abstract class Entity {
 		this.hitbox = new Hitbox(this, offsetX, offsetY, width, height);
 	}
 	
-	protected void drawHitbox(Graphics2D g2) {
-		hitbox.drawDebug(g2);
-	}
+	protected final void drawHitbox(Graphics2D g2) { hitbox.drawDebug(g2); }
+	protected final void updateHitbox() { hitbox.update(x, y); }
 	
-	protected void updateHitbox() {
-		hitbox.update(x, y);
-	}
+	public final Hitbox getHitbox() { return hitbox; }
+	public final float getX() { return x; }
+	public final float getY() { return y; }
+	public final int getWidth() { return width; }
+	public final int getHeight() { return height; }
 	
-	public Hitbox getHitbox() { return hitbox; }
-	public float getX() { return x; }
-	public float getY() { return y; }
-	public int getWidth() { return width; }
-	public int getHeight() { return height; }
+	public abstract void update();
+	public abstract void draw(Graphics2D g2);
+	protected abstract void loadAnimations();
+	protected abstract void updateAnimationTick();
 }

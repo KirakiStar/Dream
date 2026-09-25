@@ -19,6 +19,7 @@ public class ResourceLoader {
 	public static final String TEST_MAP = "testMap.json";
 	public static final String LEVEL1_SET = "level1.png";
 	public static final String LEVEL1_MAP = "level1.json";
+	public static final String LEVEL1_1_MAP = "level1_1.json";
 
 	public static BufferedImage ImagesLoader(String fileName) {
 		BufferedImage img = null;
@@ -35,6 +36,9 @@ public class ResourceLoader {
 				e.printStackTrace();
 			}
 		}
+		
+		if (img == null)
+			System.err.println("Failed to load image: " + fileName);
 		return img;
 	}
 
@@ -55,6 +59,9 @@ public class ResourceLoader {
 				e.printStackTrace();
 			}
 		}
+		
+		if (levelData == null)
+			System.err.println("Failed to load level: " + fileName);
 		return levelData;
 	}
 }
