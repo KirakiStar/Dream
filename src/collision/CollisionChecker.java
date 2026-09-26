@@ -32,60 +32,73 @@ public final class CollisionChecker {
         return false;
     }
 
-    public static boolean isPlatform(Hitbox hitbox, float currentY, float nextY, float airSpeed, List<Integer> collisionData, int levelWidth, int levelHeight) {
-        if (airSpeed <= 0) return false;
+	public static boolean isPlatform(Hitbox hitbox, float currentY, float nextY, float airSpeed, List<Integer> collisionData, int levelWidth, int levelHeight) {
+		if (airSpeed <= 0) return false;
 
-        float feetY = nextY + hitbox.getOffsetY() + hitbox.getHeight();
-        float prevFeetY = currentY + hitbox.getOffsetY() + hitbox.getHeight();
+		float feetY = nextY + hitbox.getOffsetY() + hitbox.getHeight();
+		float prevFeetY = currentY + hitbox.getOffsetY() + hitbox.getHeight();
 
-        int leftTile  = (int) Math.floor((hitbox.getBounds().x) / Game.TILES_SIZE);
-        int rightTile = (int) (hitbox.getBounds().x + hitbox.getWidth() - 1) / Game.TILES_SIZE;
-        int tileY     = (int) Math.floor(feetY / Game.TILES_SIZE);
+		int leftTile  = (int) Math.floor((hitbox.getBounds().x) / Game.TILES_SIZE);
+		int rightTile = (int) (hitbox.getBounds().x + hitbox.getWidth() - 1) / Game.TILES_SIZE;
+		int tileY     = (int) Math.floor(feetY / Game.TILES_SIZE);
 
-        for (int tileX = leftTile; tileX <= rightTile; tileX++) {
-            if (getTileType(tileX, tileY, collisionData, levelWidth, levelHeight) == PLATFORM) {
-                float platformTop = tileY * Game.TILES_SIZE;
-                if (prevFeetY <= platformTop + 5) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+		for (int tileX = leftTile; tileX <= rightTile; tileX++) {
+			int tileType = getTileType(tileX, tileY, collisionData, levelWidth, levelHeight);
+
+			if (tileType == PLATFORM || tileType == LADDER) {
+				float platformTop = tileY * Game.TILES_SIZE;
+				if (prevFeetY <= platformTop + 2.0f) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
     public static float getSlopeY(Hitbox hitbox, float nextX, float nextY, List<Integer> collisionData, int levelWidth, int levelHeight) {
-        float centerX = nextX + hitbox.getOffsetX() + (hitbox.getWidth() / 2f);
-        float feetY   = nextY + hitbox.getOffsetY() + hitbox.getHeight();
+		int leftTile   = (int) Math.floor((nextX + hitbox.getOffsetX()) / Game.TILES_SIZE);
+		int rightTile  = (int) Math.floor((nextX + hitbox.getOffsetX() + hitbox.getWidth() - 1) / Game.TILES_SIZE);
+		int topTile    = (int) Math.floor((nextY + hitbox.getOffsetY()) / Game.TILES_SIZE);
+		int bottomTile = (int) Math.floor((nextY + hitbox.getOffsetY() + hitbox.getHeight()) / Game.TILES_SIZE);
 
-        int tileX = (int) Math.floor(centerX / Game.TILES_SIZE);
-        int tileY = (int) Math.floor(feetY / Game.TILES_SIZE);
+		float slopeY = -1f;
 
-        int tileType = getTileType(tileX, tileY, collisionData, levelWidth, levelHeight);
+		for (int tileX = leftTile; tileX <= rightTile; tileX++) {
+			for (int tileY = topTile; tileY <= bottomTile; tileY++) {
 
-        if (tileType == SLOPE_UP || tileType == SLOPE_DOWN) {
-            float xInTile = centerX - (tileX * Game.TILES_SIZE);
-            float yOffsetInTile;
+				int tileType = getTileType(tileX, tileY, collisionData, levelWidth, levelHeight);
 
-            if (tileType == SLOPE_UP) {
-                yOffsetInTile = Game.TILES_SIZE - xInTile;
-            } else {
-                yOffsetInTile = xInTile;
-            }
+				if (tileType == SLOPE_UP || tileType == SLOPE_DOWN) {
+					float xToCheck;
+					if (tileType == SLOPE_UP) {
+						xToCheck = Math.min(nextX + hitbox.getOffsetX() + hitbox.getWidth() - 1, (tileX + 1) * Game.TILES_SIZE - 0.01f);
+					} else {
+						xToCheck = Math.max(nextX + hitbox.getOffsetX(), tileX * Game.TILES_SIZE);
+					}
 
-            return (tileY * Game.TILES_SIZE) + yOffsetInTile;
-        }
+					float xInTile = xToCheck - (tileX * Game.TILES_SIZE);
+					float yOffsetInTile = (tileType == SLOPE_UP) ? (Game.TILES_SIZE - xInTile) : xInTile;
 
-        return -1;
-    }
+					float calculatedSlopeY = (tileY * Game.TILES_SIZE) + yOffsetInTile;
 
-    public static boolean isOnLadder(Hitbox hitbox, List<Integer> collisionData, int levelWidth, int levelHeight) {
-        int centerX = (int) Math.floor((hitbox.getBounds().x + (hitbox.getWidth() / 2f)) / Game.TILES_SIZE);
-        int centerY = (int) Math.floor((hitbox.getBounds().y + (hitbox.getHeight() / 2f)) / Game.TILES_SIZE);
+					if (slopeY == -1f || calculatedSlopeY < slopeY) {
+						slopeY = calculatedSlopeY;
+					}
+				}
+			}
+		}
 
-        return getTileType(centerX, centerY, collisionData, levelWidth, levelHeight) == LADDER;
-    }
+		return slopeY;
+	}
 
-    public static boolean isTouchWater(Hitbox hitbox, List<Integer> collisionData, int levelWidth, int levelHeight) {
+    public static boolean isLadder(Hitbox hitbox, List<Integer> collisionData, int levelWidth, int levelHeight) {
+		int centerX = (int) Math.floor((hitbox.getBounds().x + (hitbox.getWidth() / 2f)) / Game.TILES_SIZE);
+		int bottomY = (int) Math.floor((hitbox.getBounds().y + hitbox.getHeight() - 1f) / Game.TILES_SIZE);
+
+		return getTileType(centerX, bottomY, collisionData, levelWidth, levelHeight) == LADDER;
+	}
+
+    public static boolean isWater(Hitbox hitbox, List<Integer> collisionData, int levelWidth, int levelHeight) {
         int leftTile   = (int) Math.floor((hitbox.getBounds().x) / Game.TILES_SIZE);
         int rightTile  = (int) (hitbox.getBounds().x + hitbox.getWidth() - 1) / Game.TILES_SIZE;
         int topTile    = (int) Math.floor((hitbox.getBounds().y) / Game.TILES_SIZE);
@@ -101,10 +114,10 @@ public final class CollisionChecker {
         return false;
     }
 	
-	public static float GetEntityYPosUnderRoofOrAboveFloor(Hitbox hitbox, float nextY, float airSpeed) {
+	public static float GetYFromBlocks(Hitbox hitbox, float nextY, float airSpeed) {
 		if (airSpeed > 0) {
 			float feetY = nextY + hitbox.getOffsetY() + hitbox.getHeight();
-			int tileY = (int) Math.floor(feetY / Game.TILES_SIZE);
+			int tileY = (int) Math.floor((feetY - 0.01f) / Game.TILES_SIZE);
 			float yIndex = tileY * Game.TILES_SIZE;
 			float yOffset = hitbox.getOffsetY() + hitbox.getHeight();
 

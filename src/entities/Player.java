@@ -142,12 +142,12 @@ public class Player extends Entity {
 		int lw = playing.getLevelWidth();
 		int lh = playing.getLevelHeight();
 
-		if (CollisionChecker.isTouchWater(hitbox, cd, lw, lh)) {
+		if (CollisionChecker.isWater(hitbox, cd, lw, lh)) {
 			die();
 			return;
 		}
 
-		climbable = CollisionChecker.isOnLadder(hitbox, cd, lw, lh);
+		climbable = CollisionChecker.isLadder(hitbox, cd, lw, lh);
 		if (climbable && (up || down)) {
 			climbing = true;
 			inAir = false;
@@ -170,7 +170,15 @@ public class Player extends Entity {
 				moving = true;
 			}
 			if (xSpeed != 0) {
-				updateXPos(xSpeed, cd, lw, lh);
+				updateXPos(xSpeed, false, cd, lw, lh);
+			}
+
+			// Dismount when climbing past the top of the ladder
+			if (!CollisionChecker.isLadder(hitbox, cd, lw, lh)) {
+				climbing = false;
+				inAir = false;
+				airSpeed = 0;
+				jumpCount = 0;
 			}
 			return;
 		}
@@ -181,17 +189,26 @@ public class Player extends Entity {
 		if (left) { xSpeed -= playerSpeed; facingLeft = true; }
 		if (right) { xSpeed += playerSpeed; facingLeft = false; }
 
-		float slopeFloorY = CollisionChecker.getSlopeY(hitbox, x, y, cd, lw, lh);
+		float slopeFloorY = CollisionChecker.getSlopeY(hitbox, x + xSpeed, y, cd, lw, lh);
+		
+		if (xSpeed != 0) {
+			updateXPos(xSpeed, slopeFloorY != -1, cd, lw, lh);
+		}
 
-		if (slopeFloorY != -1) {
+		if (slopeFloorY != -1 && airSpeed >= 0) {
 			y = slopeFloorY - hitbox.getOffsetY() - hitbox.getHeight();
 			inAir = false;
 			airSpeed = 0;
+			jumpCount = 0;
 		} else if (!inAir) {
 			boolean solidGround = CollisionChecker.isSolid(hitbox, x, y + 1.0f, cd, lw, lh);
 			boolean platformGround = CollisionChecker.isPlatform(hitbox, y, y + 1.0f, 1.0f, cd, lw, lh);
 
-			if (!solidGround && !platformGround) {
+			if (down && platformGround && !solidGround) {
+				inAir = true;
+				y += 3.0f;
+				airSpeed = fallSpeed;
+			} else if (!solidGround && !platformGround) {
 				inAir = true;
 				jumpCount = 1;
 			}
@@ -200,14 +217,15 @@ public class Player extends Entity {
 		if (inAir) {
 			updateYPos(airSpeed, cd, lw, lh);
 		}
-
-		if (xSpeed != 0) {
-			updateXPos(xSpeed, cd, lw, lh);
-		}
 	}
-	
-	private void updateXPos(float xSpeed, List<Integer> cd, int lw, int lh) {
+
+	private void updateXPos(float xSpeed, boolean candidateIsSlope, List<Integer> cd, int lw, int lh) {
 		if (!CollisionChecker.isSolid(hitbox, x + xSpeed, y, cd, lw, lh)) {
+			this.x += xSpeed;
+			moving = true;
+		} 
+		
+		else if (candidateIsSlope && !CollisionChecker.isSolid(hitbox, x + xSpeed, y - (4.0f * Game.SCALE), cd, lw, lh)) {
 			this.x += xSpeed;
 			moving = true;
 		}
@@ -224,7 +242,7 @@ public class Player extends Entity {
 			}
 			moving = true;
 		} else {
-			this.y = CollisionChecker.GetEntityYPosUnderRoofOrAboveFloor(hitbox, y + ySpeed, airSpeed);
+			this.y = CollisionChecker.GetYFromBlocks(hitbox, y + ySpeed, airSpeed);
 
 			if (airSpeed > 0) {
 				resetInAir();
