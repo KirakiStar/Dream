@@ -24,6 +24,7 @@ public class KeyboardInputs implements KeyListener{
 		switch (Gamestate.state) {
 			case TITLESCREEN:
 				gamePanel.getGame().getTitleScreen().keyPressed(e);
+//				System.out.println("Start");
 				break;
 			case PLAYING:
 				gamePanel.getGame().getPlaying().keyPressed(e);

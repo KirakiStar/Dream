@@ -5,32 +5,25 @@ import java.util.List;
 import main.Game;
 
 public final class CollisionChecker {
-    public static final int NONE = 0;
-    public static final int SOLID = 1;
-    public static final int SLOPE_UP = 2;
-    public static final int SLOPE_DOWN = 3;
-    public static final int PLATFORM = 4;
-    public static final int WATER = 5;
-    public static final int LADDER = 6;
 
-    private CollisionChecker() { }
+	private CollisionChecker() { }
 
-    public static boolean isSolid(Hitbox hitbox, float nextX, float nextY, List<Integer> collisionData, int levelWidth, int levelHeight) {
-        int leftTile   = (int) Math.floor((nextX + hitbox.getOffsetX()) / Game.TILES_SIZE);
-        int rightTile  = (int) (nextX + hitbox.getOffsetX() + hitbox.getWidth() - 1) / Game.TILES_SIZE;
-        int topTile    = (int) Math.floor((nextY + hitbox.getOffsetY()) / Game.TILES_SIZE);
-        int bottomTile = (int) (nextY + hitbox.getOffsetY() + hitbox.getHeight() - 1) / Game.TILES_SIZE;
+	public static boolean isSolid(Hitbox hitbox, float nextX, float nextY, List<Integer> collisionData, int levelWidth, int levelHeight) {
+		int leftTile   = (int) Math.floor((nextX + hitbox.getOffsetX()) / Game.TILES_SIZE);
+		int rightTile  = (int) (nextX + hitbox.getOffsetX() + hitbox.getWidth() - 1) / Game.TILES_SIZE;
+		int topTile    = (int) Math.floor((nextY + hitbox.getOffsetY()) / Game.TILES_SIZE);
+		int bottomTile = (int) (nextY + hitbox.getOffsetY() + hitbox.getHeight() - 1) / Game.TILES_SIZE;
 
-        for (int tileX = leftTile; tileX <= rightTile; tileX++) {
-            for (int tileY = topTile; tileY <= bottomTile; tileY++) {
-                int tileType = getTileType(tileX, tileY, collisionData, levelWidth, levelHeight);
-                if (tileType == SOLID) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+		for (int tileX = leftTile; tileX <= rightTile; tileX++) {
+			for (int tileY = topTile; tileY <= bottomTile; tileY++) {
+				TileType tileType = getTileType(tileX, tileY, collisionData, levelWidth, levelHeight);
+				if (tileType == TileType.SOLID) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	public static boolean isPlatform(Hitbox hitbox, float currentY, float nextY, float airSpeed, List<Integer> collisionData, int levelWidth, int levelHeight) {
 		if (airSpeed <= 0) return false;
@@ -43,9 +36,9 @@ public final class CollisionChecker {
 		int tileY     = (int) Math.floor(feetY / Game.TILES_SIZE);
 
 		for (int tileX = leftTile; tileX <= rightTile; tileX++) {
-			int tileType = getTileType(tileX, tileY, collisionData, levelWidth, levelHeight);
+			TileType tileType = getTileType(tileX, tileY, collisionData, levelWidth, levelHeight);
 
-			if (tileType == PLATFORM || tileType == LADDER) {
+			if (tileType == TileType.PLATFORM || tileType == TileType.LADDER) {
 				float platformTop = tileY * Game.TILES_SIZE;
 				if (prevFeetY <= platformTop + 2.0f) {
 					return true;
@@ -55,7 +48,7 @@ public final class CollisionChecker {
 		return false;
 	}
 
-    public static float getSlopeY(Hitbox hitbox, float nextX, float nextY, List<Integer> collisionData, int levelWidth, int levelHeight) {
+	public static float getSlopeY(Hitbox hitbox, float nextX, float nextY, List<Integer> collisionData, int levelWidth, int levelHeight) {
 		int leftTile   = (int) Math.floor((nextX + hitbox.getOffsetX()) / Game.TILES_SIZE);
 		int rightTile  = (int) Math.floor((nextX + hitbox.getOffsetX() + hitbox.getWidth() - 1) / Game.TILES_SIZE);
 		int topTile    = (int) Math.floor((nextY + hitbox.getOffsetY()) / Game.TILES_SIZE);
@@ -66,18 +59,18 @@ public final class CollisionChecker {
 		for (int tileX = leftTile; tileX <= rightTile; tileX++) {
 			for (int tileY = topTile; tileY <= bottomTile; tileY++) {
 
-				int tileType = getTileType(tileX, tileY, collisionData, levelWidth, levelHeight);
+				TileType tileType = getTileType(tileX, tileY, collisionData, levelWidth, levelHeight);
 
-				if (tileType == SLOPE_UP || tileType == SLOPE_DOWN) {
+				if (tileType == TileType.SLOPE_UP || tileType == TileType.SLOPE_DOWN) {
 					float xToCheck;
-					if (tileType == SLOPE_UP) {
+					if (tileType == TileType.SLOPE_UP) {
 						xToCheck = Math.min(nextX + hitbox.getOffsetX() + hitbox.getWidth() - 1, (tileX + 1) * Game.TILES_SIZE - 0.01f);
 					} else {
 						xToCheck = Math.max(nextX + hitbox.getOffsetX(), tileX * Game.TILES_SIZE);
 					}
 
 					float xInTile = xToCheck - (tileX * Game.TILES_SIZE);
-					float yOffsetInTile = (tileType == SLOPE_UP) ? (Game.TILES_SIZE - xInTile) : xInTile;
+					float yOffsetInTile = (tileType == TileType.SLOPE_UP) ? (Game.TILES_SIZE - xInTile) : xInTile;
 
 					float calculatedSlopeY = (tileY * Game.TILES_SIZE) + yOffsetInTile;
 
@@ -91,29 +84,29 @@ public final class CollisionChecker {
 		return slopeY;
 	}
 
-    public static boolean isLadder(Hitbox hitbox, List<Integer> collisionData, int levelWidth, int levelHeight) {
+	public static boolean isLadder(Hitbox hitbox, List<Integer> collisionData, int levelWidth, int levelHeight) {
 		int centerX = (int) Math.floor((hitbox.getBounds().x + (hitbox.getWidth() / 2f)) / Game.TILES_SIZE);
 		int bottomY = (int) Math.floor((hitbox.getBounds().y + hitbox.getHeight() - 1f) / Game.TILES_SIZE);
 
-		return getTileType(centerX, bottomY, collisionData, levelWidth, levelHeight) == LADDER;
+		return getTileType(centerX, bottomY, collisionData, levelWidth, levelHeight) == TileType.LADDER;
 	}
 
-    public static boolean isWater(Hitbox hitbox, List<Integer> collisionData, int levelWidth, int levelHeight) {
-        int leftTile   = (int) Math.floor((hitbox.getBounds().x) / Game.TILES_SIZE);
-        int rightTile  = (int) (hitbox.getBounds().x + hitbox.getWidth() - 1) / Game.TILES_SIZE;
-        int topTile    = (int) Math.floor((hitbox.getBounds().y) / Game.TILES_SIZE);
-        int bottomTile = (int) Math.floor((hitbox.getBounds().y + hitbox.getHeight() - 1) / Game.TILES_SIZE);
+	public static boolean isWater(Hitbox hitbox, List<Integer> collisionData, int levelWidth, int levelHeight) {
+		int leftTile   = (int) Math.floor((hitbox.getBounds().x) / Game.TILES_SIZE);
+		int rightTile  = (int) (hitbox.getBounds().x + hitbox.getWidth() - 1) / Game.TILES_SIZE;
+		int topTile    = (int) Math.floor((hitbox.getBounds().y) / Game.TILES_SIZE);
+		int bottomTile = (int) Math.floor((hitbox.getBounds().y + hitbox.getHeight() - 1) / Game.TILES_SIZE);
 
-        for (int tileX = leftTile; tileX <= rightTile; tileX++) {
-            for (int tileY = topTile; tileY <= bottomTile; tileY++) {
-                if (getTileType(tileX, tileY, collisionData, levelWidth, levelHeight) == WATER) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-	
+		for (int tileX = leftTile; tileX <= rightTile; tileX++) {
+			for (int tileY = topTile; tileY <= bottomTile; tileY++) {
+				if (getTileType(tileX, tileY, collisionData, levelWidth, levelHeight) == TileType.WATER) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public static float GetYFromBlocks(Hitbox hitbox, float nextY, float airSpeed) {
 		if (airSpeed > 0) {
 			float feetY = nextY + hitbox.getOffsetY() + hitbox.getHeight();
@@ -132,16 +125,24 @@ public final class CollisionChecker {
 		}
 	}
 
-    public static int getTileType(int tileX, int tileY, List<Integer> collisionData, int levelWidth, int levelHeight) {
-        if (tileX < 0 || tileX >= levelWidth || tileY < 0 || tileY >= levelHeight) {
-            return SOLID;
-        }
+	public static TileType getTileType(int tileX, int tileY, List<Integer> collisionData, int levelWidth, int levelHeight) {
+		if (tileY >= levelHeight + 2) {
+			return TileType.WATER;
+		}
+		
+		if (tileY < 0 || tileY >= levelHeight) {
+			return TileType.NONE;
+		}
 
-        int index = tileX + tileY * levelWidth;
-        if (index < 0 || index >= collisionData.size()) {
-            return SOLID;
-        }
+		if (tileX < 0 || tileX >= levelWidth) {
+			return TileType.SOLID;
+		}
 
-        return collisionData.get(index);
-    }
+		int index = tileX + tileY * levelWidth;
+		if (index < 0 || index >= collisionData.size()) {
+			return TileType.SOLID;
+		}
+
+		return TileType.fromId(collisionData.get(index));
+	}
 }
