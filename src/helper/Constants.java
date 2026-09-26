@@ -4,6 +4,7 @@ public class Constants {
 	public interface EntityState {
 		int getId();
 		int getAnimationAmount();
+		boolean isLooping();
 	}
 
 	public enum PlayerState implements EntityState {
@@ -35,6 +36,7 @@ public class Constants {
 		@Override
 		public int getAnimationAmount() { return animationAmount; }
 		
+		@Override
 		public boolean isLooping() { return looping; }
 	}
 }

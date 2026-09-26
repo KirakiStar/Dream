@@ -1,7 +1,6 @@
 package entities;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.util.List;
 
 import main.Game;
@@ -12,24 +11,18 @@ import collision.CollisionChecker;
 import static main.Game.SCALE;
 import static helper.Constants.PlayerState.*;
 
-public class Player extends Entity {
+public class Player extends MovingEntity {
 	private Playing playing;
-	private BufferedImage[][] sprites;
 	private final String playerPng = ResourceLoader.PLAYER_SPRITES;
 	private final int pngRow = 11;
 	private final int pngCol = 4;
 	private PlayerState playerAction;
-	private int aniTick;
-	private int aniIndex;
-	private final int aniSpeed = 15;
-	private boolean facingLeft = false;
 	
 	private static final int WIDTH = (int)(16*Game.SCALE);
 	private static final int HEIGHT = (int)(36*Game.SCALE);
 	private static final float OFFSET_X = 24 * Game.SCALE;
 	private static final float OFFSET_Y = 27 * Game.SCALE;
 	
-	private boolean moving = false;
 	private final float playerSpeed = 1.5f * SCALE;
 	private boolean left;
 	private boolean right;
@@ -38,51 +31,21 @@ public class Player extends Entity {
 	private boolean jumping;
 	private boolean climbing;
 	
-	private boolean inAir = false;
 	private int jumpCount = 0;
 	private final int maxJump = 2;
 	private boolean climbable = false;
-	private final float gravity = 0.05f * SCALE;
-	private float airSpeed = 0f;
 	private final float jumpSpeed = -2.3f * SCALE;
-	private final float fallSpeed = 0.5f * SCALE;
 
 	public Player(Playing playing, float x, float y) {
 		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y);
 		this.playing = playing;
 		this.playerAction = IDLE;
-		loadAnimations();
-	}
-
-	@Override
-	protected void loadAnimations() {
-		BufferedImage img = ResourceLoader.ImagesLoader(playerPng);
-		
-		sprites = new BufferedImage[pngRow][pngCol];
-		for(int i = 0; i < pngRow; i++) {
-			for(int j = 0; j < pngCol; j++) {
-				sprites[i][j] = img.getSubimage(j*64, i*64, 64, 64);
-			}
-		}
+		entitySpeed = playerSpeed;
+		loadAnimations(playerPng, pngRow, pngCol, 64, 64);
 	}
 	
-	@Override
 	protected void updateAnimationTick() {
-		aniTick++;
-		if (aniTick >= aniSpeed) {
-			aniTick = 0;
-
-			if (playerAction.isLooping()) {
-				aniIndex++;
-				if (aniIndex >= playerAction.getAnimationAmount()) {
-					aniIndex = 0;
-				}
-			} else {
-				if (aniIndex < playerAction.getAnimationAmount() - 1) {
-					aniIndex++;
-				}
-			}
-		}
+		super.updateAnimationTick(playerAction.getAnimationAmount(), playerAction.isLooping());
 	}
 	
 	private void setAnimation(PlayerState newAction) {
@@ -113,26 +76,15 @@ public class Player extends Entity {
 
 	@Override
 	public void update() {
+		super.update();
 		updatePosition();
-		updateHitbox();
 		updateAnimationTick();
 		updatePlayerAction();
 	}
 
 	@Override
 	public void draw(Graphics2D g2) {
-		int drawX = (int) x;
-		int drawY = (int) y;
-		int drawWidth = (int) (64 * SCALE);
-		int drawHeight = (int) (64 * SCALE);
-		if (facingLeft) {
-			g2.drawImage(sprites[playerAction.getId()][aniIndex], drawX+drawWidth, drawY,
-					-drawWidth, drawHeight, null);
-		} else {
-			g2.drawImage(sprites[playerAction.getId()][aniIndex], drawX, drawY,
-					drawWidth, drawHeight, null);
-		}
-//		drawHitbox(g2);
+		super.draw(g2, playerAction.getId());
 	}
 
 	private void updatePosition() {
@@ -173,7 +125,6 @@ public class Player extends Entity {
 				updateXPos(xSpeed, false, cd, lw, lh);
 			}
 
-			// Dismount when climbing past the top of the ladder
 			if (!CollisionChecker.isLadder(hitbox, cd, lw, lh)) {
 				climbing = false;
 				inAir = false;
@@ -218,39 +169,6 @@ public class Player extends Entity {
 			updateYPos(airSpeed, cd, lw, lh);
 		}
 	}
-
-	private void updateXPos(float xSpeed, boolean candidateIsSlope, List<Integer> cd, int lw, int lh) {
-		if (!CollisionChecker.isSolid(hitbox, x + xSpeed, y, cd, lw, lh)) {
-			this.x += xSpeed;
-			moving = true;
-		} 
-		
-		else if (candidateIsSlope && !CollisionChecker.isSolid(hitbox, x + xSpeed, y - (4.0f * Game.SCALE), cd, lw, lh)) {
-			this.x += xSpeed;
-			moving = true;
-		}
-	}
-
-	private void updateYPos(float ySpeed, List<Integer> cd, int lw, int lh) {
-		boolean solidHit = CollisionChecker.isSolid(hitbox, x, y + ySpeed, cd, lw, lh);
-		boolean platformHit = CollisionChecker.isPlatform(hitbox, y, y + ySpeed, ySpeed, cd, lw, lh);
-
-		if (!solidHit && !platformHit) {
-			this.y += ySpeed;
-			if (inAir) {
-				airSpeed += gravity;
-			}
-			moving = true;
-		} else {
-			this.y = CollisionChecker.GetYFromBlocks(hitbox, y + ySpeed, airSpeed);
-
-			if (airSpeed > 0) {
-				resetInAir();
-			} else {
-				airSpeed = fallSpeed;
-			}
-		}
-	}
 	
 	private void jump() {
 		if (jumpCount < maxJump) {
@@ -261,10 +179,10 @@ public class Player extends Entity {
 		jumping = false;
 	}
 	
-	private void resetInAir() {
-		inAir = false;
+	@Override
+	protected void resetInAir() {
+		super.resetInAir();
 		jumpCount = 0;
-		airSpeed = 0;
 	}
 
 	public void resetDirection() {

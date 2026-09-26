@@ -15,6 +15,7 @@ public class GamePanel extends JPanel{
 	public GamePanel(Game game) {
 		this.game = game;
 		setPanelSize();
+		setFocusable(true);
 		addKeyListener(new KeyboardInputs(this));
 	}
 	
