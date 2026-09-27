@@ -88,9 +88,9 @@
     {
       "type": "LEVEL_TRANSITION",
       "activation": "AUTO",
-      "x": 1020,
+      "x": 1016,
       "y": 0,
-      "width": 3,
+      "width": 7,
       "height": -1,
       "targetLevel": 2,
       "spawnX": 24,

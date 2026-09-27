@@ -34,7 +34,7 @@ public class Camera {
 		if (y > levelHeight - height) y = levelHeight - height;
 	}
 
-	private void setLevelBounds() {
+	public void setLevelBounds() {
 		this.levelWidth = playing.getLevelWidth() * Game.TILES_SIZE;
 		this.levelHeight = playing.getLevelHeight() * Game.TILES_SIZE;
 	}

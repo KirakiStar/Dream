@@ -68,6 +68,7 @@ public class Playing extends State implements StateMethods {
 				if (isAuto || isInteract) {
 					player.setUp(false);
 					levelManager.loadLevel(trigger.getTargetLevel(), trigger.getSpawnX(), trigger.getSpawnY());
+					camera.setLevelBounds();
 					break;
 				}
 			}
