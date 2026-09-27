@@ -22,13 +22,14 @@ public class Player extends MovingEntity {
 	private static final int HEIGHT = (int)(36*Game.SCALE);
 	private static final float OFFSET_X = 24 * Game.SCALE;
 	private static final float OFFSET_Y = 27 * Game.SCALE;
+	private static final float heightDropFromLadder = HEIGHT / 2;
 	
 	private final float playerSpeed = 1.5f * SCALE;
 	private boolean left;
 	private boolean right;
 	private boolean up;
 	private boolean down;
-	private boolean jumping;
+	private boolean jump;
 	private boolean climbing;
 	
 	private int jumpCount = 0;
@@ -67,6 +68,8 @@ public class Player extends MovingEntity {
 			} else {
 				setAnimation(FALLING);
 			}
+		} else if (climbing) {
+			setAnimation(CLIMBING);
 		} else if (moving) {
 			setAnimation(RUNNING);
 		} else {
@@ -101,10 +104,15 @@ public class Player extends MovingEntity {
 
 		climbable = CollisionChecker.isLadder(hitbox, cd, lw, lh);
 		if (climbable && (up || down)) {
-			climbing = true;
-			inAir = false;
-			airSpeed = 0;
-		} else if (!climbable) {
+			if (down && CollisionChecker.isSolid(hitbox, x, y + heightDropFromLadder, cd, lw, lh)) {
+				climbing = false;
+				jumpCount = 1;
+			} else {
+				climbing = true;
+				inAir = false;
+				airSpeed = 0;
+			}
+		} else if (!climbable || jump) {
 			climbing = false;
 		}
 
@@ -136,7 +144,7 @@ public class Player extends MovingEntity {
 
 		float xSpeed = 0;
 
-		if (jumping) jump();
+		if (jump) jump();
 		if (left) { xSpeed -= playerSpeed; facingLeft = true; }
 		if (right) { xSpeed += playerSpeed; facingLeft = false; }
 
@@ -176,7 +184,7 @@ public class Player extends MovingEntity {
 			inAir = true;
 			airSpeed = jumpSpeed;
 		}
-		jumping = false;
+		jump = false;
 	}
 	
 	@Override
@@ -208,6 +216,6 @@ public class Player extends MovingEntity {
 	public void setDown(boolean down) { this.down = down; }
 	public boolean isDown() { return down; }
 
-	public void setJump(boolean jump) { this.jumping = jump; }
-	public boolean isJump() { return jumping; }
+	public void setJump(boolean jump) { this.jump = jump; }
+	public boolean isJump() { return jump; }
 }

@@ -35,9 +35,9 @@ public class LevelManager {
 	}
 	
 	public void draw(Graphics2D g2) {
-		int layers = level.getLevelLayers()-1;
+		int layers = level.getLevelLayers();
 		int levelSize = level.getLevelWidth() * level.getLevelHeight();
-		for (int i=0; i<layers; i++) {
+		for (int i=1; i<layers; i++) {
 			for (int j=0; j<levelSize; j++) {
 				int tileID = level.getTileAt(i, j);
 				if (tileID == 0) continue;

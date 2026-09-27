@@ -38,7 +38,15 @@ public final class CollisionChecker {
 		for (int tileX = leftTile; tileX <= rightTile; tileX++) {
 			TileType tileType = getTileType(tileX, tileY, collisionData, levelWidth, levelHeight);
 
-			if (tileType == TileType.PLATFORM || tileType == TileType.LADDER) {
+			boolean isTopLadder = false;
+			if (tileType == TileType.LADDER) {
+				TileType tileAbove = getTileType(tileX, tileY - 1, collisionData, levelWidth, levelHeight);
+				if (tileAbove != TileType.LADDER) {
+					isTopLadder = true;
+				}
+			}
+
+			if (tileType == TileType.PLATFORM || isTopLadder) {
 				float platformTop = tileY * Game.TILES_SIZE;
 				if (prevFeetY <= platformTop + 2.0f) {
 					return true;

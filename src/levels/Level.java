@@ -24,6 +24,7 @@ public class Level {
 	}
 	
 	public List<Integer> getCollisionData() {
-		return levelData.getLayers().get(levelData.getLayers().size()-1).getData();
+//		return levelData.getLayers().get(levelData.getLayers().size()-1).getData();
+		return levelData.getLayers().get(0).getData();
 	}
 }
