@@ -50,5 +50,18 @@
         2,2,2,4,2,2,2,2,2,2
       ]
     }
+  ],
+  "triggers": [
+    {
+      "type": "LEVEL_TRANSITION",
+      "activation": "INTERACT",
+      "x": 160,
+      "y": 160,
+      "width": 32,
+      "height": 32,
+      "targetLevel": 1,
+      "spawnX": 110,
+      "spawnY": 150
+    }
   ]
 }

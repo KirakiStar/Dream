@@ -5,10 +5,12 @@ import java.util.List;
 import helper.ResourceLoader;
 
 public class Level {
-	private LevelData levelData;
+	private final LevelData levelData;
+	private final String tilesetImg;
 	
-	public Level(String jsonFileName) {
+	public Level(String jsonFileName, String tilesetImg) {
 		this.levelData = ResourceLoader.LoadLevels(jsonFileName);
+		this.tilesetImg = tilesetImg;
 	}
 	
 	public int getLevelLayers() { return levelData.getLayers().size(); }
@@ -24,7 +26,12 @@ public class Level {
 	}
 	
 	public List<Integer> getCollisionData() {
-//		return levelData.getLayers().get(levelData.getLayers().size()-1).getData();
 		return levelData.getLayers().get(0).getData();
 	}
+	
+	public List<LevelData.TriggerData> getTriggers() {
+		return levelData.getTriggers();
+	}
+	
+	public String getTilesetImg() { return tilesetImg; }
 }

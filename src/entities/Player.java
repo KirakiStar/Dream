@@ -22,7 +22,7 @@ public class Player extends MovingEntity {
 	private static final int HEIGHT = (int)(36*Game.SCALE);
 	private static final float OFFSET_X = 24 * Game.SCALE;
 	private static final float OFFSET_Y = 27 * Game.SCALE;
-	private static final float heightDropFromLadder = HEIGHT / 2;
+	private static final float HEIGHT_DROP_LADDER = HEIGHT / 2;
 	
 	private final float playerSpeed = 1.5f * SCALE;
 	private boolean left;
@@ -43,6 +43,13 @@ public class Player extends MovingEntity {
 		this.playerAction = IDLE;
 		entitySpeed = playerSpeed;
 		loadAnimations(playerPng, pngRow, pngCol, 64, 64);
+	}
+	
+	public void setPosition(float x, float y) {
+		this.x = x;
+		this.y = y;
+		updateHitbox();
+		resetDirection();
 	}
 	
 	protected void updateAnimationTick() {
@@ -103,8 +110,10 @@ public class Player extends MovingEntity {
 		}
 
 		climbable = CollisionChecker.isLadder(hitbox, cd, lw, lh);
-		if (climbable && (up || down)) {
-			if (down && CollisionChecker.isSolid(hitbox, x, y + heightDropFromLadder, cd, lw, lh)) {
+		if (jump) {
+			climbing = false;
+		} else if (climbable && (up || down)) {
+			if (down && CollisionChecker.isSolid(hitbox, x, y + HEIGHT_DROP_LADDER, cd, lw, lh)) {
 				climbing = false;
 				jumpCount = 1;
 			} else {
@@ -112,7 +121,7 @@ public class Player extends MovingEntity {
 				inAir = false;
 				airSpeed = 0;
 			}
-		} else if (!climbable || jump) {
+		} else if (!climbable) {
 			climbing = false;
 		}
 

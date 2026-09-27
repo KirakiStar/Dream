@@ -72,5 +72,29 @@
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
       ]
     }
+  ],
+  "triggers": [
+    {
+      "type": "LEVEL_TRANSITION",
+      "activation": "INTERACT",
+      "x": 128,
+      "y": 160,
+      "width": 64,
+      "height": 64,
+      "targetLevel": 0,
+      "spawnX": 40,
+      "spawnY": 0
+    },
+    {
+      "type": "LEVEL_TRANSITION",
+      "activation": "AUTO",
+      "x": 1020,
+      "y": 0,
+      "width": 3,
+      "height": -1,
+      "targetLevel": 2,
+      "spawnX": 24,
+      "spawnY": 128
+    }
   ]
 }

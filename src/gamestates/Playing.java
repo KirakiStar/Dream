@@ -8,6 +8,8 @@ import java.awt.geom.AffineTransform;
 import main.Game;
 import display.Camera;
 import entities.Player;
+import levels.Level;
+import levels.LevelData;
 import levels.LevelManager;
 
 public class Playing extends State implements StateMethods {
@@ -25,23 +27,58 @@ public class Playing extends State implements StateMethods {
 	
 	private void init() {
 		levelManager = new LevelManager(this);
-		player = new Player(this,
-				levelManager.getCurrentLevel().getSpawnX() * Game.SCALE,
-				levelManager.getCurrentLevel().getSpawnY() * Game.SCALE);
-		loadLevelData(levelManager);
+		Level current = levelManager.getCurrentLevel();
+
+		player = new Player(this, current.getSpawnX() * Game.SCALE, current.getSpawnY() * Game.SCALE);
 		camera = new Camera(this);
+
+		loadLevelData(levelManager, current.getSpawnX(), current.getSpawnY());
 	}
 	
-	public void loadLevelData(LevelManager levelManager) {
-		this.collisionData = levelManager.getCurrentLevel().getCollisionData();
-		this.levelWidth = levelManager.getCurrentLevel().getLevelWidth();
-		this.levelHeight = levelManager.getCurrentLevel().getLevelHeight();
+	public void loadLevelData(LevelManager levelManager, float spawnX, float spawnY) {
+		Level currentLevel = levelManager.getCurrentLevel();
+		this.collisionData = currentLevel.getCollisionData();
+		this.levelWidth = currentLevel.getLevelWidth();
+		this.levelHeight = currentLevel.getLevelHeight();
+
+		if (player != null) {
+			player.setPosition(spawnX * Game.SCALE, spawnY * Game.SCALE);
+		}
+	}
+	
+	private void checkTriggers() {
+		List<LevelData.TriggerData> triggers = levelManager.getCurrentLevel().getTriggers();
+		if (triggers == null) return;
+
+		for (LevelData.TriggerData trigger : triggers) {
+			float tx = trigger.getX() * Game.SCALE;
+			float ty = trigger.getY() * Game.SCALE;
+			float tw = (trigger.getWidth() == -1)?
+						levelWidth * Game.TILES_SIZE * Game.SCALE 
+						: trigger.getWidth() * Game.SCALE;
+
+			float th = (trigger.getHeight() == -1)?
+						levelHeight * Game.TILES_SIZE * Game.SCALE 
+						: trigger.getHeight() * Game.SCALE;
+
+			if (player.getHitbox().getBounds().intersects(tx, ty, tw, th)) {
+				boolean isAuto = "AUTO".equalsIgnoreCase(trigger.getActivation());
+				boolean isInteract = "INTERACT".equalsIgnoreCase(trigger.getActivation()) && player.isUp();
+
+				if (isAuto || isInteract) {
+					player.setUp(false);
+					levelManager.loadLevel(trigger.getTargetLevel(), trigger.getSpawnX(), trigger.getSpawnY());
+					break;
+				}
+			}
+		}
 	}
 
 	@Override
 	public void update() {
 		player.update();
 		levelManager.update();
+		checkTriggers();
 		camera.update();
 	}
 

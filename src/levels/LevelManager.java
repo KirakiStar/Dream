@@ -3,6 +3,8 @@ package levels;
 import gamestates.Playing;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.ArrayList;
 
 import helper.ResourceLoader;
 import static main.Game.TILES_SIZE;
@@ -10,39 +12,64 @@ import static main.Game.TILES_SIZE;
 public class LevelManager {
 	private Playing playing;
 	private BufferedImage[] tiles;
-	private Level level;
-	
-//	private String levelJson = ResourceLoader.TEST_MAP;
-//	private String levelImg = ResourceLoader.TEST_LEVEL;
-	private String levelImg = ResourceLoader.LEVEL1_SET;
-//	private String levelJson = ResourceLoader.LEVEL1_MAP;
-	private String levelJson = ResourceLoader.LEVEL1_1_MAP;
+	private List<Level> levels;
+	private int currentLevelIndex = 1;
 	
 	public LevelManager(Playing playing) {
 		this.playing = playing;
-		level = new Level(levelJson);
-		setTiles(level.getTileRow() * level.getTileColumn(), level.getTileColumn());
+		this.levels = new ArrayList<>();
+		buildLevels();
+		loadLevel(currentLevelIndex);
 	}
 	
-	private void setTiles(int tileSetSize, int tileSetColumns) {
-		BufferedImage img = ResourceLoader.ImagesLoader(levelImg);
+	private void buildLevels() {
+		// Index 0
+		levels.add(new Level(ResourceLoader.TEST_MAP, ResourceLoader.TEST_LEVEL));
+		// Index 1
+		levels.add(new Level(ResourceLoader.LEVEL1_MAP, ResourceLoader.LEVEL1_SET));
+		// Index 2
+		levels.add(new Level(ResourceLoader.LEVEL1_1_MAP, ResourceLoader.LEVEL1_SET));
+	}
+	
+	public void loadLevel(int index, float spawnX, float spawnY) {
+		if (index < 0 || index >= levels.size()) return;
+
+		currentLevelIndex = index;
+		Level current = getCurrentLevel();
+
+		setTiles(current.getTilesetImg(), current.getTileRow() * current.getTileColumn(), current.getTileColumn());
+
+		if (playing != null) {
+			playing.loadLevelData(this, spawnX, spawnY);
+		}
+	}
+
+	public void loadLevel(int index) {
+		if (index < 0 || index >= levels.size()) return;
+		Level current = levels.get(index);
+		loadLevel(index, current.getSpawnX(), current.getSpawnY());
+	}
+	
+	private void setTiles(String tilesetImg, int tileSetSize, int tileSetColumns) {
+		BufferedImage img = ResourceLoader.ImagesLoader(tilesetImg);
 		tiles = new BufferedImage[tileSetSize];
-		for (int i=0; i<tileSetSize; i++) {
-			int x = i % tileSetColumns * 32;
-			int y = i / tileSetColumns * 32;
+		for (int i = 0; i < tileSetSize; i++) {
+			int x = (i % tileSetColumns) * 32;
+			int y = (i / tileSetColumns) * 32;
 			tiles[i] = img.getSubimage(x, y, 32, 32);
 		}
 	}
 	
 	public void draw(Graphics2D g2) {
-		int layers = level.getLevelLayers();
-		int levelSize = level.getLevelWidth() * level.getLevelHeight();
-		for (int i=1; i<layers; i++) {
-			for (int j=0; j<levelSize; j++) {
-				int tileID = level.getTileAt(i, j);
+		Level current = getCurrentLevel();
+		int layers = current.getLevelLayers();
+		int levelSize = current.getLevelWidth() * current.getLevelHeight();
+		for (int i = 1; i < layers; i++) {
+			for (int j = 0; j < levelSize; j++) {
+				int tileID = current.getTileAt(i, j);
 				if (tileID == 0) continue;
-				int tileX = j % level.getLevelWidth();
-				int tileY = j / level.getLevelWidth();
+				int tileX = j % current.getLevelWidth();
+				int tileY = j / current.getLevelWidth();
 				g2.drawImage(tiles[tileID], tileX * TILES_SIZE, tileY * TILES_SIZE, TILES_SIZE, TILES_SIZE, null);
 			}
 		}
@@ -50,5 +77,6 @@ public class LevelManager {
 	
 	public void update() { }
 	
-	public Level getCurrentLevel() { return level; }
+	public Level getCurrentLevel() { return levels.get(currentLevelIndex); }
+	public int getCurrentLevelIndex() { return currentLevelIndex; }
 }
