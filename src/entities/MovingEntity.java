@@ -13,8 +13,8 @@ public abstract class MovingEntity extends Entity {
 	protected boolean moving = false;
 	protected final float gravity = 0.05f * Game.SCALE;
 
-	public MovingEntity(float x, float y, int width, int height, float offsetX, float offsetY) {
-		super(x, y, width, height, offsetX, offsetY);
+	public MovingEntity(float x, float y, int width, int height, float offsetX, float offsetY, int maxHealth) {
+		super(x, y, width, height, offsetX, offsetY, maxHealth);
 	}
 
 	protected void updateXPos(float xSpeed, boolean candidateIsSlope, List<Integer> cd, int lw, int lh) {

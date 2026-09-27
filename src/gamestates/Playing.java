@@ -113,6 +113,12 @@ public class Playing extends State implements StateMethods {
 			case KeyEvent.VK_Z:
 				player.setJump(true);
 				break;
+			case KeyEvent.VK_X:
+				player.attack();
+				break;
+			case KeyEvent.VK_K:
+				player.takeDamage(1);
+				break;
 			case KeyEvent.VK_R:
 				Gamestate.state = Gamestate.TITLESCREEN;
 //				resetAll();

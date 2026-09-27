@@ -8,10 +8,11 @@ import helper.ResourceLoader;
 import gamestates.Playing;
 import helper.Constants.PlayerState;
 import collision.CollisionChecker;
+import collision.Hitbox;
 import static main.Game.SCALE;
 import static helper.Constants.PlayerState.*;
 
-public class Player extends MovingEntity {
+public class Player extends MovingEntity implements Attackable {
 	private Playing playing;
 	private final String playerPng = ResourceLoader.PLAYER_SPRITES;
 	private final int pngRow = 11;
@@ -36,13 +37,20 @@ public class Player extends MovingEntity {
 	private final int maxJump = 2;
 	private boolean climbable = false;
 	private final float jumpSpeed = -2.3f * SCALE;
+	
+	private static final int MAX_HEALTH = 7;
+	private Hitbox attackBox;
+	private boolean attacking = false;
+	private int attackDamage = 1;
+	private boolean hit = false;
 
 	public Player(Playing playing, float x, float y) {
-		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y);
+		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, MAX_HEALTH);
 		this.playing = playing;
 		this.playerAction = IDLE;
 		entitySpeed = playerSpeed;
 		loadAnimations(playerPng, pngRow, pngCol, 64, 64);
+		initAttackBox();
 	}
 	
 	public void setPosition(float x, float y) {
@@ -52,8 +60,27 @@ public class Player extends MovingEntity {
 		resetDirection();
 	}
 	
+	private void initAttackBox() {
+		float offsetX = 24f * Game.SCALE;
+		float offsetY = 32f * Game.SCALE;
+		int attackWidth = (int)(24 * Game.SCALE);
+		int attackHeight = (int)(32 * Game.SCALE);
+		this.attackBox = new Hitbox(this, offsetX, offsetY, attackWidth, attackHeight);
+		this.invincibilityDuration = 120;
+	}
+	
 	protected void updateAnimationTick() {
 		super.updateAnimationTick(playerAction.getAnimationAmount(), playerAction.isLooping());
+		if (attacking) {
+			if (aniIndex >= playerAction.getAnimationAmount() - 1) {
+				attacking = false;
+			}
+		}
+		if (hit) {
+			if (aniIndex >= playerAction.getAnimationAmount() - 1) {
+				hit = false;
+			}
+		}
 	}
 	
 	private void setAnimation(PlayerState newAction) {
@@ -65,6 +92,21 @@ public class Player extends MovingEntity {
 	}
 	
 	private void updatePlayerAction() {
+		if (!alive) {
+			setAnimation(DEATH);
+			return;
+		}
+		
+		if (hit) {
+			setAnimation(ATTACKED);
+			return;
+		}
+		
+		if (attacking) {
+			setAnimation(ATTACK);
+			return;
+		}
+		
 		if (inAir) {
 			if (airSpeed < 0) {
 				if (jumpCount < 2) {
@@ -88,6 +130,7 @@ public class Player extends MovingEntity {
 	public void update() {
 		super.update();
 		updatePosition();
+		updateAttackBox();
 		updateAnimationTick();
 		updatePlayerAction();
 	}
@@ -95,6 +138,7 @@ public class Player extends MovingEntity {
 	@Override
 	public void draw(Graphics2D g2) {
 		super.draw(g2, playerAction.getId());
+		if (attacking) attackBox.drawDebug(g2);
 	}
 
 	private void updatePosition() {
@@ -209,9 +253,40 @@ public class Player extends MovingEntity {
 		down = false;
 	}
 	
-	private void die() {
+	@Override
+	protected void die() {
+		if (!alive) return;
+		super.die();
 		System.out.println("Dead");
 	}
+
+	@Override
+	public void attack() {
+		attacking = true;
+	}
+	
+	private void updateAttackBox() {
+		if (facingLeft) {
+			attackBox.update(x - (attackBox.getWidth()), y);
+		} else {
+			attackBox.update(x + (WIDTH), y);
+		}
+	}
+	
+	@Override
+	public void takeDamage(int amount) {
+		if (!alive || hitbox.isInvincible()) return;
+		super.takeDamage(amount);
+		hit = true;
+		attacking = false;
+		hitbox.setInvincible(true);
+		System.out.println("hit");
+	}
+
+	@Override
+	public Hitbox getAttackBox() { return attackBox; }
+	@Override
+	public int getDamage() { return attackDamage; }
 
 	public void setLeft(boolean left) { this.left = left; }
 	public boolean isLeft() { return left; }
