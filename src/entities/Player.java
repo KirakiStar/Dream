@@ -37,6 +37,7 @@ public class Player extends MovingEntity implements Attackable {
 	private final int maxJump = 2;
 	private boolean climbable = false;
 	private final float jumpSpeed = -2.3f * SCALE;
+	private final float drownSpeed = 0.5f * SCALE;
 	
 	private static final int MAX_HEALTH = 7;
 	private Hitbox attackBox;
@@ -71,6 +72,14 @@ public class Player extends MovingEntity implements Attackable {
 	
 	protected void updateAnimationTick() {
 		super.updateAnimationTick(playerAction.getAnimationAmount(), playerAction.isLooping());
+		
+		if (!alive) {
+			if (aniIndex >= playerAction.getAnimationAmount() - 1) {
+				playing.respawnPlayer();
+			}
+			return;
+		}
+		
 		if (attacking) {
 			if (aniIndex >= playerAction.getAnimationAmount() - 1) {
 				attacking = false;
@@ -131,8 +140,8 @@ public class Player extends MovingEntity implements Attackable {
 		super.update();
 		updatePosition();
 		updateAttackBox();
-		updateAnimationTick();
 		updatePlayerAction();
+		updateAnimationTick();
 	}
 
 	@Override
@@ -150,6 +159,7 @@ public class Player extends MovingEntity implements Attackable {
 
 		if (CollisionChecker.isWater(hitbox, cd, lw, lh)) {
 			die();
+			y += drownSpeed;
 			return;
 		}
 
@@ -281,6 +291,27 @@ public class Player extends MovingEntity implements Attackable {
 		attacking = false;
 		hitbox.setInvincible(true);
 		System.out.println("hit");
+	}
+	
+	public void reset(float spawnX, float spawnY) {
+		this.currentHealth = maxHealth;
+		this.alive = true;
+
+		resetDirection();
+		this.attacking = false;
+		this.hit = false;
+		this.inAir = false;
+		this.climbing = false;
+		this.airSpeed = 0;
+		this.jumpCount = 0;
+
+		this.hitbox.setInvincible(false);
+		this.invincibilityTick = 0;
+		this.playerAction = PlayerState.IDLE;
+		this.aniTick = 0;
+		this.aniIndex = 0;
+
+		setPosition(spawnX, spawnY);
 	}
 
 	@Override

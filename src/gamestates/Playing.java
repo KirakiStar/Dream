@@ -46,6 +46,15 @@ public class Playing extends State implements StateMethods {
 		}
 	}
 	
+	public void respawnPlayer() {
+		Level currentLevel = levelManager.getCurrentLevel();
+		float spawnX = currentLevel.getSpawnX() * Game.SCALE;
+		float spawnY = currentLevel.getSpawnY() * Game.SCALE;
+
+		player.reset(spawnX, spawnY);
+		camera.setLevelBounds();
+	}
+	
 	private void checkTriggers() {
 		List<LevelData.TriggerData> triggers = levelManager.getCurrentLevel().getTriggers();
 		if (triggers == null) return;

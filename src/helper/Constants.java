@@ -18,7 +18,7 @@ public class Constants {
 		ATTACK(7, 4, false),
 		ATTACK_AIR(8, 4, false),
 		ATTACKED(9, 4, false),
-		DEATH(10, 1, false);
+		DEATH(10, 4, false);
 
 		private final int id;
 		private final int animationAmount;
