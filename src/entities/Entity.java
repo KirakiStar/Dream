@@ -3,8 +3,9 @@ package entities;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import helper.ResourceLoader;
 import collision.Hitbox;
+import helper.ResourceLoader;
+import helper.ResourceLoader.SpriteSheet;
 
 public abstract class Entity {
 	protected float x;
@@ -37,6 +38,21 @@ public abstract class Entity {
 	protected void initHealth(int maxHealth) {
 		this.maxHealth = maxHealth;
 		this.currentHealth = maxHealth;
+	}
+
+	protected void loadAnimations(SpriteSheet spriteSheet) {
+		String fileName = spriteSheet.getFileName();
+		int rows = spriteSheet.getRow();
+		int columns = spriteSheet.getColumn();
+		int spriteWidth = spriteSheet.getWidth();
+		int spriteHeight = spriteSheet.getHeight();
+		BufferedImage img = ResourceLoader.ImagesLoader(fileName);
+		sprites = new BufferedImage[rows][columns];
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				sprites[i][j] = img.getSubimage(j * spriteWidth, i * spriteHeight, spriteWidth, spriteHeight);
+			}
+		}
 	}
 	
 	public void takeDamage(int amount) {
@@ -85,16 +101,6 @@ public abstract class Entity {
 				if (aniIndex < maxAnimationAmount - 1) {
 					aniIndex++;
 				}
-			}
-		}
-	}
-
-	protected void loadAnimations(String resourcePath, int rows, int cols, int spriteWidth, int spriteHeight) {
-		BufferedImage img = ResourceLoader.ImagesLoader(resourcePath);
-		sprites = new BufferedImage[rows][cols];
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < cols; j++) {
-				sprites[i][j] = img.getSubimage(j * spriteWidth, i * spriteHeight, spriteWidth, spriteHeight);
 			}
 		}
 	}

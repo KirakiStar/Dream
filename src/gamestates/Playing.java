@@ -7,6 +7,8 @@ import java.awt.geom.AffineTransform;
 
 import main.Game;
 import display.Camera;
+import entities.Entity;
+import entities.EntityManager;
 import entities.Player;
 import levels.Level;
 import levels.LevelData;
@@ -18,6 +20,8 @@ public class Playing extends State implements StateMethods {
 	private List<Integer> collisionData;
 	private int levelWidth;
 	private int levelHeight;
+	private static EntityManager entityManager;
+	private List<Integer> entityData;
 	private Camera camera;
 	
 	public Playing(Game game) {
@@ -27,6 +31,7 @@ public class Playing extends State implements StateMethods {
 	
 	private void init() {
 		levelManager = new LevelManager(this);
+		entityManager = new EntityManager(this);
 		Level current = levelManager.getCurrentLevel();
 
 		player = new Player(this, current.getSpawnX() * Game.SCALE, current.getSpawnY() * Game.SCALE);
@@ -40,9 +45,14 @@ public class Playing extends State implements StateMethods {
 		this.collisionData = currentLevel.getCollisionData();
 		this.levelWidth = currentLevel.getLevelWidth();
 		this.levelHeight = currentLevel.getLevelHeight();
+		this.entityData = currentLevel.getEntityData();
 
 		if (player != null) {
 			player.setPosition(spawnX * Game.SCALE, spawnY * Game.SCALE);
+		}
+		
+		if (entityManager != null) {
+			entityManager.loadEntities();
 		}
 	}
 	
@@ -88,6 +98,7 @@ public class Playing extends State implements StateMethods {
 	public void update() {
 		player.update();
 		levelManager.update();
+		entityManager.update();
 		checkTriggers();
 		camera.update();
 	}
@@ -98,6 +109,7 @@ public class Playing extends State implements StateMethods {
 		
 		g2.translate(-camera.getX(), -camera.getY());
 		levelManager.draw(g2);
+		entityManager.draw(g2);
 		player.draw(g2);
 		
 		g2.setTransform(originalTransform);
@@ -169,4 +181,6 @@ public class Playing extends State implements StateMethods {
 	public List<Integer> getCollisionData() { return collisionData; }
 	public int getLevelWidth() { return levelWidth; }
 	public int getLevelHeight() { return levelHeight; }
+	public EntityManager getEntityManager() { return entityManager; }
+	public List<Integer> getEntityData() { return entityData; }
 }

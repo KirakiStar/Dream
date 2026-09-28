@@ -14,9 +14,7 @@ import static helper.Constants.PlayerState.*;
 
 public class Player extends MovingEntity implements Attackable {
 	private Playing playing;
-	private final String playerPng = ResourceLoader.PLAYER_SPRITES;
-	private final int pngRow = 11;
-	private final int pngCol = 4;
+	private static final ResourceLoader.SpriteSheet playerSprites = ResourceLoader.PLAYER_SPRITES;
 	private PlayerState playerAction;
 	
 	private static final int WIDTH = (int)(16*Game.SCALE);
@@ -39,19 +37,19 @@ public class Player extends MovingEntity implements Attackable {
 	private final float jumpSpeed = -2.3f * SCALE;
 	private final float drownSpeed = 0.5f * SCALE;
 	
-	private static final int MAX_HEALTH = 7;
 	private Hitbox attackBox;
 	private boolean attacking = false;
 	private int attackDamage = 1;
 	private boolean hit = false;
 
 	public Player(Playing playing, float x, float y) {
-		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, MAX_HEALTH);
+		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 7); //maxHealth = 7
 		this.playing = playing;
 		this.playerAction = IDLE;
 		entitySpeed = playerSpeed;
-		loadAnimations(playerPng, pngRow, pngCol, 64, 64);
+		loadAnimations(playerSprites);
 		initAttackBox();
+		this.invincibilityDuration = 120;
 	}
 	
 	public void setPosition(float x, float y) {
@@ -67,7 +65,6 @@ public class Player extends MovingEntity implements Attackable {
 		int attackWidth = (int)(24 * Game.SCALE);
 		int attackHeight = (int)(32 * Game.SCALE);
 		this.attackBox = new Hitbox(this, offsetX, offsetY, attackWidth, attackHeight);
-		this.invincibilityDuration = 120;
 	}
 	
 	protected void updateAnimationTick() {
@@ -290,7 +287,7 @@ public class Player extends MovingEntity implements Attackable {
 		hit = true;
 		attacking = false;
 		hitbox.setInvincible(true);
-		System.out.println("hit");
+		if (alive) System.out.println("hit");
 	}
 	
 	public void reset(float spawnX, float spawnY) {
@@ -333,4 +330,6 @@ public class Player extends MovingEntity implements Attackable {
 
 	public void setJump(boolean jump) { this.jump = jump; }
 	public boolean isJump() { return jump; }
+	
+	public boolean isAttacking() { return attacking; }
 }

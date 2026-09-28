@@ -1,0 +1,40 @@
+package entities;
+
+import java.util.List;
+import java.awt.Graphics2D;
+
+import main.Game;
+import helper.ResourceLoader;
+import helper.Constants.MittenState;
+import static helper.Constants.MittenState.*;
+
+public class Mitten extends Enemy {
+	private static final ResourceLoader.SpriteSheet mittenSprites = ResourceLoader.MITTEN_SPRITES;
+	private MittenState mittenState;
+	
+	private static final int WIDTH = (int)(16*Game.SCALE);
+	private static final int HEIGHT = (int)(36*Game.SCALE);
+	private static final float OFFSET_X = 24 * Game.SCALE;
+	private static final float OFFSET_Y = 27 * Game.SCALE;
+
+	public Mitten(float x, float y) {
+		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 1, mittenSprites); //maxHealth = 1
+		mittenState = IDLE;
+	}
+	
+	@Override
+	public void update(List<Integer> collisionData, int levelWidth, int levelHeight) {
+		super.update(collisionData, levelWidth, levelHeight);
+		updateAnimationTick(mittenState.getAnimationAmount(), mittenState.isLooping());
+	}
+	
+	@Override
+	public void draw(Graphics2D g2) {
+		super.draw(g2, mittenState.getId());
+	}
+
+	@Override
+	protected void updateBehavior(List<Integer> collisionData, int levelWidth, int levelHeight) {
+		
+	}
+}

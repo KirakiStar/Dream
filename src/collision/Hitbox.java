@@ -7,10 +7,12 @@ import java.awt.Rectangle;
 import entities.Entity;
 
 public class Hitbox {
-    private Entity owner;
-    private float offsetX, offsetY;
-    private int width, height;
-    private Rectangle bounds;
+    private final Entity owner;
+    private final float offsetX;
+    private final float offsetY;
+    private final int width;
+    private final int height;
+    private final Rectangle bounds;
     private boolean isInvincible = false;
     private boolean isTrigger = false;
 
@@ -33,7 +35,7 @@ public class Hitbox {
     }
 
     public boolean intersects(Hitbox other) {
-        if (this.isInvincible || other.isInvincible)
+        if (other == null || this.isInvincible || other.isInvincible)
 			return false;
         return this.bounds.intersects(other.getBounds());
     }

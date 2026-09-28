@@ -29,6 +29,10 @@ public class Level {
 		return levelData.getLayers().get(0).getData();
 	}
 	
+	public List<Integer> getEntityData() {
+		return levelData.getLayers().get(1).getData();
+	}
+	
 	public List<LevelData.TriggerData> getTriggers() {
 		return levelData.getTriggers();
 	}

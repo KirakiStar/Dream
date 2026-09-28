@@ -39,4 +39,28 @@ public class Constants {
 		@Override
 		public boolean isLooping() { return looping; }
 	}
+	
+	public enum MittenState implements EntityState {
+		IDLE(0, 2, true),
+		RUNNING(1, 1, false);
+
+		private final int id;
+		private final int animationAmount;
+		private final boolean looping;
+
+		MittenState(int id, int animationAmount, boolean looping) {
+			this.id = id;
+			this.animationAmount = animationAmount;
+			this.looping = looping;
+		}
+
+		@Override
+		public int getId() { return id; }
+
+		@Override
+		public int getAnimationAmount() { return animationAmount; }
+		
+		@Override
+		public boolean isLooping() { return looping; }
+	}
 }

@@ -64,7 +64,7 @@ public class LevelManager {
 		Level current = getCurrentLevel();
 		int layers = current.getLevelLayers();
 		int levelSize = current.getLevelWidth() * current.getLevelHeight();
-		for (int i = 1; i < layers; i++) {
+		for (int i = 2; i < layers; i++) {
 			for (int j = 0; j < levelSize; j++) {
 				int tileID = current.getTileAt(i, j);
 				if (tileID == 0) continue;

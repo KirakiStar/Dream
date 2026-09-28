@@ -11,9 +11,35 @@ import javax.imageio.ImageIO;
 import levels.LevelData;
 
 public class ResourceLoader {
+	
+	public static class SpriteSheet {
+		private String fileName;
+		private int rows;
+		private int columns;
+		private int width;
+		private int height;
+
+		public SpriteSheet(String fileName, int rows, int columns, int width, int height) {
+			this.fileName = fileName;
+			this.rows = rows;
+			this.columns = columns;
+			this.width = width;
+			this.height = height;
+		}
+
+		public String getFileName() { return fileName; }
+		public int getRow() { return rows; }
+		public int getColumn() { return columns; }
+		public int getWidth() { return width; }
+		public int getHeight() { return height; }
+	}
+	
 	public static final String ICON = "icon.png";
 	public static final String TITLESCREEN = "titlescreen.png";
-	public static final String PLAYER_SPRITES = "silver.png";
+	
+	public static final SpriteSheet PLAYER_SPRITES = new SpriteSheet("silver.png", 11, 4, 64, 64);
+	public static final SpriteSheet MITTEN_SPRITES = new SpriteSheet("mitten.png", 4, 4, 64, 64);
+	public static final SpriteSheet GOLDY_SPRITES = new SpriteSheet("goldy.png", 1, 1, 64, 64);
 
 	public static final String TEST_LEVEL = "testLevel.png";
 	public static final String TEST_MAP = "testMap.json";
