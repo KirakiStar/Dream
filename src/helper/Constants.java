@@ -15,7 +15,7 @@ public class Constants {
 		FALLING(4, 1, false),
 		HIT_GROUND(5, 1, false),
 		CLIMBING(6, 1, false),
-		ATTACK(7, 4, false),
+		ATTACK(7, 2, false),
 		ATTACK_AIR(8, 4, false),
 		ATTACKED(9, 4, false),
 		DEATH(10, 4, false);

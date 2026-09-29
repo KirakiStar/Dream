@@ -1,9 +1,9 @@
 package entities;
 
 import java.util.List;
+import java.awt.Graphics2D;
 
 import helper.ResourceLoader;
-import java.awt.Graphics2D;
 
 public abstract class Enemy extends MovingEntity {
 	public Enemy(float x, float y, int width, int height, float offsetX, float offsetY, int maxHealth, ResourceLoader.SpriteSheet enemySprites) {
@@ -31,8 +31,15 @@ public abstract class Enemy extends MovingEntity {
 	}
 	
 	@Override
-	public void draw(Graphics2D g2) {
-//		super.draw(g2, 0);
+	public void draw(Graphics2D g2, int entityState) {
+		super.draw(g2, entityState);
+		hitbox.drawDebug(g2);
+	}
+	
+	@Override
+	public void takeDamage(int amount) {
+		super.takeDamage(amount);
+		System.out.println("Enemy hit");
 	}
 
 	protected abstract void updateBehavior(List<Integer> collisionData, int levelWidth, int levelHeight);

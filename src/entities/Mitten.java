@@ -13,12 +13,12 @@ public class Mitten extends Enemy {
 	private MittenState mittenState;
 	
 	private static final int WIDTH = (int)(16*Game.SCALE);
-	private static final int HEIGHT = (int)(36*Game.SCALE);
+	private static final int HEIGHT = (int)(32*Game.SCALE);
 	private static final float OFFSET_X = 24 * Game.SCALE;
-	private static final float OFFSET_Y = 27 * Game.SCALE;
+	private static final float OFFSET_Y = 31 * Game.SCALE;
 
 	public Mitten(float x, float y) {
-		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 1, mittenSprites); //maxHealth = 1
+		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 3, mittenSprites); //maxHealth = 1
 		mittenState = IDLE;
 	}
 	

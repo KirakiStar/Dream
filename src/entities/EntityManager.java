@@ -45,6 +45,8 @@ public class EntityManager {
 		List<Integer> cd = playing.getCollisionData();
 		int lw = playing.getLevelWidth();
 		int lh = playing.getLevelHeight();
+		
+		entities.removeIf(e -> !e.isAlive());
 
 		for (Entity e : entities) {
 			if (e instanceof Enemy) {
@@ -53,11 +55,25 @@ public class EntityManager {
 				e.update();
 			}
 		}
+		
+		checkEnemyHit(playing.getPlayer());
 	}
 
 	public void draw(Graphics2D g2) {
 		for (Entity e : entities) {
 			e.draw(g2);
+		}
+	}
+	
+	public void checkEnemyHit(Player player) {
+		if (!player.isAttacking()) return;
+		
+		for (Entity e : entities) {
+			if (e.isAlive() && e instanceof Enemy) {
+				if (player.getAttackBox().intersects(e.getHitbox())) {
+					e.takeDamage(player.getDamage());
+				}
+			}
 		}
 	}
 

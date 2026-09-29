@@ -107,7 +107,7 @@ public abstract class Entity {
 
 	public void draw(Graphics2D g2, int actionId) {
 		if (hitbox.isInvincible()) {
-			int blinkInterval = 10;
+			int blinkInterval = 7;
 			if ((invincibilityTick / blinkInterval) % 2 != 0) {
 				return;
 			}
@@ -142,4 +142,5 @@ public abstract class Entity {
 	public final float getY() { return y; }
 	public final int getWidth() { return width; }
 	public final int getHeight() { return height; }
+	public boolean isAlive() { return alive; }
 }

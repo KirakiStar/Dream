@@ -4,12 +4,11 @@ import java.awt.Graphics2D;
 import java.util.List;
 
 import main.Game;
-import helper.ResourceLoader;
 import gamestates.Playing;
-import helper.Constants.PlayerState;
-import collision.CollisionChecker;
 import collision.Hitbox;
-import static main.Game.SCALE;
+import collision.CollisionChecker;
+import helper.ResourceLoader;
+import helper.Constants.PlayerState;
 import static helper.Constants.PlayerState.*;
 
 public class Player extends MovingEntity implements Attackable {
@@ -23,7 +22,7 @@ public class Player extends MovingEntity implements Attackable {
 	private static final float OFFSET_Y = 27 * Game.SCALE;
 	private static final float HEIGHT_DROP_LADDER = HEIGHT / 2;
 	
-	private final float playerSpeed = 1.5f * SCALE;
+	private final float playerSpeed = 1.5f * Game.SCALE;
 	private boolean left;
 	private boolean right;
 	private boolean up;
@@ -34,8 +33,8 @@ public class Player extends MovingEntity implements Attackable {
 	private int jumpCount = 0;
 	private final int maxJump = 2;
 	private boolean climbable = false;
-	private final float jumpSpeed = -2.3f * SCALE;
-	private final float drownSpeed = 0.5f * SCALE;
+	private final float jumpSpeed = -2.3f * Game.SCALE;
+	private final float drownSpeed = 0.5f * Game.SCALE;
 	
 	private Hitbox attackBox;
 	private boolean attacking = false;
@@ -311,11 +310,6 @@ public class Player extends MovingEntity implements Attackable {
 		setPosition(spawnX, spawnY);
 	}
 
-	@Override
-	public Hitbox getAttackBox() { return attackBox; }
-	@Override
-	public int getDamage() { return attackDamage; }
-
 	public void setLeft(boolean left) { this.left = left; }
 	public boolean isLeft() { return left; }
 
@@ -331,5 +325,7 @@ public class Player extends MovingEntity implements Attackable {
 	public void setJump(boolean jump) { this.jump = jump; }
 	public boolean isJump() { return jump; }
 	
+	@Override public Hitbox getAttackBox() { return attackBox; }
+	@Override public int getDamage() { return attackDamage; }
 	public boolean isAttacking() { return attacking; }
 }
