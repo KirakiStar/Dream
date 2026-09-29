@@ -46,6 +46,8 @@ public class ResourceLoader {
 	public static final String LEVEL1_SET = "level1.png";
 	public static final String LEVEL1_MAP = "level1.json";
 	public static final String LEVEL1_1_MAP = "level1_1.json";
+	public static final String LEVEL2_1_MAP = "level2_1.json";
+	public static final String LEVEL2_2_MAP = "level2_2.json";
 
 	public static BufferedImage ImagesLoader(String fileName) {
 		BufferedImage img = null;

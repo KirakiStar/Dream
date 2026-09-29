@@ -100,6 +100,17 @@
       "targetLevel": 1,
       "spawnX": 960,
       "spawnY": 128
+    },
+    {
+      "type": "LEVEL_TRANSITION",
+      "activation": "AUTO",
+      "x": 3960,
+      "y": 0,
+      "width": 7,
+      "height": -1,
+      "targetLevel": 3,
+      "spawnX": 40,
+      "spawnY": 192
     }
   ]
 }

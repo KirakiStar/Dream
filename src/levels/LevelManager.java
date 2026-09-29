@@ -29,6 +29,10 @@ public class LevelManager {
 		levels.add(new Level(ResourceLoader.LEVEL1_MAP, ResourceLoader.LEVEL1_SET));
 		// Index 2
 		levels.add(new Level(ResourceLoader.LEVEL1_1_MAP, ResourceLoader.LEVEL1_SET));
+		// Index 3
+		levels.add(new Level(ResourceLoader.LEVEL2_1_MAP, ResourceLoader.LEVEL1_SET));
+		// Index 4
+		levels.add(new Level(ResourceLoader.LEVEL2_2_MAP, ResourceLoader.LEVEL1_SET));
 	}
 	
 	public void loadLevel(int index, float spawnX, float spawnY) {
