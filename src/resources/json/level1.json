@@ -6,7 +6,7 @@
   "tileSetColumn": 9,
   "tileSetRow": 5,
   "spawnX": 110,
-  "spawnY": 150,
+  "spawnY": 192,
   "layers": [
     {
       "name": "collision",

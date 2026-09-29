@@ -5,8 +5,8 @@
   "tileHeight": 32,
   "tileSetColumn": 9,
   "tileSetRow": 5,
-  "spawnX": 64,
-  "spawnY": 100,
+  "spawnX": 192,
+  "spawnY": 332,
   "layers": [
     {
       "name": "collision",
@@ -145,6 +145,17 @@
     }
   ],
   "triggers": [
+      {
+      "type": "LEVEL_TRANSITION",
+      "activation": "INTERACT",
+      "x": 64,
+      "y": 192,
+      "width": 192,
+      "height": 224,
+      "targetLevel": 4,
+      "spawnX": 1408,
+      "spawnY": 192
+    },
     {
       "type": "LEVEL_TRANSITION",
       "activation": "AUTO",
@@ -152,20 +163,9 @@
       "y": 0,
       "width": 7,
       "height": -1,
-      "targetLevel": 0,
-      "spawnX": 40,
-      "spawnY": 0
-    },
-    {
-      "type": "LEVEL_TRANSITION",
-      "activation": "INTERACT",
-      "x": 64,
-      "y": 192,
-      "width": 192,
-      "height": 224,
-      "targetLevel": 3,
-      "spawnX": 192,
-      "spawnY": 256
+      "targetLevel": 6,
+      "spawnX": 64,
+      "spawnY": 192
     }
   ]
 }
