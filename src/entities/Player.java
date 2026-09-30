@@ -38,8 +38,9 @@ public class Player extends MovingEntity implements Attackable {
 	
 	private Hitbox attackBox;
 	private boolean attacking = false;
-	private int attackDamage = 1;
 	private boolean hit = false;
+	private final int attackDamage = 1;
+	private int knockbackDir = 1;
 
 	public Player(Playing playing, float x, float y) {
 		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 7); //maxHealth = 7
@@ -47,7 +48,7 @@ public class Player extends MovingEntity implements Attackable {
 		this.playerAction = IDLE;
 		entitySpeed = playerSpeed;
 		loadAnimations(playerSprites);
-		initAttackBox();
+		setAttackBox();
 		this.invincibilityDuration = 120;
 	}
 	
@@ -58,10 +59,10 @@ public class Player extends MovingEntity implements Attackable {
 		resetDirection();
 	}
 	
-	private void initAttackBox() {
+	private void setAttackBox() {
 		float offsetX = 24f * Game.SCALE;
 		float offsetY = 32f * Game.SCALE;
-		int attackWidth = (int)(24 * Game.SCALE);
+		int attackWidth = (int)(27 * Game.SCALE);
 		int attackHeight = (int)(32 * Game.SCALE);
 		this.attackBox = new Hitbox(this, offsetX, offsetY, attackWidth, attackHeight);
 	}
@@ -194,56 +195,40 @@ public class Player extends MovingEntity implements Attackable {
 
 			if (!CollisionChecker.isLadder(hitbox, cd, lw, lh)) {
 				climbing = false;
-				inAir = false;
-				airSpeed = 0;
-				jumpCount = 0;
+				resetInAir();
 			}
 			return;
 		}
 
 		float xSpeed = 0;
-
 		if (jump) jump();
 		if (left) { xSpeed -= playerSpeed; facingLeft = true; }
 		if (right) { xSpeed += playerSpeed; facingLeft = false; }
 
-		float slopeFloorY = CollisionChecker.getSlopeY(hitbox, x + xSpeed, y, cd, lw, lh);
-		
-		if (xSpeed != 0) {
-			updateXPos(xSpeed, slopeFloorY != -1, cd, lw, lh);
+		if (hit) {
+			resetDirection();
+			xSpeed = knockbackDir * playerSpeed;
 		}
 
-		if (slopeFloorY != -1 && airSpeed >= 0) {
-			y = slopeFloorY - hitbox.getOffsetY() - hitbox.getHeight();
-			inAir = false;
-			airSpeed = 0;
-			jumpCount = 0;
-		} else if (!inAir) {
-			boolean solidGround = CollisionChecker.isSolid(hitbox, x, y + 1.0f, cd, lw, lh);
-			boolean platformGround = CollisionChecker.isPlatform(hitbox, y, y + 1.0f, 1.0f, cd, lw, lh);
-
-			if (down && platformGround && !solidGround) {
-				inAir = true;
-				y += 3.0f;
-				airSpeed = fallSpeed;
-			} else if (!solidGround && !platformGround) {
-				inAir = true;
-				jumpCount = 1;
-			}
-		}
-
-		if (inAir) {
-			updateYPos(airSpeed, cd, lw, lh);
-		}
+		boolean dropping = down;
+		updateGroundPosition(xSpeed, cd, lw, lh, dropping);
 	}
 	
 	private void jump() {
-		if (jumpCount < maxJump) {
-			jumpCount++;
+		if (!inAir) {
 			inAir = true;
+			airSpeed = jumpSpeed;
+			jumpCount = 1;
+		} else if (jumpCount < maxJump) {
+			jumpCount++;
 			airSpeed = jumpSpeed;
 		}
 		jump = false;
+	}
+	
+	@Override
+	protected void dropFromEdgeOrPlatform() {
+		jumpCount = 1;
 	}
 	
 	@Override
@@ -281,11 +266,26 @@ public class Player extends MovingEntity implements Attackable {
 	
 	@Override
 	public void takeDamage(int amount) {
+		takeDamage(amount, -1);
+	}
+	
+	public void takeDamage(int amount, float enemyX) {
 		if (!alive || hitbox.isInvincible()) return;
+		
+		if (enemyX >= 0) this.knockbackDir = (enemyX < this.x) ? 1 : -1;
+		else this.knockbackDir = (facingLeft) ? 1 : -1;
+		
 		super.takeDamage(amount);
 		hit = true;
 		attacking = false;
 		hitbox.setInvincible(true);
+		
+		if (inAir || climbing) {
+			climbing = false;
+			inAir = true;
+			airSpeed = fallSpeed;
+		}
+		
 		if (alive) System.out.println("hit");
 	}
 	

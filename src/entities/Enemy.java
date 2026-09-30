@@ -4,8 +4,17 @@ import java.util.List;
 import java.awt.Graphics2D;
 
 import helper.ResourceLoader;
+import collision.CollisionChecker;
+import main.Game;
 
 public abstract class Enemy extends MovingEntity {
+	protected boolean hit = false;
+	protected int hitDuration = 15;
+	protected int hitTick = 0;
+	protected float knockbackSpeed = 0.5f * Game.SCALE;
+	protected float knockbackHeight = -0.5f * Game.SCALE;
+	protected int knockbackDir = 1; // 1: right, -1: left
+	
 	public Enemy(float x, float y, int width, int height, float offsetX, float offsetY, int maxHealth, ResourceLoader.SpriteSheet enemySprites) {
 		super(x, y, width, height, offsetX, offsetY, maxHealth);
 		facingLeft = true;
@@ -15,18 +24,24 @@ public abstract class Enemy extends MovingEntity {
 	public void update(List<Integer> collisionData, int levelWidth, int levelHeight) {
 		super.update();
 		
-		if (!inAir) {
-			boolean solidGround = collision.CollisionChecker.isSolid(hitbox, x, y + 1.0f, collisionData, levelWidth, levelHeight);
-			boolean platformGround = collision.CollisionChecker.isPlatform(hitbox, y, y + 1.0f, 1.0f, collisionData, levelWidth, levelHeight);
-			if (!solidGround && !platformGround) {
-				inAir = true;
+		if (CollisionChecker.isWater(hitbox, collisionData, levelWidth, levelHeight)) {
+			die();
+			return;
+		}
+
+		float xSpeed = 0;
+		if (hit) {
+			hitTick++;
+			xSpeed = knockbackDir * knockbackSpeed;
+			if (hitTick >= hitDuration) {
+				hit = false;
+				hitTick = 0;
 			}
+		} else {
+			
 		}
 
-		if (inAir) {
-			updateYPos(airSpeed, collisionData, levelWidth, levelHeight);
-		}
-
+		updateGroundPosition(xSpeed, collisionData, levelWidth, levelHeight, false);
 		updateBehavior(collisionData, levelWidth, levelHeight);
 	}
 	
@@ -37,8 +52,31 @@ public abstract class Enemy extends MovingEntity {
 	}
 	
 	@Override
-	public void takeDamage(int amount) {
+    protected void updateXPos(float xSpeed, boolean candidateIsSlope, List<Integer> cd, int lw, int lh) {
+        float nextX = x + xSpeed;
+        float mapRightX = (lw * Game.TILES_SIZE) - width;
+
+        if (nextX < 0 || nextX > mapRightX) {
+            moving = false;
+            return;
+        }
+
+        super.updateXPos(xSpeed, candidateIsSlope, cd, lw, lh);
+    }
+	
+	public void takeDamage(int amount, float playerX) {
+		if (!alive || hitbox.isInvincible()) return;
+		
+		this.knockbackDir = (playerX < this.x) ? 1 : -1;
+		
 		super.takeDamage(amount);
+		hit = true;
+		hitTick = 0;
+		
+		if (!inAir) {
+			inAir = true;
+			airSpeed = knockbackHeight;
+		}
 		System.out.println("Enemy hit");
 	}
 

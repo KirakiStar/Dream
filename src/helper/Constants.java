@@ -17,7 +17,7 @@ public class Constants {
 		CLIMBING(6, 1, false),
 		ATTACK(7, 2, false),
 		ATTACK_AIR(8, 4, false),
-		ATTACKED(9, 4, false),
+		ATTACKED(9, 2, false),
 		DEATH(10, 4, false);
 
 		private final int id;
@@ -42,13 +42,38 @@ public class Constants {
 	
 	public enum MittenState implements EntityState {
 		IDLE(0, 2, true),
-		RUNNING(1, 1, false);
+		JUMPING(1, 1, false);
 
 		private final int id;
 		private final int animationAmount;
 		private final boolean looping;
 
 		MittenState(int id, int animationAmount, boolean looping) {
+			this.id = id;
+			this.animationAmount = animationAmount;
+			this.looping = looping;
+		}
+
+		@Override
+		public int getId() { return id; }
+
+		@Override
+		public int getAnimationAmount() { return animationAmount; }
+		
+		@Override
+		public boolean isLooping() { return looping; }
+	}
+	
+	public enum GoldyState implements EntityState {
+		IDLE(0, 2, true),
+		WALKING(1, 1, true),
+		ATTACK(2, 1, false);
+
+		private final int id;
+		private final int animationAmount;
+		private final boolean looping;
+
+		GoldyState(int id, int animationAmount, boolean looping) {
 			this.id = id;
 			this.animationAmount = animationAmount;
 			this.looping = looping;

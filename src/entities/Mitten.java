@@ -17,9 +17,15 @@ public class Mitten extends Enemy {
 	private static final float OFFSET_X = 24 * Game.SCALE;
 	private static final float OFFSET_Y = 31 * Game.SCALE;
 
-	public Mitten(float x, float y) {
-		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 3, mittenSprites); //maxHealth = 1
+	private int tick = 0;
+	
+	private int jumpInterval = 300;
+	private float jumpSpeed = -2f * Game.SCALE;
+	
+	public Mitten(float x, float y, int startingTick) {
+		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 100, mittenSprites); //maxHealth = 2
 		mittenState = IDLE;
+		tick += startingTick;
 	}
 	
 	@Override
@@ -35,6 +41,18 @@ public class Mitten extends Enemy {
 
 	@Override
 	protected void updateBehavior(List<Integer> collisionData, int levelWidth, int levelHeight) {
+		tick++;
 		
+		if (tick >= jumpInterval) {
+			jump();
+			tick = 0;
+		}
+	}
+	
+	private void jump() {
+		if (!inAir) {
+			inAir = true;
+			airSpeed = jumpSpeed;
+		}
 	}
 }

@@ -34,7 +34,10 @@ public class EntityManager {
 			
 			switch (tileID) {
 				case 1:
-					entities.add(new Mitten(x, y));
+					entities.add(new Mitten(x, y, (int)(Math.random() * 299)));
+					break;
+				case 2:
+					entities.add(new Goldy(x, y));
 					break;
 				default: break;
 			}
@@ -57,6 +60,7 @@ public class EntityManager {
 		}
 		
 		checkEnemyHit(playing.getPlayer());
+		checkEntityCollide(playing.getPlayer());
 	}
 
 	public void draw(Graphics2D g2) {
@@ -71,11 +75,24 @@ public class EntityManager {
 		for (Entity e : entities) {
 			if (e.isAlive() && e instanceof Enemy) {
 				if (player.getAttackBox().intersects(e.getHitbox())) {
-					e.takeDamage(player.getDamage());
+					((Enemy) e).takeDamage(player.getDamage(), player.getX());
 				}
 			}
 		}
 	}
 
+	public void checkEntityCollide(Player player) {
+		if (player.getHitbox().isInvincible()) return;
+		
+		for (Entity e : entities) {
+			if (e.isAlive() && e instanceof Enemy && !e.getHitbox().isInvincible()) {
+				if (player.getHitbox().intersects(e.getHitbox())) {
+					player.takeDamage(1, e.getX());
+					((Enemy) e).takeDamage(player.getDamage(), player.getX());
+				}
+			}
+		}
+	}
+	
 	public List<Entity> getEntities() { return entities; }
 }
