@@ -59,8 +59,11 @@ public class EntityManager {
 			}
 		}
 		
-		checkEnemyHit(playing.getPlayer());
-		checkEntityCollide(playing.getPlayer());
+		Player player = playing.getPlayer();
+		
+		checkEnemyHit(player);
+		checkEntityCollide(player);
+		checkEnemyAttack(player);
 	}
 
 	public void draw(Graphics2D g2) {
@@ -76,6 +79,16 @@ public class EntityManager {
 			if (e.isAlive() && e instanceof Enemy) {
 				if (player.getAttackBox().intersects(e.getHitbox())) {
 					((Enemy) e).takeDamage(player.getDamage(), player.getX());
+				}
+			}
+		}
+	}
+	
+	public void checkEnemyAttack(Player player) {
+		for (Entity e : entities) {
+			if (e.isAlive() && e instanceof Attackable attacker && (attacker.isAttacking() || attacker instanceof Goldy)) {
+				if (attacker.getAttackBox().intersects(player.getHitbox())) {
+					player.takeDamage(attacker.getDamage(), e.getX());
 				}
 			}
 		}

@@ -7,7 +7,6 @@ import java.awt.geom.AffineTransform;
 
 import main.Game;
 import display.Camera;
-import entities.Entity;
 import entities.EntityManager;
 import entities.Player;
 import levels.Level;
@@ -119,15 +118,19 @@ public class Playing extends State implements StateMethods {
 	public void keyPressed(KeyEvent e) {
 		switch(e.getKeyCode()) {
 			case KeyEvent.VK_RIGHT:
+			case KeyEvent.VK_D:
 				player.setRight(true);
 				break;
 			case KeyEvent.VK_LEFT:
+			case KeyEvent.VK_A:
 				player.setLeft(true);
 				break;
 			case KeyEvent.VK_UP:
+			case KeyEvent.VK_W:
 				player.setUp(true);
 				break;
 			case KeyEvent.VK_DOWN:
+			case KeyEvent.VK_S:
 				player.setDown(true);
 				break;
 			case KeyEvent.VK_SPACE:
@@ -135,6 +138,7 @@ public class Playing extends State implements StateMethods {
 				player.setJump(true);
 				break;
 			case KeyEvent.VK_X:
+			case KeyEvent.VK_SHIFT:
 				player.attack();
 				break;
 			case KeyEvent.VK_K:
@@ -151,15 +155,19 @@ public class Playing extends State implements StateMethods {
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_RIGHT:
+			case KeyEvent.VK_D:
 				player.setRight(false);
 				break;
 			case KeyEvent.VK_LEFT:
+			case KeyEvent.VK_A:
 				player.setLeft(false);
 				break;
 			case KeyEvent.VK_UP:
+			case KeyEvent.VK_W:
 				player.setUp(false);
 				break;
 			case KeyEvent.VK_DOWN:
+			case KeyEvent.VK_S:
 				player.setDown(false);
 				break;
 			case KeyEvent.VK_SPACE:

@@ -38,8 +38,8 @@ public class Player extends MovingEntity implements Attackable {
 	
 	private Hitbox attackBox;
 	private boolean attacking = false;
-	private boolean hit = false;
 	private final int attackDamage = 1;
+	private boolean hit = false;
 	private int knockbackDir = 1;
 
 	public Player(Playing playing, float x, float y) {
@@ -248,7 +248,7 @@ public class Player extends MovingEntity implements Attackable {
 	protected void die() {
 		if (!alive) return;
 		super.die();
-		System.out.println("Dead");
+//		System.out.println("Dead");
 	}
 
 	@Override
@@ -286,7 +286,7 @@ public class Player extends MovingEntity implements Attackable {
 			airSpeed = fallSpeed;
 		}
 		
-		if (alive) System.out.println("hit");
+//		if (alive) System.out.println("hit");
 	}
 	
 	public void reset(float spawnX, float spawnY) {

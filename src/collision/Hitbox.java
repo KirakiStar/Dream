@@ -14,7 +14,7 @@ public class Hitbox {
     private final int height;
     private final Rectangle bounds;
     private boolean isInvincible = false;
-    private boolean isTrigger = false;
+//    private boolean isTrigger = false;
 
     public Hitbox(Entity owner, float offsetX, float offsetY, int width, int height) {
         this.owner = owner;
@@ -42,7 +42,8 @@ public class Hitbox {
 
     public void drawDebug(Graphics2D g2) {
         if (isInvincible) return;
-        g2.setColor(isTrigger? Color.YELLOW : Color.MAGENTA);
+//        g2.setColor(isTrigger? Color.YELLOW : Color.MAGENTA);
+        g2.setColor(Color.MAGENTA);
         g2.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
@@ -50,8 +51,8 @@ public class Hitbox {
     public Entity getOwner() { return owner; }
     public boolean isInvincible() { return isInvincible; }
     public void setInvincible(boolean invincible) { this.isInvincible = invincible; }
-    public boolean isTrigger() { return isTrigger; }
-    public void setTrigger(boolean isTrigger) { this.isTrigger = isTrigger; }
+//    public boolean isTrigger() { return isTrigger; }
+//    public void setTrigger(boolean isTrigger) { this.isTrigger = isTrigger; }
 
 	public int getWidth() { return width; }
 	public int getHeight() { return height; }

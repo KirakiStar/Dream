@@ -23,7 +23,7 @@ public class Mitten extends Enemy {
 	private float jumpSpeed = -2f * Game.SCALE;
 	
 	public Mitten(float x, float y, int startingTick) {
-		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 100, mittenSprites); //maxHealth = 2
+		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 3, mittenSprites); //maxHealth = 2
 		mittenState = IDLE;
 		tick += startingTick;
 	}

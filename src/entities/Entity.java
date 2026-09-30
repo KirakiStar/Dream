@@ -86,7 +86,7 @@ public abstract class Entity {
 	protected void die() {
 		if (!alive) return;
 		alive = false;
-		System.out.println("Something died");
+//		System.out.println("Something died");
 	}
 
 	protected void updateAnimationTick(int maxAnimationAmount, boolean isLooping) {

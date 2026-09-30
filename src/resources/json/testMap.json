@@ -68,11 +68,11 @@
   "triggers": [
     {
       "type": "LEVEL_TRANSITION",
-      "activation": "INTERACT",
-      "x": 160,
-      "y": 160,
-      "width": 32,
-      "height": 32,
+      "activation": "AUTO",
+      "x": 312,
+      "y": 0,
+      "width": 7,
+      "height": 64,
       "targetLevel": 1,
       "spawnX": 110,
       "spawnY": 192

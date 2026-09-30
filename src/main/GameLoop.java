@@ -50,7 +50,7 @@ public class GameLoop implements Runnable {
 			
 			if(System.currentTimeMillis() - lastCheck >=1000) {
 				lastCheck = System.currentTimeMillis();
-				System.out.println(frames+" FPS | "+updates+" UPS");
+//				System.out.println(frames+" FPS | "+updates+" UPS");
 				frames = 0;
 				updates = 0;
 			}

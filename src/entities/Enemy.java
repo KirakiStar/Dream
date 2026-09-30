@@ -14,6 +14,7 @@ public abstract class Enemy extends MovingEntity {
 	protected float knockbackSpeed = 0.5f * Game.SCALE;
 	protected float knockbackHeight = -0.5f * Game.SCALE;
 	protected int knockbackDir = 1; // 1: right, -1: left
+	protected float xSpeed = 0;
 	
 	public Enemy(float x, float y, int width, int height, float offsetX, float offsetY, int maxHealth, ResourceLoader.SpriteSheet enemySprites) {
 		super(x, y, width, height, offsetX, offsetY, maxHealth);
@@ -29,7 +30,7 @@ public abstract class Enemy extends MovingEntity {
 			return;
 		}
 
-		float xSpeed = 0;
+		xSpeed = 0;
 		if (hit) {
 			hitTick++;
 			xSpeed = knockbackDir * knockbackSpeed;
@@ -38,11 +39,10 @@ public abstract class Enemy extends MovingEntity {
 				hitTick = 0;
 			}
 		} else {
-			
+			updateBehavior(collisionData, levelWidth, levelHeight);
 		}
 
 		updateGroundPosition(xSpeed, collisionData, levelWidth, levelHeight, false);
-		updateBehavior(collisionData, levelWidth, levelHeight);
 	}
 	
 	@Override
@@ -77,7 +77,7 @@ public abstract class Enemy extends MovingEntity {
 			inAir = true;
 			airSpeed = knockbackHeight;
 		}
-		System.out.println("Enemy hit");
+//		System.out.println("Enemy hit");
 	}
 
 	protected abstract void updateBehavior(List<Integer> collisionData, int levelWidth, int levelHeight);

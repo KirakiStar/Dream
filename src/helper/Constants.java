@@ -30,14 +30,9 @@ public class Constants {
 			this.looping = looping;
 		}
 
-		@Override
-		public int getId() { return id; }
-
-		@Override
-		public int getAnimationAmount() { return animationAmount; }
-		
-		@Override
-		public boolean isLooping() { return looping; }
+		@Override public int getId() { return id; }
+		@Override public int getAnimationAmount() { return animationAmount; }
+		@Override public boolean isLooping() { return looping; }
 	}
 	
 	public enum MittenState implements EntityState {
@@ -54,14 +49,9 @@ public class Constants {
 			this.looping = looping;
 		}
 
-		@Override
-		public int getId() { return id; }
-
-		@Override
-		public int getAnimationAmount() { return animationAmount; }
-		
-		@Override
-		public boolean isLooping() { return looping; }
+		@Override public int getId() { return id; }
+		@Override public int getAnimationAmount() { return animationAmount; }
+		@Override public boolean isLooping() { return looping; }
 	}
 	
 	public enum GoldyState implements EntityState {
@@ -79,13 +69,8 @@ public class Constants {
 			this.looping = looping;
 		}
 
-		@Override
-		public int getId() { return id; }
-
-		@Override
-		public int getAnimationAmount() { return animationAmount; }
-		
-		@Override
-		public boolean isLooping() { return looping; }
+		@Override public int getId() { return id; }
+		@Override public int getAnimationAmount() { return animationAmount; }
+		@Override public boolean isLooping() { return looping; }
 	}
 }
