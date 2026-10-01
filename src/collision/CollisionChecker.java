@@ -25,14 +25,21 @@ public final class CollisionChecker {
 		return false;
 	}
 
+	// for player
 	public static boolean isPlatform(Hitbox hitbox, float currentY, float nextY, float airSpeed, List<Integer> collisionData, int levelWidth, int levelHeight) {
+		return isPlatform(hitbox, hitbox.getOwner().getX(), currentY, nextY, airSpeed, collisionData, levelWidth, levelHeight);
+	}
+	
+	// for other entites (check future x)
+	public static boolean isPlatform(Hitbox hitbox, float customX, float currentY, float nextY, float airSpeed, List<Integer> collisionData, int levelWidth, int levelHeight) {
 		if (airSpeed <= 0) return false;
 
 		float feetY = nextY + hitbox.getOffsetY() + hitbox.getHeight();
 		float prevFeetY = currentY + hitbox.getOffsetY() + hitbox.getHeight();
 
-		int leftTile  = (int) Math.floor((hitbox.getBounds().x) / Game.TILES_SIZE);
-		int rightTile = (int) (hitbox.getBounds().x + hitbox.getWidth() - 1) / Game.TILES_SIZE;
+		float customHitboxX = customX + hitbox.getOffsetX();
+		int leftTile  = (int) Math.floor(customHitboxX / Game.TILES_SIZE);
+		int rightTile = (int) (customHitboxX + hitbox.getWidth() - 1) / Game.TILES_SIZE;
 		int tileY     = (int) Math.floor(feetY / Game.TILES_SIZE);
 
 		for (int tileX = leftTile; tileX <= rightTile; tileX++) {

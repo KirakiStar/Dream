@@ -37,7 +37,7 @@ public class EntityManager {
 					entities.add(new Mitten(x, y, (int)(Math.random() * 299)));
 					break;
 				case 2:
-					entities.add(new Goldy(x, y));
+					entities.add(new Goldy(x, y, (int)(Math.random() * 299)));
 					break;
 				default: break;
 			}

@@ -30,10 +30,11 @@ public class Goldy extends Enemy implements Attackable {
 	private final int attackDamage = 1;
 	private int attackInterval = 180;
 
-	public Goldy(float x, float y) {
+	public Goldy(float x, float y, int UniqueTickOffset) {
 		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 5, goldySprites); //maxHealth = 5
 		this.startX = x;
 		this.knockbackSpeed = 0.2f * Game.SCALE;
+		tick = UniqueTickOffset;
 		this.goldyState = IDLE;
 		setAttackBox();
 	}
@@ -68,6 +69,7 @@ public class Goldy extends Enemy implements Attackable {
 			}
 		}
 		if (hit) {
+			attacking = false;
 			if (aniIndex >= goldyState.getAnimationAmount() - 1) {
 				hit = false;
 			}
@@ -85,8 +87,8 @@ public class Goldy extends Enemy implements Attackable {
 	}
 	
 	private void patrol(List<Integer> cd, int lw, int lh) {
-		float proposedXSpeed = facingLeft ? -walkSpeed : walkSpeed;
-		float nextX = x + proposedXSpeed;
+		float trueXSpeed = facingLeft ? -walkSpeed : walkSpeed;
+		float nextX = x + trueXSpeed;
 
 		if (Math.abs(nextX - startX) >= maxWalkDistance) {
 			turnAround();
@@ -98,10 +100,10 @@ public class Goldy extends Enemy implements Attackable {
 			return;
 		}
 
-		float checkX = facingLeft ? x - 2.0f : x + width + 2.0f;
+		float checkX = facingLeft ? nextX - width : nextX + width;
 		float checkY = y + 1.0f;
 		boolean solidGround = CollisionChecker.isSolid(hitbox, checkX, checkY, cd, lw, lh);
-		boolean platformGround = CollisionChecker.isPlatform(hitbox, checkY, checkY, 1.0f, cd, lw, lh);
+		boolean platformGround = CollisionChecker.isPlatform(hitbox, checkX, y, checkY, 1.0f, cd, lw, lh);
 
 		if (!solidGround && !platformGround) {
 			turnAround();
@@ -117,7 +119,7 @@ public class Goldy extends Enemy implements Attackable {
 			}
 		}
 
-		this.xSpeed = proposedXSpeed;
+		this.xSpeed = trueXSpeed;
 //		this.goldyState = WALKING;
 	}
 	

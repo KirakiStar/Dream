@@ -72,6 +72,7 @@ public abstract class Enemy extends MovingEntity {
 		super.takeDamage(amount);
 		hit = true;
 		hitTick = 0;
+		hitbox.setInvincible(true);
 		
 		if (!inAir) {
 			inAir = true;
