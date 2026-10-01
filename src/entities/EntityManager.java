@@ -101,7 +101,7 @@ public class EntityManager {
 			if (e.isAlive() && e instanceof Enemy && !e.getHitbox().isInvincible()) {
 				if (player.getHitbox().intersects(e.getHitbox())) {
 					player.takeDamage(1, e.getX());
-					((Enemy) e).takeDamage(player.getDamage(), player.getX());
+					((Enemy) e).takeDamage(1, player.getX());
 				}
 			}
 		}

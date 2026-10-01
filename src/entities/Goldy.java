@@ -70,9 +70,10 @@ public class Goldy extends Enemy implements Attackable {
 		}
 		if (hit) {
 			attacking = false;
-			if (aniIndex >= goldyState.getAnimationAmount() - 1) {
-				hit = false;
-			}
+			hit = false;
+//			if (aniIndex >= goldyState.getAnimationAmount() - 1) {
+//			
+//			}
 		}
 	}
 
