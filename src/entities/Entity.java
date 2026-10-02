@@ -4,8 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import collision.Hitbox;
-import helper.ResourceLoader;
-import helper.ResourceLoader.SpriteSheet;
+import inputsAndResourceLoader.ResourceLoader;
+import inputsAndResourceLoader.ResourceLoader.SpriteSheet;
 
 public abstract class Entity {
 	protected float x;

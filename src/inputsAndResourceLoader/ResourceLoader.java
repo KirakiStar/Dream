@@ -1,4 +1,4 @@
-package helper;
+package inputsAndResourceLoader;
 
 import com.google.gson.Gson;
 import java.awt.image.BufferedImage;
@@ -40,6 +40,7 @@ public class ResourceLoader {
 	public static final SpriteSheet PLAYER_SPRITES = new SpriteSheet("silver.png", 11, 4, 64, 64);
 	public static final SpriteSheet MITTEN_SPRITES = new SpriteSheet("mitten.png", 4, 4, 64, 64);
 	public static final SpriteSheet GOLDY_SPRITES = new SpriteSheet("goldy.png", 4, 4, 64, 64);
+	public static final SpriteSheet ITEM_SPRITES = new SpriteSheet("silver.png", 4, 4, 64, 64);
 
 	public static final String TEST_LEVEL = "testLevel.png";
 	public static final String TEST_MAP = "testMap.json";

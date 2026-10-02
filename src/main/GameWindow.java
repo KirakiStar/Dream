@@ -5,7 +5,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import javax.swing.JFrame;
 
-import helper.ResourceLoader;
+import inputsAndResourceLoader.ResourceLoader;
 
 public class GameWindow {
 	private JFrame jframe;

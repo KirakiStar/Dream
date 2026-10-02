@@ -5,9 +5,9 @@ import java.awt.Graphics2D;
 
 import main.Game;
 import collision.CollisionChecker;
-import helper.ResourceLoader;
-import helper.Constants.MittenState;
-import static helper.Constants.MittenState.*;
+import inputsAndResourceLoader.ResourceLoader;
+import entities.EntityConstants.MittenState;
+import static entities.EntityConstants.MittenState.*;
 
 public class Mitten extends Enemy {
 	private static final ResourceLoader.SpriteSheet mittenSprites = ResourceLoader.MITTEN_SPRITES;
@@ -25,8 +25,8 @@ public class Mitten extends Enemy {
 	private float maxWalkDistance = 50 * Game.SCALE;
 	private final float walkSpeed = 0.3f * Game.SCALE;
 	
-	private int jumpInterval = 300;
 	private float jumpSpeed = -2f * Game.SCALE;
+	public static final int jumpInterval = 300;
 	
 	public Mitten(float x, float y, int UniqueTickOffset) {
 		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 3, mittenSprites); //maxHealth = 2

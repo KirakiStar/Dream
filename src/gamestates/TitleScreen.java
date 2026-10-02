@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
-import helper.ResourceLoader;
+import inputsAndResourceLoader.ResourceLoader;
 import main.Game;
 
 public class TitleScreen extends State implements StateMethods{

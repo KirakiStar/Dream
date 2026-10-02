@@ -7,9 +7,9 @@ import main.Game;
 import gamestates.Playing;
 import collision.Hitbox;
 import collision.CollisionChecker;
-import helper.ResourceLoader;
-import helper.Constants.PlayerState;
-import static helper.Constants.PlayerState.*;
+import inputsAndResourceLoader.ResourceLoader;
+import entities.EntityConstants.PlayerState;
+import static entities.EntityConstants.PlayerState.*;
 
 public class Player extends MovingEntity implements Attackable {
 	private Playing playing;
@@ -287,6 +287,11 @@ public class Player extends MovingEntity implements Attackable {
 		}
 		
 //		if (alive) System.out.println("hit");
+	}
+	
+	protected void heal(int amount) {
+		if (!alive) return;
+		currentHealth = Math.min(currentHealth + amount, maxHealth);
 	}
 	
 	public void reset(float spawnX, float spawnY) {

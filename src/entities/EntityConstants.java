@@ -1,13 +1,13 @@
-package helper;
+package entities;
 
-public class Constants {
-	public interface EntityState {
+public class EntityConstants {
+	public interface EntityAnimation {
 		int getId();
 		int getAnimationAmount();
 		boolean isLooping();
 	}
 
-	public enum PlayerState implements EntityState {
+	public enum PlayerState implements EntityAnimation {
 		IDLE(0, 4, true),
 		RUNNING(1, 4, true),
 		JUMPING(2, 1, false),
@@ -35,7 +35,7 @@ public class Constants {
 		@Override public boolean isLooping() { return looping; }
 	}
 	
-	public enum MittenState implements EntityState {
+	public enum MittenState implements EntityAnimation {
 		IDLE(0, 2, true),
 		JUMPING(1, 1, false);
 
@@ -54,7 +54,7 @@ public class Constants {
 		@Override public boolean isLooping() { return looping; }
 	}
 	
-	public enum GoldyState implements EntityState {
+	public enum GoldyState implements EntityAnimation {
 		IDLE(0, 2, true),
 		WALKING(1, 1, true),
 		ATTACK(2, 1, false);
@@ -72,5 +72,29 @@ public class Constants {
 		@Override public int getId() { return id; }
 		@Override public int getAnimationAmount() { return animationAmount; }
 		@Override public boolean isLooping() { return looping; }
+	}
+	
+	public enum ItemType implements EntityAnimation {
+		STRAWBERRY(0, 4, true, 1),
+		BOSS1(1, 1, false, 7),
+		BOSS2(2, 1, false, 7),
+		BOSS3(3, 1, false, 7);
+
+		private final int id;
+		private final int animationAmount;
+		private final boolean looping;
+		private final int healAmount;
+
+		ItemType(int id, int animationAmount, boolean looping, int healAmount) {
+			this.id = id;
+			this.animationAmount = animationAmount;
+			this.looping = looping;
+			this.healAmount = healAmount;
+		}
+
+		@Override public int getId() { return id; }
+		@Override public int getAnimationAmount() { return animationAmount; }
+		@Override public boolean isLooping() { return looping; }
+		public int getHealAmount() { return healAmount; }
 	}
 }

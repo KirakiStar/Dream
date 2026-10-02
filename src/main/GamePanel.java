@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
-import inputs.KeyboardInputs;
+import inputsAndResourceLoader.KeyboardInputs;
 import static main.Game.GAME_WIDTH;
 import static main.Game.GAME_HEIGHT;
 

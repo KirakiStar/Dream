@@ -6,9 +6,9 @@ import java.awt.Graphics2D;
 import main.Game;
 import collision.Hitbox;
 import collision.CollisionChecker;
-import helper.ResourceLoader;
-import helper.Constants.GoldyState;
-import static helper.Constants.GoldyState.*;
+import inputsAndResourceLoader.ResourceLoader;
+import entities.EntityConstants.GoldyState;
+import static entities.EntityConstants.GoldyState.*;
 
 public class Goldy extends Enemy implements Attackable {
 	private static final ResourceLoader.SpriteSheet goldySprites = ResourceLoader.GOLDY_SPRITES;
@@ -28,7 +28,7 @@ public class Goldy extends Enemy implements Attackable {
 	private Hitbox attackBox;
 	private boolean attacking = false;
 	private final int attackDamage = 1;
-	private int attackInterval = 180;
+	public static final int attackInterval = 180;
 
 	public Goldy(float x, float y, int UniqueTickOffset) {
 		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 5, goldySprites); //maxHealth = 5

@@ -34,10 +34,13 @@ public class EntityManager {
 			
 			switch (tileID) {
 				case 1:
-					entities.add(new Mitten(x, y, (int)(Math.random() * 299)));
+					entities.add(new Item(x, y));
 					break;
 				case 2:
-					entities.add(new Goldy(x, y, (int)(Math.random() * 299)));
+					entities.add(new Mitten(x, y, (int)(Math.random() * Mitten.jumpInterval)));
+					break;
+				case 3:
+					entities.add(new Goldy(x, y, (int)(Math.random() * Mitten.jumpInterval)));
 					break;
 				default: break;
 			}
@@ -102,6 +105,12 @@ public class EntityManager {
 				if (player.getHitbox().intersects(e.getHitbox())) {
 					player.takeDamage(1, e.getX());
 					((Enemy) e).takeDamage(1, player.getX());
+				}
+			}
+			if (e.isAlive() && e instanceof Item item) {
+				if (player.getHitbox().intersects(e.getHitbox())) {
+					player.heal(item.getHealAmount());
+					item.collect(player);
 				}
 			}
 		}

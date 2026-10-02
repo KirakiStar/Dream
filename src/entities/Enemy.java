@@ -3,7 +3,7 @@ package entities;
 import java.util.List;
 import java.awt.Graphics2D;
 
-import helper.ResourceLoader;
+import inputsAndResourceLoader.ResourceLoader;
 import collision.CollisionChecker;
 import main.Game;
 
