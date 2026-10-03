@@ -48,10 +48,10 @@ public class Goldy extends Enemy implements Attackable {
 	}
 	
 	@Override
-	public void update(List<Integer> collisionData, int levelWidth, int levelHeight) {
-		super.update(collisionData, levelWidth, levelHeight);
-		updateAnimationTick();
+	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player) {
+		super.update(collisionData, levelWidth, levelHeight, player);
 		updateAttackBox();
+		updateAnimationTick();
 	}
 	
 	@Override
@@ -78,12 +78,14 @@ public class Goldy extends Enemy implements Attackable {
 	}
 
 	@Override
-	protected void updateBehavior(List<Integer> collisionData, int levelWidth, int levelHeight) {
-		tick++;
-//		patrol(collisionData, levelWidth, levelHeight);
-		if (tick >= attackInterval) {
-			attack();
-			tick = 0;
+	protected void updateBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player) {
+		if (!attacking && !hit) {
+			tick++;
+//			patrol(collisionData, levelWidth, levelHeight);
+			if (tick >= attackInterval) {
+				attack();
+				tick = 0;
+			}
 		}
 	}
 	
@@ -138,6 +140,7 @@ public class Goldy extends Enemy implements Attackable {
 	private void resetAttack() {
 		attacking = false;
 		facingLeft = !facingLeft;
+		aniIndex = 0;
 	}
 	
 	private void updateAttackBox() {

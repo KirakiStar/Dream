@@ -12,10 +12,10 @@ public class Item extends Entity {
 	private ItemType item;
 	private boolean collected = false;
 	
-	private static final int WIDTH = (int)(16*Game.SCALE);
-	private static final int HEIGHT = (int)(32*Game.SCALE);
-	private static final float OFFSET_X = 24 * Game.SCALE;
-	private static final float OFFSET_Y = 31 * Game.SCALE;
+	private static final int WIDTH = (int)(24*Game.SCALE);
+	private static final int HEIGHT = (int)(24*Game.SCALE);
+	private static final float OFFSET_X = 20 * Game.SCALE;
+	private static final float OFFSET_Y = 20 * Game.SCALE;
 	
 	public Item(float x, float y, ItemType item) {
 		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 1);
@@ -36,6 +36,7 @@ public class Item extends Entity {
 	@Override
 	public void draw(Graphics2D g2) {
 		if (!collected) super.draw(g2, item.getId());
+		hitbox.drawDebug(g2);
 	}
 	
 	public void collect(Player player) {
@@ -45,7 +46,7 @@ public class Item extends Entity {
 			default:
 			case STRAWBERRY:
 				player.heal(item.getHealAmount());
-				System.out.println("heal");
+//				System.out.println("heal");
 				break;
 		}
 		

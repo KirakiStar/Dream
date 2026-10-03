@@ -19,7 +19,7 @@ public class Mitten extends Enemy {
 	private static final float OFFSET_Y = 31 * Game.SCALE;
 
 	private int tick = 0;
-	private final int randomAction;// 1:nothing, 2:patrol, other:jump
+	private final int randomAction;// 1:idle, 2:patrol, other:jump
 	
 	private final float startX;
 	private float maxWalkDistance = 50 * Game.SCALE;
@@ -37,8 +37,8 @@ public class Mitten extends Enemy {
 	}
 	
 	@Override
-	public void update(List<Integer> collisionData, int levelWidth, int levelHeight) {
-		super.update(collisionData, levelWidth, levelHeight);
+	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player) {
+		super.update(collisionData, levelWidth, levelHeight, player);
 		updateAnimationTick(mittenState.getAnimationAmount(), mittenState.isLooping());
 	}
 	
@@ -48,15 +48,17 @@ public class Mitten extends Enemy {
 	}
 
 	@Override
-	protected void updateBehavior(List<Integer> collisionData, int levelWidth, int levelHeight) {
+	protected void updateBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player) {
 		switch (randomAction) {
 			case 1:
+				facePlayer(player.getX());
 				return;
 			case 2:
 				patrol(collisionData, levelWidth, levelHeight);
 				break;
 			default:
 				tick++;
+				facePlayer(player.getX());
 				if (tick >= jumpInterval) {
 					jump();
 					tick = 0;
@@ -105,6 +107,10 @@ public class Mitten extends Enemy {
 		facingLeft = !facingLeft;
 		this.xSpeed = 0;
 		this.mittenState = IDLE;
+	}
+	
+	private void facePlayer(float playerX) {
+		facingLeft = (playerX < this.x);
 	}
 	
 	private void jump() {

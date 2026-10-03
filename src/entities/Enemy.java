@@ -22,7 +22,7 @@ public abstract class Enemy extends MovingEntity {
 		loadAnimations(enemySprites);
 	}
 
-	public void update(List<Integer> collisionData, int levelWidth, int levelHeight) {
+	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player) {
 		super.update();
 		
 		if (CollisionChecker.isWater(hitbox, collisionData, levelWidth, levelHeight)) {
@@ -39,7 +39,7 @@ public abstract class Enemy extends MovingEntity {
 				hitTick = 0;
 			}
 		} else {
-			updateBehavior(collisionData, levelWidth, levelHeight);
+			updateBehavior(collisionData, levelWidth, levelHeight, player);
 		}
 
 		updateGroundPosition(xSpeed, collisionData, levelWidth, levelHeight, false);
@@ -81,5 +81,5 @@ public abstract class Enemy extends MovingEntity {
 //		System.out.println("Enemy hit");
 	}
 
-	protected abstract void updateBehavior(List<Integer> collisionData, int levelWidth, int levelHeight);
+	protected abstract void updateBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player);
 }

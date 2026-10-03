@@ -40,7 +40,7 @@ public class EntityManager {
 					entities.add(new Mitten(x, y, (int)(Math.random() * Mitten.jumpInterval)));
 					break;
 				case 3:
-					entities.add(new Goldy(x, y, (int)(Math.random() * Mitten.jumpInterval)));
+					entities.add(new Goldy(x, y, (int)(Math.random() * Goldy.attackInterval)));
 					break;
 				default: break;
 			}
@@ -51,18 +51,17 @@ public class EntityManager {
 		List<Integer> cd = playing.getCollisionData();
 		int lw = playing.getLevelWidth();
 		int lh = playing.getLevelHeight();
+		Player player = playing.getPlayer();
 		
 		entities.removeIf(e -> !e.isAlive());
 
 		for (Entity e : entities) {
 			if (e instanceof Enemy) {
-				((Enemy) e).update(cd, lw, lh);
+				((Enemy) e).update(cd, lw, lh, player);
 			} else {
 				e.update();
 			}
 		}
-		
-		Player player = playing.getPlayer();
 		
 		checkEnemyHit(player);
 		checkEntityCollide(player);
@@ -80,7 +79,7 @@ public class EntityManager {
 		
 		for (Entity e : entities) {
 			if (e.isAlive() && e instanceof Enemy) {
-				if (player.getAttackBox().intersects(e.getHitbox())) {
+				if (player.getAttackBox().entityIntersects(e.getHitbox())) {
 					((Enemy) e).takeDamage(player.getDamage(), player.getX());
 				}
 			}
@@ -90,7 +89,7 @@ public class EntityManager {
 	public void checkEnemyAttack(Player player) {
 		for (Entity e : entities) {
 			if (e.isAlive() && e instanceof Attackable attacker && (attacker.isAttacking() || attacker instanceof Goldy)) {
-				if (attacker.getAttackBox().intersects(player.getHitbox())) {
+				if (attacker.getAttackBox().entityIntersects(player.getHitbox())) {
 					player.takeDamage(attacker.getDamage(), e.getX());
 				}
 			}
@@ -98,17 +97,15 @@ public class EntityManager {
 	}
 
 	public void checkEntityCollide(Player player) {
-		if (player.getHitbox().isInvincible()) return;
-		
 		for (Entity e : entities) {
 			if (e.isAlive() && e instanceof Enemy && !e.getHitbox().isInvincible()) {
-				if (player.getHitbox().intersects(e.getHitbox())) {
+				if (player.getHitbox().entityIntersects(e.getHitbox())) {
 					player.takeDamage(1, e.getX());
 					((Enemy) e).takeDamage(1, player.getX());
 				}
 			}
 			if (e.isAlive() && e instanceof Item item) {
-				if (player.getHitbox().intersects(e.getHitbox())) {
+				if (player.getHitbox().itemIntersects(e.getHitbox())) {
 					player.heal(item.getHealAmount());
 					item.collect(player);
 				}
