@@ -11,13 +11,12 @@ import entities.EntityConstants.GoldyState;
 import static entities.EntityConstants.GoldyState.*;
 
 public class Goldy extends Enemy implements Attackable {
-	private static final ResourceLoader.SpriteSheet goldySprites = ResourceLoader.GOLDY_SPRITES;
 	private GoldyState goldyState;
 	
-	private static final int WIDTH = (int)(16*Game.SCALE);
-	private static final int HEIGHT = (int)(32*Game.SCALE);
-	private static final float OFFSET_X = 24 * Game.SCALE;
-	private static final float OFFSET_Y = 31 * Game.SCALE;
+	private static final int WIDTH = 16;
+	private static final int HEIGHT = 32;
+	private static final float OFFSET_X = 24f;
+	private static final float OFFSET_Y = 31f;
 	
 	private int tick = 0;
 	
@@ -31,7 +30,7 @@ public class Goldy extends Enemy implements Attackable {
 	public static final int attackInterval = 180;
 
 	public Goldy(float x, float y, int UniqueTickOffset) {
-		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 5, goldySprites); //maxHealth = 5
+		super(ResourceLoader.GOLDY_SPRITES, x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 5); //maxHealth = 5
 		this.startX = x;
 		this.knockbackSpeed = 0.2f * Game.SCALE;
 		tick = UniqueTickOffset;
@@ -40,10 +39,10 @@ public class Goldy extends Enemy implements Attackable {
 	}
 	
 	private void setAttackBox() {
-		float offsetX = 24f * Game.SCALE;
-		float offsetY = 50f * Game.SCALE;
-		int attackWidth = (int)(14 * Game.SCALE);
-		int attackHeight = (int)(14 * Game.SCALE);
+		float offsetX = 24f;
+		float offsetY = 50f;
+		int attackWidth = 14;
+		int attackHeight = 14;
 		this.attackBox = new Hitbox(this, offsetX, offsetY, attackWidth, attackHeight);
 	}
 	
@@ -147,7 +146,7 @@ public class Goldy extends Enemy implements Attackable {
 		if (!facingLeft) {
 			attackBox.update(x - (attackBox.getWidth()), y);
 		} else {
-			attackBox.update(x + (WIDTH), y);
+			attackBox.update(x + this.width, y);
 		}
 	}
 

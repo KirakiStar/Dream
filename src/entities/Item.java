@@ -8,19 +8,17 @@ import static entities.EntityConstants.ItemType.*;
 import main.Game;
 
 public class Item extends Entity {
-	private ResourceLoader.SpriteSheet itemSprites = ResourceLoader.ITEM_SPRITES;
 	private ItemType item;
 	private boolean collected = false;
 	
-	private static final int WIDTH = (int)(24*Game.SCALE);
-	private static final int HEIGHT = (int)(24*Game.SCALE);
-	private static final float OFFSET_X = 20 * Game.SCALE;
-	private static final float OFFSET_Y = 20 * Game.SCALE;
+	private static final int WIDTH = 24;
+	private static final int HEIGHT = 24;
+	private static final float OFFSET_X = 20f;
+	private static final float OFFSET_Y = 20f;
 	
 	public Item(float x, float y, ItemType item) {
-		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 1);
-		this.item = STRAWBERRY;
-		loadAnimations(itemSprites);
+		super(ResourceLoader.ITEM_SPRITES, x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 1);
+		this.item = item;
 	}
 
 	public Item(float x, float y) {

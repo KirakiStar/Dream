@@ -3,11 +3,15 @@ package entities;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import main.Game;
 import collision.Hitbox;
 import inputsAndResourceLoader.ResourceLoader;
 import inputsAndResourceLoader.ResourceLoader.SpriteSheet;
 
 public abstract class Entity {
+	protected SpriteSheet entitySprites;
+	protected int imgWidth;
+	protected int imgHeight;
 	protected float x;
 	protected float y;
 	protected int width;
@@ -26,12 +30,17 @@ public abstract class Entity {
 	protected int invincibilityTick = 0;
 	protected int invincibilityDuration = 30;
 
-	public Entity(float x, float y, int width, int height, float offsetX, float offsetY, int maxHealth) {
+	public Entity(SpriteSheet entitySprites, float x, float y, int width, int height, float offsetX, float offsetY, int maxHealth) {
+		this.entitySprites = entitySprites;
 		this.x = x;
 		this.y = y;
-		this.width = width;
-		this.height = height;
+		this.width = (int)(width * Game.SCALE);
+		this.height = (int)(height * Game.SCALE);
 		this.hitbox = new Hitbox(this, offsetX, offsetY, width, height);
+		
+		this.imgWidth = entitySprites.getWidth();
+		this.imgHeight = entitySprites.getHeight();
+		loadAnimations(entitySprites);
 		initHealth(maxHealth);
 	}
 	
@@ -44,13 +53,11 @@ public abstract class Entity {
 		String fileName = spriteSheet.getFileName();
 		int rows = spriteSheet.getRow();
 		int columns = spriteSheet.getColumn();
-		int spriteWidth = spriteSheet.getWidth();
-		int spriteHeight = spriteSheet.getHeight();
 		BufferedImage img = ResourceLoader.ImagesLoader(fileName);
 		sprites = new BufferedImage[rows][columns];
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				sprites[i][j] = img.getSubimage(j * spriteWidth, i * spriteHeight, spriteWidth, spriteHeight);
+				sprites[i][j] = img.getSubimage(j * imgWidth, i * imgHeight, imgWidth, imgHeight);
 			}
 		}
 	}
@@ -86,7 +93,6 @@ public abstract class Entity {
 	protected void die() {
 		if (!alive) return;
 		alive = false;
-//		System.out.println("Something died");
 	}
 
 	protected void updateAnimationTick(int maxAnimationAmount, boolean isLooping) {
@@ -116,8 +122,8 @@ public abstract class Entity {
 		
 		int drawX = (int) x;
 		int drawY = (int) y;
-		int drawWidth = (int) (64 * main.Game.SCALE);
-		int drawHeight = (int) (64 * main.Game.SCALE);
+		int drawWidth = (int)(imgWidth * Game.SCALE);
+		int drawHeight = (int)(imgHeight * Game.SCALE);
 
 		if (sprites != null && actionId < sprites.length && sprites[actionId] != null) {
 			if (facingLeft) {
@@ -126,7 +132,7 @@ public abstract class Entity {
 				g2.drawImage(sprites[actionId][aniIndex], drawX, drawY, drawWidth, drawHeight, null);
 			}
 		}
-//		drawHitbox(g2);
+		drawHitbox(g2);
 	}
 
 	public void update() {

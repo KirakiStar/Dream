@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+import main.Game;
 import entities.Entity;
 
 public class Hitbox {
@@ -17,15 +18,16 @@ public class Hitbox {
 
     public Hitbox(Entity owner, float offsetX, float offsetY, int width, int height) {
         this.owner = owner;
-        this.offsetX = offsetX;
-        this.offsetY = offsetY;
-        this.width = width;
-        this.height = height;
-        this.bounds = new Rectangle(
-            (int) (owner.getX() + offsetX),
-            (int) (owner.getY() + offsetY),
-            width, height
-        );
+        this.offsetX = offsetX * Game.SCALE;
+        this.offsetY = offsetY * Game.SCALE;
+        this.width = (int)(width * Game.SCALE);
+        this.height = (int)(height * Game.SCALE);
+		this.bounds = new Rectangle(
+			(int) (owner.getX() + this.offsetX),
+			(int) (owner.getY() + this.offsetY),
+			this.width, 
+			this.height
+		);
     }
 
     public void update(float entityX, float entityY) {

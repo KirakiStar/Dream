@@ -10,13 +10,12 @@ import entities.EntityConstants.MittenState;
 import static entities.EntityConstants.MittenState.*;
 
 public class Mitten extends Enemy {
-	private static final ResourceLoader.SpriteSheet mittenSprites = ResourceLoader.MITTEN_SPRITES;
 	private MittenState mittenState;
 	
-	private static final int WIDTH = (int)(16*Game.SCALE);
-	private static final int HEIGHT = (int)(32*Game.SCALE);
-	private static final float OFFSET_X = 24 * Game.SCALE;
-	private static final float OFFSET_Y = 31 * Game.SCALE;
+	private static final int WIDTH = 16;
+	private static final int HEIGHT = 32;
+	private static final float OFFSET_X = 24f;
+	private static final float OFFSET_Y = 31f;
 
 	private int tick = 0;
 	private final int randomAction;// 1:idle, 2:patrol, other:jump
@@ -29,7 +28,7 @@ public class Mitten extends Enemy {
 	public static final int jumpInterval = 300;
 	
 	public Mitten(float x, float y, int UniqueTickOffset) {
-		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 3, mittenSprites); //maxHealth = 2
+		super(ResourceLoader.MITTEN_SPRITES, x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 3); //maxHealth = 2
 		this.startX = x;
 		mittenState = IDLE;
 		tick = UniqueTickOffset;
@@ -80,7 +79,7 @@ public class Mitten extends Enemy {
 			return;
 		}
 
-		float checkX = facingLeft ? nextX - width : nextX + width;
+		float checkX = facingLeft ? nextX - this.width : nextX + this.width;
 		float checkY = y + 1.0f;
 		boolean solidGround = CollisionChecker.isSolid(hitbox, checkX, checkY, cd, lw, lh);
 		boolean platformGround = CollisionChecker.isPlatform(hitbox, checkX, y, checkY, 1.0f, cd, lw, lh);

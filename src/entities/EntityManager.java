@@ -42,6 +42,9 @@ public class EntityManager {
 				case 3:
 					entities.add(new Goldy(x, y, (int)(Math.random() * Goldy.attackInterval)));
 					break;
+				case 11:
+					entities.add(new Alice(x, y));
+					break;
 				default: break;
 			}
 		}
@@ -56,8 +59,10 @@ public class EntityManager {
 		entities.removeIf(e -> !e.isAlive());
 
 		for (Entity e : entities) {
-			if (e instanceof Enemy) {
-				((Enemy) e).update(cd, lw, lh, player);
+			if (e instanceof Enemy enemy) {
+				enemy.update(cd, lw, lh, player);
+			} else if (e instanceof Boss boss) {
+				boss.update(cd, lw, lh, player);
 			} else {
 				e.update();
 			}
@@ -78,9 +83,15 @@ public class EntityManager {
 		if (!player.isAttacking()) return;
 		
 		for (Entity e : entities) {
-			if (e.isAlive() && e instanceof Enemy) {
-				if (player.getAttackBox().entityIntersects(e.getHitbox())) {
-					((Enemy) e).takeDamage(player.getDamage(), player.getX());
+			if (e.isAlive()) {
+				if (e instanceof Enemy enemy) {
+					if (player.getAttackBox().entityIntersects(enemy.getHitbox())) {
+						enemy.takeDamage(player.getDamage(), player.getX());
+					}
+				} else if (e instanceof Boss boss) {
+					if (player.getAttackBox().entityIntersects(boss.getHitbox())) {
+						boss.takeDamage(player.getDamage());
+					}
 				}
 			}
 		}
@@ -88,7 +99,8 @@ public class EntityManager {
 	
 	public void checkEnemyAttack(Player player) {
 		for (Entity e : entities) {
-			if (e.isAlive() && e instanceof Attackable attacker && (attacker.isAttacking() || attacker instanceof Goldy)) {
+			if (e.isAlive() && e instanceof Attackable attacker &&
+				(attacker.isAttacking() || attacker instanceof Goldy || attacker instanceof Alice)) {
 				if (attacker.getAttackBox().entityIntersects(player.getHitbox())) {
 					player.takeDamage(attacker.getDamage(), e.getX());
 				}
@@ -98,16 +110,27 @@ public class EntityManager {
 
 	public void checkEntityCollide(Player player) {
 		for (Entity e : entities) {
-			if (e.isAlive() && e instanceof Enemy && !e.getHitbox().isInvincible()) {
-				if (player.getHitbox().entityIntersects(e.getHitbox())) {
-					player.takeDamage(1, e.getX());
-					((Enemy) e).takeDamage(1, player.getX());
-				}
-			}
-			if (e.isAlive() && e instanceof Item item) {
-				if (player.getHitbox().itemIntersects(e.getHitbox())) {
-					player.heal(item.getHealAmount());
-					item.collect(player);
+			if (e.isAlive()) {
+				if (e instanceof Enemy enemy) {
+					if (player.getHitbox().entityIntersects(enemy.getHitbox())) {
+						player.takeDamage(1, enemy.getX());
+						enemy.takeDamage(1, player.getX());
+					}
+				} else if (e instanceof Boss boss) {
+					if (player.getHitbox().entityIntersects(boss.getHitbox())) {
+						player.takeDamage(1, boss.getX());
+					}
+				} else if (e instanceof Item item) {
+					if (player.getHitbox().itemIntersects(item.getHitbox())) {
+						int healAmount = item.getHealAmount();
+						player.heal(healAmount);
+						item.collect(player);
+						if (healAmount > 1) {
+							player.maxhealthUp(healAmount);
+							player.attackDamageUp(1);
+							player.heal(10);
+						}
+					}
 				}
 			}
 		}

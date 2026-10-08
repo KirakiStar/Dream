@@ -74,11 +74,32 @@ public class EntityConstants {
 		@Override public boolean isLooping() { return looping; }
 	}
 	
+	public enum AliceState implements EntityAnimation {
+		IDLE(0, 4, true),
+		WALKING(1, 2, true),
+		ATTACK1(2, 4, false),
+		ATTACK2(3, 4, false);
+
+		private final int id;
+		private final int animationAmount;
+		private final boolean looping;
+
+		AliceState(int id, int animationAmount, boolean looping) {
+			this.id = id;
+			this.animationAmount = animationAmount;
+			this.looping = looping;
+		}
+
+		@Override public int getId() { return id; }
+		@Override public int getAnimationAmount() { return animationAmount; }
+		@Override public boolean isLooping() { return looping; }
+	}
+	
 	public enum ItemType implements EntityAnimation {
 		STRAWBERRY(0, 4, true, 1),
-		BOSS1(1, 1, false, 7),
-		BOSS2(2, 1, false, 7),
-		BOSS3(3, 1, false, 7);
+		MAGICIAN(1, 1, false, 2),
+		PUPPETEER(2, 1, false, 3),
+		HYPNOTIST(3, 1, false, 5);
 
 		private final int id;
 		private final int animationAmount;

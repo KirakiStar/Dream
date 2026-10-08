@@ -15,11 +15,10 @@ public abstract class Enemy extends MovingEntity {
 	protected float knockbackHeight = -0.5f * Game.SCALE;
 	protected int knockbackDir = 1; // 1: right, -1: left
 	protected float xSpeed = 0;
-	
-	public Enemy(float x, float y, int width, int height, float offsetX, float offsetY, int maxHealth, ResourceLoader.SpriteSheet enemySprites) {
-		super(x, y, width, height, offsetX, offsetY, maxHealth);
+
+	public Enemy(ResourceLoader.SpriteSheet entitySprites, float x, float y, int width, int height, float offsetX, float offsetY, int maxHealth) {
+		super(entitySprites, x, y, width, height, offsetX, offsetY, maxHealth);
 		facingLeft = true;
-		loadAnimations(enemySprites);
 	}
 
 	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player) {
@@ -78,7 +77,6 @@ public abstract class Enemy extends MovingEntity {
 			inAir = true;
 			airSpeed = knockbackHeight;
 		}
-//		System.out.println("Enemy hit");
 	}
 
 	protected abstract void updateBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player);

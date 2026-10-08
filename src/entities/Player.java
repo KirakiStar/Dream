@@ -13,14 +13,12 @@ import static entities.EntityConstants.PlayerState.*;
 
 public class Player extends MovingEntity implements Attackable {
 	private Playing playing;
-	private static final ResourceLoader.SpriteSheet playerSprites = ResourceLoader.PLAYER_SPRITES;
 	private PlayerState playerAction;
 	
-	private static final int WIDTH = (int)(16*Game.SCALE);
-	private static final int HEIGHT = (int)(36*Game.SCALE);
-	private static final float OFFSET_X = 24 * Game.SCALE;
-	private static final float OFFSET_Y = 27 * Game.SCALE;
-	private static final float HEIGHT_DROP_LADDER = HEIGHT / 2;
+	private static final int WIDTH = 16;
+	private static final int HEIGHT = 36;
+	private static final float OFFSET_X = 24f;
+	private static final float OFFSET_Y = 27f;
 	
 	private final float playerSpeed = 1.5f * Game.SCALE;
 	private boolean left;
@@ -35,19 +33,19 @@ public class Player extends MovingEntity implements Attackable {
 	private boolean climbable = false;
 	private final float jumpSpeed = -2.3f * Game.SCALE;
 	private final float drownSpeed = 0.5f * Game.SCALE;
+	private final float HEIGHT_DROP_LADDER = HEIGHT / 2 * Game.SCALE;
 	
 	private Hitbox attackBox;
+	private int attackDamage = 1;
 	private boolean attacking = false;
-	private final int attackDamage = 1;
 	private boolean hit = false;
 	private int knockbackDir = 1;
 
 	public Player(Playing playing, float x, float y) {
-		super(x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 7); //maxHealth = 7
+		super(ResourceLoader.PLAYER_SPRITES, x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 5); //deafault maxHealth = 5
 		this.playing = playing;
 		this.playerAction = IDLE;
 		entitySpeed = playerSpeed;
-		loadAnimations(playerSprites);
 		setAttackBox();
 		this.invincibilityDuration = 120;
 	}
@@ -60,10 +58,10 @@ public class Player extends MovingEntity implements Attackable {
 	}
 	
 	private void setAttackBox() {
-		float offsetX = 24f * Game.SCALE;
-		float offsetY = 32f * Game.SCALE;
-		int attackWidth = (int)(27 * Game.SCALE);
-		int attackHeight = (int)(32 * Game.SCALE);
+		float offsetX = 24f;
+		float offsetY = 32f;
+		int attackWidth = 27;
+		int attackHeight = 32;
 		this.attackBox = new Hitbox(this, offsetX, offsetY, attackWidth, attackHeight);
 	}
 	
@@ -260,7 +258,7 @@ public class Player extends MovingEntity implements Attackable {
 		if (facingLeft) {
 			attackBox.update(x - (attackBox.getWidth()), y);
 		} else {
-			attackBox.update(x + (WIDTH), y);
+			attackBox.update(x + this.width, y);
 		}
 	}
 	
@@ -285,8 +283,6 @@ public class Player extends MovingEntity implements Attackable {
 			inAir = true;
 			airSpeed = fallSpeed;
 		}
-		
-//		if (alive) System.out.println("hit");
 	}
 	
 	protected void heal(int amount) {
@@ -333,4 +329,7 @@ public class Player extends MovingEntity implements Attackable {
 	@Override public Hitbox getAttackBox() { return attackBox; }
 	@Override public int getDamage() { return attackDamage; }
 	public boolean isAttacking() { return attacking; }
+
+	public void attackDamageUp(int amount) { this.attackDamage += amount; }
+	public void maxhealthUp(int amount) { this.maxHealth += amount; }
 }
