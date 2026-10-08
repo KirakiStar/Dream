@@ -13,7 +13,7 @@ public class LevelManager {
 	private Playing playing;
 	private BufferedImage[] tiles;
 	private List<Level> levels;
-	private int currentLevelIndex = 1;
+	private int currentLevelIndex = 3;
 	
 	public LevelManager(Playing playing) {
 		this.playing = playing;

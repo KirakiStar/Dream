@@ -95,6 +95,27 @@ public class EntityConstants {
 		@Override public boolean isLooping() { return looping; }
 	}
 	
+	public enum ShabiState implements EntityAnimation {
+		IDLE(0, 4, true),
+		WALKING(1, 2, true),
+		ATTACK1(2, 4, false),
+		ATTACK2(3, 4, false);
+
+		private final int id;
+		private final int animationAmount;
+		private final boolean looping;
+
+		ShabiState(int id, int animationAmount, boolean looping) {
+			this.id = id;
+			this.animationAmount = animationAmount;
+			this.looping = looping;
+		}
+
+		@Override public int getId() { return id; }
+		@Override public int getAnimationAmount() { return animationAmount; }
+		@Override public boolean isLooping() { return looping; }
+	}
+	
 	public enum ItemType implements EntityAnimation {
 		STRAWBERRY(0, 4, true, 1),
 		MAGICIAN(1, 1, false, 2),

@@ -42,6 +42,9 @@ public class EntityManager {
 				case 3:
 					entities.add(new Goldy(x, y, (int)(Math.random() * Goldy.attackInterval)));
 					break;
+				case 10:
+					entities.add(new Shabi(x, y));
+					break;
 				case 11:
 					entities.add(new Alice(x, y));
 					break;
@@ -134,6 +137,15 @@ public class EntityManager {
 				}
 			}
 		}
+	}
+	
+	public Boss getActiveBoss() {
+		for (Entity e : entities) {
+			if (e instanceof Boss boss && boss.isAlive()) {
+				return boss;
+			}
+		}
+		return null;
 	}
 	
 	public List<Entity> getEntities() { return entities; }

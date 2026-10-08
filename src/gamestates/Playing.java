@@ -9,6 +9,7 @@ import main.Game;
 import display.Camera;
 import entities.EntityManager;
 import entities.Player;
+import entities.Boss;
 import levels.Level;
 import levels.LevelData;
 import levels.LevelManager;
@@ -64,7 +65,7 @@ public class Playing extends State implements StateMethods {
 		camera.setLevelBounds();
 	}
 	
-	private void checkTriggers() {
+	private void checkNextLevelTriggers() {
 		List<LevelData.TriggerData> triggers = levelManager.getCurrentLevel().getTriggers();
 		if (triggers == null) return;
 
@@ -92,14 +93,29 @@ public class Playing extends State implements StateMethods {
 			}
 		}
 	}
+	
+	public void checkBossTrigger() {
+		Boss activeBoss = entityManager.getActiveBoss();
+
+		if (activeBoss != null && activeBoss.isAlive()) {
+			if (!camera.isLocked() && player.getX() >= 512 * Game.SCALE) {
+				float arenaStartX = 512 * Game.SCALE;
+				float arenaEndX = 928 * Game.SCALE;
+				camera.lockToArea(arenaStartX, arenaEndX);
+			}
+		} else if (camera.isLocked()) {
+			camera.unlock();
+		}
+	}
 
 	@Override
 	public void update() {
 		player.update();
 		levelManager.update();
 		entityManager.update();
-		checkTriggers();
+		checkNextLevelTriggers();
 		camera.update();
+		checkBossTrigger();
 	}
 
 	@Override

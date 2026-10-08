@@ -1,9 +1,9 @@
 package entities;
 
-import collision.Hitbox;
 import java.awt.Graphics2D;
 import java.util.List;
 
+import collision.Hitbox;
 import inputsAndResourceLoader.ResourceLoader;
 import static entities.EntityConstants.AliceState.*;
 
@@ -79,5 +79,4 @@ public class Alice extends Boss {
 	@Override public Hitbox getAttackBox() { return this.attackBox; }
 	@Override public int getDamage() { return attackDamage; }
 	@Override public boolean isAttacking() { return attacking; }
-	
 }
