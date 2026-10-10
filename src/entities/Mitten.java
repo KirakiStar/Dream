@@ -4,6 +4,7 @@ import java.util.List;
 import java.awt.Graphics2D;
 
 import main.Game;
+import display.Camera;
 import collision.CollisionChecker;
 import inputsAndResourceLoader.ResourceLoader;
 import entities.EntityConstants.MittenState;
@@ -36,8 +37,8 @@ public class Mitten extends Enemy {
 	}
 	
 	@Override
-	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player) {
-		super.update(collisionData, levelWidth, levelHeight, player);
+	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera) {
+		super.update(collisionData, levelWidth, levelHeight, player, camera);
 		updateAnimationTick(mittenState.getAnimationAmount(), mittenState.isLooping());
 	}
 	

@@ -63,9 +63,9 @@ public class EntityManager {
 
 		for (Entity e : entities) {
 			if (e instanceof Enemy enemy) {
-				enemy.update(cd, lw, lh, player);
+				enemy.update(cd, lw, lh, player, playing.getCamera());
 			} else if (e instanceof Boss boss) {
-				boss.update(cd, lw, lh, player);
+				boss.update(cd, lw, lh, player, playing.getCamera());
 			} else {
 				e.update();
 			}

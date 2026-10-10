@@ -3,9 +3,10 @@ package entities;
 import java.util.List;
 import java.awt.Graphics2D;
 
-import inputsAndResourceLoader.ResourceLoader;
-import collision.CollisionChecker;
 import main.Game;
+import display.Camera;
+import collision.CollisionChecker;
+import inputsAndResourceLoader.ResourceLoader;
 
 public abstract class Enemy extends MovingEntity {
 	protected boolean hit = false;
@@ -21,7 +22,7 @@ public abstract class Enemy extends MovingEntity {
 		facingLeft = true;
 	}
 
-	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player) {
+	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera) {
 		super.update();
 		
 		if (CollisionChecker.isWater(hitbox, collisionData, levelWidth, levelHeight)) {
@@ -41,7 +42,7 @@ public abstract class Enemy extends MovingEntity {
 			updateBehavior(collisionData, levelWidth, levelHeight, player);
 		}
 
-		updateGroundPosition(xSpeed, collisionData, levelWidth, levelHeight, false);
+		updateGroundPosition(xSpeed, collisionData, levelWidth, levelHeight, false, camera);
 	}
 	
 	@Override
@@ -51,17 +52,17 @@ public abstract class Enemy extends MovingEntity {
 	}
 	
 	@Override
-    protected void updateXPos(float xSpeed, boolean candidateIsSlope, List<Integer> cd, int lw, int lh) {
-        float nextX = x + xSpeed;
-        float mapRightX = (lw * Game.TILES_SIZE) - width;
+	protected void updateXPos(float xSpeed, boolean candidateIsSlope, List<Integer> cd, int lw, int lh, Camera camera) {
+		float nextX = x + xSpeed;
+		float mapRightX = (lw * Game.TILES_SIZE) - width;
 
-        if (nextX < 0 || nextX > mapRightX) {
-            moving = false;
-            return;
-        }
+		if (nextX < 0 || nextX > mapRightX) {
+			moving = false;
+			return;
+		}
 
-        super.updateXPos(xSpeed, candidateIsSlope, cd, lw, lh);
-    }
+		super.updateXPos(xSpeed, candidateIsSlope, cd, lw, lh, camera);
+	}
 	
 	public void takeDamage(int amount, float playerX) {
 		if (!alive || hitbox.isInvincible()) return;

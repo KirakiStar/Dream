@@ -3,6 +3,7 @@ package entities;
 import java.awt.Graphics2D;
 import java.util.List;
 
+import display.Camera;
 import collision.Hitbox;
 import inputsAndResourceLoader.ResourceLoader;
 import static entities.EntityConstants.ShabiState.IDLE;
@@ -30,8 +31,8 @@ public class Shabi extends Boss {
 	}
 	
 	@Override
-	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player) {
-		super.update(collisionData, levelWidth, levelHeight, player);
+	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera) {
+		super.update(collisionData, levelWidth, levelHeight, player, camera);
 		updateAttackBox();
 		updateAnimationTick();
 	}

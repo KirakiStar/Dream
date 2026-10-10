@@ -24,6 +24,20 @@ public final class CollisionChecker {
 		}
 		return false;
 	}
+	
+	//camera lock
+	public static boolean isSolid(Hitbox hitbox, float nextX, float nextY, List<Integer> collisionData, int levelWidth, int levelHeight, display.Camera camera) {
+		if (camera != null && camera.isLocked()) {
+			float leftEdge = nextX + hitbox.getOffsetX();
+			float rightEdge = leftEdge + hitbox.getWidth() - 1;
+
+			if (leftEdge < camera.getLockMinX() || rightEdge > camera.getLockMaxX()) {
+				return true;
+			}
+		}
+		
+		return isSolid(hitbox, nextX, nextY, collisionData, levelWidth, levelHeight);
+	}
 
 	// for player
 	public static boolean isPlatform(Hitbox hitbox, float currentY, float nextY, float airSpeed, List<Integer> collisionData, int levelWidth, int levelHeight) {

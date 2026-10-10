@@ -3,6 +3,7 @@ package entities;
 import java.util.List;
 import java.awt.Graphics2D;
 
+import display.Camera;
 import collision.CollisionChecker;
 import inputsAndResourceLoader.ResourceLoader;
 
@@ -14,7 +15,7 @@ public abstract class Boss extends MovingEntity implements Attackable {
 		super(entitySprites, x, y, width, height, offsetX, offsetY, maxHealth);
 	}
 	
-	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player) {
+	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera) {
 		super.update();
 		
 		if (CollisionChecker.isWater(hitbox, collisionData, levelWidth, levelHeight)) {
@@ -25,7 +26,7 @@ public abstract class Boss extends MovingEntity implements Attackable {
 		xSpeed = 0;
 		updateBossBehavior(collisionData, levelWidth, levelHeight, player);
 
-		updateGroundPosition(xSpeed, collisionData, levelWidth, levelHeight, false);
+		updateGroundPosition(xSpeed, collisionData, levelWidth, levelHeight, false, camera);
 	}
 	
 	@Override

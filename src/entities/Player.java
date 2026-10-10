@@ -188,7 +188,7 @@ public class Player extends MovingEntity implements Attackable {
 				moving = true;
 			}
 			if (xSpeed != 0) {
-				updateXPos(xSpeed, false, cd, lw, lh);
+				updateXPos(xSpeed, false, cd, lw, lh, playing.getCamera());
 			}
 
 			if (!CollisionChecker.isLadder(hitbox, cd, lw, lh)) {
@@ -209,23 +209,7 @@ public class Player extends MovingEntity implements Attackable {
 		}
 
 		boolean dropping = down;
-		updateGroundPosition(xSpeed, cd, lw, lh, dropping);
-		
-		if (playing.getCamera().isLocked()) {
-			float minX = playing.getCamera().getLockMinX();
-			float maxX = playing.getCamera().getLockMaxX();
-
-			float hitboxOffset = hitbox.getOffsetX();
-			float hitboxWidth = hitbox.getWidth();
-
-			if (this.x + hitboxOffset < minX) {
-				this.x = minX - hitboxOffset;
-			}
-
-			if (this.x + hitboxOffset + hitboxWidth > maxX) {
-				this.x = maxX - hitboxOffset - hitboxWidth;
-			}
-		}
+		updateGroundPosition(xSpeed, cd, lw, lh, dropping, playing.getCamera());
 	}
 	
 	private void jump() {
@@ -262,7 +246,6 @@ public class Player extends MovingEntity implements Attackable {
 	protected void die() {
 		if (!alive) return;
 		super.die();
-//		System.out.println("Dead");
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.util.List;
 import java.awt.Graphics2D;
 
 import main.Game;
+import display.Camera;
 import collision.Hitbox;
 import collision.CollisionChecker;
 import inputsAndResourceLoader.ResourceLoader;
@@ -47,8 +48,8 @@ public class Goldy extends Enemy implements Attackable {
 	}
 	
 	@Override
-	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player) {
-		super.update(collisionData, levelWidth, levelHeight, player);
+	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera) {
+		super.update(collisionData, levelWidth, levelHeight, player, camera);
 		updateAttackBox();
 		updateAnimationTick();
 	}

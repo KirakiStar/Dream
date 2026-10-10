@@ -11,9 +11,9 @@ public class GameLoop implements Runnable {
 	}
 	
 	public void start() {
-        gameThread = new Thread(this);
-        gameThread.start();
-    }
+		gameThread = new Thread(this);
+		gameThread.start();
+	}
 
 	@Override
 	public void run() {
