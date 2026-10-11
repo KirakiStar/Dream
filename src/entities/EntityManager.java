@@ -7,7 +7,7 @@ import java.util.List;
 import main.Game;
 import gamestates.Playing;
 
-public class EntityManager {
+public final class EntityManager {
 	private Playing playing;
 	private List<Integer> entityData;
 	private int levelWidth;

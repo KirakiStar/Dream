@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 
 import levels.LevelData;
 
-public class ResourceLoader {
+public final class ResourceLoader {
 	
 	public static class SpriteSheet {
 		private String fileName;

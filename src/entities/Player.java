@@ -118,11 +118,10 @@ public class Player extends MovingEntity implements Attackable {
 				} else {
 					setAnimation(JUMPING2);
 				}
-			} else {
-				setAnimation(FALLING);
-			}
+			} else setAnimation(FALLING);
 		} else if (climbing) {
-			setAnimation(CLIMBING);
+			if (moving)setAnimation(CLIMBING);
+			else setAnimation(ON_LADDER);
 		} else if (moving) {
 			setAnimation(RUNNING);
 		} else {

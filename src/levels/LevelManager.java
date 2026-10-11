@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import inputsAndResourceLoader.ResourceLoader;
 import static main.Game.TILES_SIZE;
 
-public class LevelManager {
+public final class LevelManager {
 	private Playing playing;
 	private BufferedImage[] tiles;
 	private List<Level> levels;
