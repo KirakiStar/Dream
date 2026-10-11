@@ -3,10 +3,13 @@ package levels;
 import java.util.List;
 
 public class LevelData {
+	private String tileset;
 	private int width;
 	private int height;
 	private int tileWidth;
 	private int tileHeight;
+	private float arenaMinX;
+	private float arenaMaxX;
 	private int tileSetColumn;
 	private int tileSetRow;
 	private float spawnX;
@@ -14,10 +17,13 @@ public class LevelData {
 	private List<Layer> layers;
 	private List<TriggerData> triggers;
 
+	public String getTileset() { return tileset; }
 	public int getWidth() { return width; }
 	public int getHeight() { return height; }
 	public int getTileWidth() { return tileWidth; }
 	public int getTileHeight() { return tileHeight; }
+	public float getArenaMinX() { return arenaMinX; }
+	public float getArenaMaxX() { return arenaMaxX; }
 	public int getTileSetColumn() { return tileSetColumn; }
 	public int getTileSetRow() { return tileSetRow; }
 	public float getSpawnX() { return spawnX; }

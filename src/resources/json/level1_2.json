@@ -1,8 +1,11 @@
 {
+  "tileset": "level1.png",
   "width": 43,
   "height": 10,
   "tileWidth": 32,
   "tileHeight": 32,
+  "arenaMinX" : 512,
+  "arenaMaxX" : 928,
   "tileSetColumn": 9,
   "tileSetRow": 5,
   "spawnX": 40,

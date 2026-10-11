@@ -23,20 +23,10 @@ public class LevelManager {
 	}
 	
 	private void buildLevels() {
-		// Index 0
-		levels.add(new Level(ResourceLoader.TEST_MAP, ResourceLoader.TEST_LEVEL));
-		// Index 1
-		levels.add(new Level(ResourceLoader.LEVEL1_MAP, ResourceLoader.LEVEL1_SET));
-		// Index 2
-		levels.add(new Level(ResourceLoader.LEVEL1_1_MAP, ResourceLoader.LEVEL1_SET));
-		// Index 3
-		levels.add(new Level(ResourceLoader.LEVEL1_2_MAP, ResourceLoader.LEVEL1_SET));
-		// Index 4
-		levels.add(new Level(ResourceLoader.LEVEL2_1_MAP, ResourceLoader.LEVEL1_SET));
-		// Index 5
-		levels.add(new Level(ResourceLoader.LEVEL2_2_MAP, ResourceLoader.LEVEL1_SET));
-		// Index 6
-		levels.add(new Level(ResourceLoader.LEVEL2_3_MAP, ResourceLoader.LEVEL1_SET));
+		List<String> levelFiles = ResourceLoader.levelFiles;
+		for (String file : levelFiles) {
+			levels.add(new Level(file));
+		}
 	}
 	
 	public void loadLevel(int index, float spawnX, float spawnY) {

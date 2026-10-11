@@ -20,6 +20,8 @@ public class Playing extends State implements StateMethods {
 	private List<Integer> collisionData;
 	private int levelWidth;
 	private int levelHeight;
+	private float arenaMinX;
+	private float arenaMaxX;
 	private static EntityManager entityManager;
 	private List<Integer> entityData;
 	private Camera camera;
@@ -45,6 +47,8 @@ public class Playing extends State implements StateMethods {
 		this.collisionData = currentLevel.getCollisionData();
 		this.levelWidth = currentLevel.getLevelWidth();
 		this.levelHeight = currentLevel.getLevelHeight();
+		this.arenaMinX = currentLevel.getArenaMinX();
+		this.arenaMaxX = currentLevel.getArenaMaxX();
 		this.entityData = currentLevel.getEntityData();
 
 		if (player != null) {
@@ -95,13 +99,15 @@ public class Playing extends State implements StateMethods {
 	}
 	
 	public void checkBossTrigger() {
+		if (arenaMinX < 0 || arenaMaxX < 0) return;
+		
 		Boss activeBoss = entityManager.getActiveBoss();
 
 		if (activeBoss != null && activeBoss.isAlive()) {
-			if (!camera.isLocked() && player.getX() >= 512 * Game.SCALE) {
-				float arenaStartX = 512 * Game.SCALE;
-				float arenaEndX = 928 * Game.SCALE;
-				camera.lockToArea(arenaStartX, arenaEndX);
+			if (!camera.isLocked() && player.getX() >= arenaMinX * Game.SCALE) {
+				float minX = arenaMinX * Game.SCALE;
+				float maxX = arenaMaxX * Game.SCALE;
+				camera.lockToArea(minX, maxX);
 			}
 		} else if (camera.isLocked()) {
 			camera.unlock();

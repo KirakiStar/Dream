@@ -1,11 +1,14 @@
 package inputsAndResourceLoader;
 
 import com.google.gson.Gson;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+
+import java.util.List;
+import java.util.ArrayList;
 import java.io.Reader;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 import levels.LevelData;
@@ -44,15 +47,8 @@ public class ResourceLoader {
 	public static final SpriteSheet SHABI_SPRITES = new SpriteSheet("alice.png", 4, 4, 96, 96);
 	public static final SpriteSheet ALICE_SPRITES = new SpriteSheet("alice.png", 4, 4, 96, 96);
 
-	public static final String TEST_LEVEL = "testLevel.png";
-	public static final String TEST_MAP = "testMap.json";
-	public static final String LEVEL1_SET = "level1.png";
-	public static final String LEVEL1_MAP = "level1.json";
-	public static final String LEVEL1_1_MAP = "level1_1.json";
-	public static final String LEVEL1_2_MAP = "level1_2.json";
-	public static final String LEVEL2_1_MAP = "level2_1.json";
-	public static final String LEVEL2_2_MAP = "level2_2.json";
-	public static final String LEVEL2_3_MAP = "level2_3.json";
+	public static List<String> levelFiles = new ArrayList<>(List.of("testMap", "level1", "level1_1", "level1_2", 
+													"level2_1", "level2_2", "level2_3"));
 
 	public static BufferedImage ImagesLoader(String fileName) {
 		BufferedImage img = null;
@@ -79,7 +75,7 @@ public class ResourceLoader {
 		Gson gson = new Gson();
 		Reader reader = null;
 		LevelData levelData = null;
-		InputStream is = ResourceLoader.class.getResourceAsStream("/resources/json/" + fileName);
+		InputStream is = ResourceLoader.class.getResourceAsStream("/resources/json/" + fileName + ".json");
 		try {
 			reader = new InputStreamReader(is);
 			levelData = gson.fromJson(reader, LevelData.class);
