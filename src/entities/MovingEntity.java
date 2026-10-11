@@ -4,7 +4,7 @@ import java.util.List;
 
 import main.Game;
 import collision.CollisionChecker;
-import inputsAndResourceLoader.ResourceLoader;
+import helpers.ResourceLoader;
 
 public abstract class MovingEntity extends Entity {
 	protected float entitySpeed;

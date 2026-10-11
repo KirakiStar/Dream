@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 
 import display.Camera;
 import collision.CollisionChecker;
-import inputsAndResourceLoader.ResourceLoader;
+import helpers.ResourceLoader;
 
 public abstract class Boss extends MovingEntity implements Attackable {
 	protected boolean hit = false;

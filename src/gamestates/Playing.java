@@ -7,7 +7,8 @@ import java.awt.geom.AffineTransform;
 
 import main.Game;
 import display.Camera;
-import entities.EntityManager;
+import display.PlayingUI;
+import helpers.EntityManager;
 import entities.Player;
 import entities.Boss;
 import levels.Level;
@@ -16,6 +17,8 @@ import levels.LevelManager;
 
 public class Playing extends State implements StateMethods {
 	private Player player;
+	private Camera camera;
+	private PlayingUI playingUI;
 	private static LevelManager levelManager;
 	private List<Integer> collisionData;
 	private int levelWidth;
@@ -24,7 +27,6 @@ public class Playing extends State implements StateMethods {
 	private float arenaMaxX;
 	private static EntityManager entityManager;
 	private List<Integer> entityData;
-	private Camera camera;
 	
 	public Playing(Game game) {
 		super(game);
@@ -32,6 +34,7 @@ public class Playing extends State implements StateMethods {
 	}
 	
 	private void init() {
+		playingUI = new PlayingUI(this);
 		levelManager = new LevelManager(this);
 		entityManager = new EntityManager(this);
 		Level current = levelManager.getCurrentLevel();
@@ -40,6 +43,29 @@ public class Playing extends State implements StateMethods {
 		camera = new Camera(this);
 
 		loadLevelData(levelManager, current.getSpawnX(), current.getSpawnY());
+	}
+
+	@Override
+	public void update() {
+		player.update();
+		levelManager.update();
+		entityManager.update();
+		checkNextLevelTriggers();
+		camera.update();
+		checkBossTrigger();
+	}
+
+	@Override
+	public void draw(Graphics2D g2) {
+		AffineTransform originalTransform = g2.getTransform();
+		
+		g2.translate(-camera.getX(), -camera.getY());
+		levelManager.draw(g2);
+		entityManager.draw(g2);
+		player.draw(g2);
+		
+		g2.setTransform(originalTransform);
+		playingUI.draw(g2);
 	}
 	
 	public void loadLevelData(LevelManager levelManager, float spawnX, float spawnY) {
@@ -112,28 +138,6 @@ public class Playing extends State implements StateMethods {
 		} else if (camera.isLocked()) {
 			camera.unlock();
 		}
-	}
-
-	@Override
-	public void update() {
-		player.update();
-		levelManager.update();
-		entityManager.update();
-		checkNextLevelTriggers();
-		camera.update();
-		checkBossTrigger();
-	}
-
-	@Override
-	public void draw(Graphics2D g2) {
-		AffineTransform originalTransform = g2.getTransform();
-		
-		g2.translate(-camera.getX(), -camera.getY());
-		levelManager.draw(g2);
-		entityManager.draw(g2);
-		player.draw(g2);
-		
-		g2.setTransform(originalTransform);
 	}
 
 	@Override

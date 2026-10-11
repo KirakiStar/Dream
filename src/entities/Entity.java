@@ -5,8 +5,8 @@ import java.awt.image.BufferedImage;
 
 import main.Game;
 import collision.Hitbox;
-import inputsAndResourceLoader.ResourceLoader;
-import inputsAndResourceLoader.ResourceLoader.SpriteSheet;
+import helpers.ResourceLoader;
+import helpers.ResourceLoader.SpriteSheet;
 
 public abstract class Entity {
 	protected SpriteSheet entitySprites;
@@ -149,5 +149,6 @@ public abstract class Entity {
 	public final float getY() { return y; }
 	public final int getWidth() { return width; }
 	public final int getHeight() { return height; }
+	public int getCurrentHealth() { return currentHealth; }
 	public boolean isAlive() { return alive; }
 }

@@ -2,10 +2,9 @@ package entities;
 
 import java.awt.Graphics2D;
 
-import inputsAndResourceLoader.ResourceLoader;
-import entities.EntityConstants.ItemType;
-import static entities.EntityConstants.ItemType.*;
-import main.Game;
+import helpers.ResourceLoader;
+import helpers.EntityConstants.ItemType;
+import static helpers.EntityConstants.ItemType.*;
 
 public class Item extends Entity {
 	private ItemType item;

@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
-import inputsAndResourceLoader.KeyboardInputs;
+import inputs.KeyboardInputs;
 import static main.Game.GAME_WIDTH;
 import static main.Game.GAME_HEIGHT;
 
@@ -34,9 +34,7 @@ public class GamePanel extends JPanel{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		
-//		g2.translate(-game.getPlaying().getCamera().getX(), -game.getPlaying().getCamera().getY());
 		game.render(g2);
-//		g2.translate(game.getCamera().getX(), game.getCamera().getY());
 	}
 	
 	public Game getGame() { return game; }

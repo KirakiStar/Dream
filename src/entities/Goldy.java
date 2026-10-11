@@ -7,9 +7,9 @@ import main.Game;
 import display.Camera;
 import collision.Hitbox;
 import collision.CollisionChecker;
-import inputsAndResourceLoader.ResourceLoader;
-import entities.EntityConstants.GoldyState;
-import static entities.EntityConstants.GoldyState.*;
+import helpers.ResourceLoader;
+import helpers.EntityConstants.GoldyState;
+import static helpers.EntityConstants.GoldyState.*;
 
 public class Goldy extends Enemy implements Attackable {
 	private GoldyState goldyState;

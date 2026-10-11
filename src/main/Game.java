@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import gamestates.Gamestate;
 import gamestates.Playing;
 import gamestates.TitleScreen;
+import helpers.ResourceLoader;
 
 public class Game{
 	private GameWindow gameWindow;
@@ -35,6 +36,7 @@ public class Game{
 	}
 	
 	private void init() {
+		ResourceLoader.loadFonts();
 		titleScreen = new TitleScreen(this);
 		playing = new Playing(this);
 	}

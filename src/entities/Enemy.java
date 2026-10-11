@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import main.Game;
 import display.Camera;
 import collision.CollisionChecker;
-import inputsAndResourceLoader.ResourceLoader;
+import helpers.ResourceLoader;
 
 public abstract class Enemy extends MovingEntity {
 	protected boolean hit = false;

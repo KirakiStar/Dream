@@ -6,9 +6,9 @@ import java.awt.Graphics2D;
 import main.Game;
 import display.Camera;
 import collision.CollisionChecker;
-import inputsAndResourceLoader.ResourceLoader;
-import entities.EntityConstants.MittenState;
-import static entities.EntityConstants.MittenState.*;
+import helpers.ResourceLoader;
+import helpers.EntityConstants.MittenState;
+import static helpers.EntityConstants.MittenState.*;
 
 public class Mitten extends Enemy {
 	private MittenState mittenState;

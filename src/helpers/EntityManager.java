@@ -1,10 +1,11 @@
-package entities;
+package helpers;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
 import main.Game;
+import entities.*;
 import gamestates.Playing;
 
 public final class EntityManager {

@@ -1,12 +1,13 @@
 package entities;
 
+import helpers.EntityConstants;
 import java.awt.Graphics2D;
 import java.util.List;
 
 import display.Camera;
 import collision.Hitbox;
-import inputsAndResourceLoader.ResourceLoader;
-import static entities.EntityConstants.ShabiState.IDLE;
+import helpers.ResourceLoader;
+import static helpers.EntityConstants.ShabiState.IDLE;
 
 public class Shabi extends Boss {
 	private EntityConstants.ShabiState shabiState;

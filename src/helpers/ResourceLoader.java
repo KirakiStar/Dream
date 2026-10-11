@@ -1,4 +1,4 @@
-package inputsAndResourceLoader;
+package helpers;
 
 import com.google.gson.Gson;
 
@@ -39,7 +39,9 @@ public final class ResourceLoader {
 	
 	public static final String ICON = "icon.png";
 	public static final String TITLESCREEN = "titlescreen.png";
+	public static BufferedImage[][] fontCharacters;
 	
+	public static final SpriteSheet GUI_ITEMS = new SpriteSheet("gui.png", 9, 10, 32, 32);
 	public static final SpriteSheet PLAYER_SPRITES = new SpriteSheet("silver.png", 11, 4, 64, 64);
 	public static final SpriteSheet ITEM_SPRITES = new SpriteSheet("items.png", 4, 4, 64, 64);
 	public static final SpriteSheet MITTEN_SPRITES = new SpriteSheet("mitten.png", 4, 4, 64, 64);
@@ -50,9 +52,23 @@ public final class ResourceLoader {
 	public static List<String> levelFiles = new ArrayList<>(List.of("testMap", "level1", "level1_1", "level1_2", 
 													"level2_1", "level2_2", "level2_3"));
 
+	public static void loadFonts() {
+		int rows = GUI_ITEMS.getRow();
+		int columns = GUI_ITEMS.getColumn();
+		int imgWidth = GUI_ITEMS.getWidth();
+		int imgHeight = GUI_ITEMS.getHeight();
+		BufferedImage img = ImagesLoader(GUI_ITEMS.getFileName());
+		fontCharacters = new BufferedImage[rows][columns];
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				fontCharacters[i][j] = img.getSubimage(j * imgWidth, i * imgHeight, imgWidth, imgHeight);
+			}
+		}
+	}
+	
 	public static BufferedImage ImagesLoader(String fileName) {
 		BufferedImage img = null;
-		InputStream is = ResourceLoader.class.getResourceAsStream("/resources/images/"+fileName);
+		InputStream is = ResourceLoader.class.getResourceAsStream("/resources/images/" + fileName);
 		try {
 			img = ImageIO.read(is);
 
@@ -90,7 +106,7 @@ public final class ResourceLoader {
 		}
 		
 		if (levelData == null)
-			System.err.println("Failed to load level: " + fileName);
+			System.err.println("Failed to load level: " + fileName + "json");
 		return levelData;
 	}
 }

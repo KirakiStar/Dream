@@ -1,4 +1,4 @@
-package inputsAndResourceLoader;
+package inputs;
 
 import gamestates.Gamestate;
 import java.awt.event.KeyEvent;

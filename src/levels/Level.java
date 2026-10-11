@@ -2,7 +2,7 @@ package levels;
 
 import java.util.List;
 
-import inputsAndResourceLoader.ResourceLoader;
+import helpers.ResourceLoader;
 
 public class Level {
 	private final LevelData levelData;

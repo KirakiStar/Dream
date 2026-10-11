@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.ArrayList;
 
-import inputsAndResourceLoader.ResourceLoader;
+import helpers.ResourceLoader;
 import static main.Game.TILES_SIZE;
 
 public final class LevelManager {

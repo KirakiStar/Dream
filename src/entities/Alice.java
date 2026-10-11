@@ -1,12 +1,13 @@
 package entities;
 
+import helpers.EntityConstants;
 import java.awt.Graphics2D;
 import java.util.List;
 
 import display.Camera;
 import collision.Hitbox;
-import inputsAndResourceLoader.ResourceLoader;
-import static entities.EntityConstants.AliceState.*;
+import helpers.ResourceLoader;
+import static helpers.EntityConstants.AliceState.*;
 
 public class Alice extends Boss {
 	private EntityConstants.AliceState aliceState;
