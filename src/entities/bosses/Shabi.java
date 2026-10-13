@@ -1,14 +1,14 @@
 package entities.bosses;
 
-import entities.player.Player;
-import helpers.EntityConstants;
 import java.awt.Graphics2D;
 import java.util.List;
 
 import display.Camera;
 import collision.Hitbox;
+import entities.player.Player;
 import helpers.ResourceLoader;
-import static helpers.EntityConstants.ShabiState.IDLE;
+import helpers.EntityConstants;
+import static helpers.EntityConstants.ShabiState.*;
 
 public class Shabi extends Boss {
 	private EntityConstants.ShabiState shabiState;

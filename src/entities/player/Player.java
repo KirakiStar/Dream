@@ -72,7 +72,6 @@ public class Player extends MovingEntity implements Attackable {
 	@Override
 	public void update() {
 		super.update();
-		setStats();
 		updatePosition();
 		updateAttackBox();
 		updatePlayerAction();
@@ -350,7 +349,7 @@ public class Player extends MovingEntity implements Attackable {
 	}
 	
 	public void activateCheat() {
-		stats.activateCheat();
+		stats.TheSevenDeadlyCheats();
 		setStats();
 		heal(maxHealth);
 	}

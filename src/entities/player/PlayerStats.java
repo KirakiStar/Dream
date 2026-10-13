@@ -25,13 +25,13 @@ public final class PlayerStats {
 	public int getMaxJump() { return maxJump; }
 	public int getAttackDamage() { return attackDamage; }
 	
-	public void activateCheat() {
+	public void TheSevenDeadlyCheats() {
 		if (cheating) resetCheat();
 		else {
 			cheating = true;
 			maxHealth = 77;
-			playerSpeed = 5f * Settings.SCALE;
-			jumpSpeed = -2.3f * Settings.SCALE;
+			playerSpeed = 7f * Settings.SCALE;
+			jumpSpeed = -4f * Settings.SCALE;
 			maxJump = 77;
 			attackDamage = 77;
 		}
