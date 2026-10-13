@@ -1,5 +1,6 @@
-package entities;
+package entities.bosses;
 
+import entities.player.Player;
 import helpers.EntityConstants;
 import java.awt.Graphics2D;
 import java.util.List;
@@ -25,7 +26,8 @@ public class Shabi extends Boss {
 	private int actionInterval = 150;
 
 	public Shabi(float x, float y) {
-		super(ResourceLoader.SHABI_SPRITES, x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 15); //maxhealth = 15
+		super(EntityConstants.BossId.SHABI, ResourceLoader.SHABI_SPRITES, 
+				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 15); //maxhealth = 15
 		facingLeft = true;
 		this.shabiState = IDLE;
 		setAttackBox();

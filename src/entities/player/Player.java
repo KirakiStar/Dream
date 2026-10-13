@@ -1,12 +1,14 @@
-package entities;
+package entities.player;
 
 import java.awt.Graphics2D;
 import java.util.List;
 
-import main.Game;
+import helpers.Settings;
 import gamestates.Playing;
 import collision.Hitbox;
 import collision.CollisionChecker;
+import entities.Attackable;
+import entities.MovingEntity;
 import helpers.ResourceLoader;
 import helpers.EntityConstants.PlayerState;
 import static helpers.EntityConstants.PlayerState.*;
@@ -14,13 +16,17 @@ import static helpers.EntityConstants.PlayerState.*;
 public class Player extends MovingEntity implements Attackable {
 	private Playing playing;
 	private PlayerState playerAction;
+	private PlayerStats stats;
+	
+	private float jumpSpeed;
+	private int maxJump;
+	private int attackDamage;
 	
 	private static final int WIDTH = 16;
 	private static final int HEIGHT = 36;
 	private static final float OFFSET_X = 24f;
 	private static final float OFFSET_Y = 27f;
 	
-	private final float playerSpeed = 1.5f * Game.SCALE;
 	private boolean left;
 	private boolean right;
 	private boolean up;
@@ -29,23 +35,21 @@ public class Player extends MovingEntity implements Attackable {
 	private boolean climbing;
 	
 	private int jumpCount = 0;
-	private final int maxJump = 2;
 	private boolean climbable = false;
-	private final float jumpSpeed = -2.3f * Game.SCALE;
-	private final float drownSpeed = 0.5f * Game.SCALE;
-	private final float HEIGHT_DROP_LADDER = HEIGHT / 2 * Game.SCALE;
+	private final float drownSpeed = 0.5f * Settings.SCALE;
+	private final float HEIGHT_DROP_LADDER = HEIGHT / 2 * Settings.SCALE;
 	
 	private Hitbox attackBox;
-	private int attackDamage = 1;
 	private boolean attacking = false;
 	private boolean hit = false;
 	private int knockbackDir = 1;
 
 	public Player(Playing playing, float x, float y) {
-		super(ResourceLoader.PLAYER_SPRITES, x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 5); //deafault maxHealth = 5
+		super(ResourceLoader.PLAYER_SPRITES, x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 5); //default maxHealth = 5
+		this.stats = new PlayerStats(maxHealth);
 		this.playing = playing;
 		this.playerAction = IDLE;
-		entitySpeed = playerSpeed;
+		setStats();
 		setAttackBox();
 		this.invincibilityDuration = 120;
 	}
@@ -63,6 +67,22 @@ public class Player extends MovingEntity implements Attackable {
 		int attackWidth = 27;
 		int attackHeight = 32;
 		this.attackBox = new Hitbox(this, offsetX, offsetY, attackWidth, attackHeight);
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		setStats();
+		updatePosition();
+		updateAttackBox();
+		updatePlayerAction();
+		updateAnimationTick();
+	}
+
+	@Override
+	public void draw(Graphics2D g2) {
+		super.draw(g2, playerAction.getId());
+		if (attacking) attackBox.drawDebug(g2);
 	}
 	
 	protected void updateAnimationTick() {
@@ -128,20 +148,13 @@ public class Player extends MovingEntity implements Attackable {
 			setAnimation(IDLE);
 		}
 	}
-
-	@Override
-	public void update() {
-		super.update();
-		updatePosition();
-		updateAttackBox();
-		updatePlayerAction();
-		updateAnimationTick();
-	}
-
-	@Override
-	public void draw(Graphics2D g2) {
-		super.draw(g2, playerAction.getId());
-		if (attacking) attackBox.drawDebug(g2);
+	
+	private void setStats() {
+		this.maxHealth = stats.getMaxHealth();
+		this.entitySpeed = stats.getPlayerSpeed();
+		this.jumpSpeed = stats.getJumpSpeed();
+		this.maxJump = stats.getMaxJump();
+		this.attackDamage = stats.getAttackDamage();
 	}
 
 	private void updatePosition() {
@@ -177,10 +190,10 @@ public class Player extends MovingEntity implements Attackable {
 			float xSpeed = 0;
 			float ySpeed = 0;
 
-			if (up) ySpeed -= playerSpeed;
-			if (down) ySpeed += playerSpeed;
-			if (left) { xSpeed -= playerSpeed; facingLeft = true; }
-			if (right) { xSpeed += playerSpeed; facingLeft = false; }
+			if (up) ySpeed -= entitySpeed;
+			if (down) ySpeed += entitySpeed;
+			if (left) { xSpeed -= entitySpeed; facingLeft = true; }
+			if (right) { xSpeed += entitySpeed; facingLeft = false; }
 
 			if (ySpeed != 0 && !CollisionChecker.isSolid(hitbox, x, y + ySpeed, cd, lw, lh)) {
 				y += ySpeed;
@@ -199,12 +212,12 @@ public class Player extends MovingEntity implements Attackable {
 
 		float xSpeed = 0;
 		if (jump) jump();
-		if (left) { xSpeed -= playerSpeed; facingLeft = true; }
-		if (right) { xSpeed += playerSpeed; facingLeft = false; }
+		if (left) { xSpeed -= entitySpeed; facingLeft = true; }
+		if (right) { xSpeed += entitySpeed; facingLeft = false; }
 
 		if (hit) {
 			resetDirection();
-			xSpeed = knockbackDir * playerSpeed;
+			xSpeed = knockbackDir * entitySpeed;
 		}
 
 		boolean dropping = down;
@@ -327,9 +340,18 @@ public class Player extends MovingEntity implements Attackable {
 	
 	@Override public Hitbox getAttackBox() { return attackBox; }
 	@Override public int getDamage() { return attackDamage; }
-	public boolean isAttacking() { return attacking; }
+	@Override public boolean isAttacking() { return attacking; }
 	public boolean isHit() { return hit; }
 
 	public void attackDamageUp(int amount) { this.attackDamage += amount; }
-	public void maxhealthUp(int amount) { this.maxHealth += amount; }
+	public void maxhealthUp(int amount) {
+		this.maxHealth += amount;
+		stats.setCurrentMaxHealth(maxHealth);
+	}
+	
+	public void activateCheat() {
+		stats.activateCheat();
+		setStats();
+		heal(maxHealth);
+	}
 }

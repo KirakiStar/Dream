@@ -5,9 +5,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
-import inputs.KeyboardInputs;
-import static main.Game.GAME_WIDTH;
-import static main.Game.GAME_HEIGHT;
+import static helpers.Settings.GAME_HEIGHT;
+import static helpers.Settings.GAME_WIDTH;
 
 public class GamePanel extends JPanel{
 	private Game game;
@@ -16,7 +15,7 @@ public class GamePanel extends JPanel{
 		this.game = game;
 		setPanelSize();
 		setFocusable(true);
-		addKeyListener(new KeyboardInputs(this));
+		addKeyListener(new Inputs(this));
 	}
 	
 	private void setPanelSize() {

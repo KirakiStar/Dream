@@ -1,5 +1,6 @@
 package entities;
 
+import entities.player.Player;
 import java.awt.Graphics2D;
 
 import helpers.ResourceLoader;

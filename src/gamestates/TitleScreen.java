@@ -4,8 +4,9 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
-import helpers.ResourceLoader;
 import main.Game;
+import helpers.Settings;
+import helpers.ResourceLoader;
 
 public class TitleScreen extends State implements StateMethods{
 	private String titlePng = ResourceLoader.TITLESCREEN;
@@ -27,7 +28,7 @@ public class TitleScreen extends State implements StateMethods{
 
 	@Override
 	public void draw(Graphics2D g2) {
-		g2.drawImage(background, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
+		g2.drawImage(background, 0, 0, Settings.GAME_WIDTH, Settings.GAME_HEIGHT, null);
 	}
 
 	@Override

@@ -1,12 +1,14 @@
-package entities;
+package entities.enemies;
 
+import entities.player.Player;
 import java.util.List;
 import java.awt.Graphics2D;
 
-import main.Game;
 import display.Camera;
 import collision.Hitbox;
 import collision.CollisionChecker;
+import entities.Attackable;
+import helpers.Settings;
 import helpers.ResourceLoader;
 import helpers.EntityConstants.GoldyState;
 import static helpers.EntityConstants.GoldyState.*;
@@ -22,8 +24,8 @@ public class Goldy extends Enemy implements Attackable {
 	private int tick = 0;
 	
 	private final float startX;
-	private float maxWalkDistance = 50 * Game.SCALE;
-	private final float walkSpeed = 0.5f * Game.SCALE;
+	private float maxWalkDistance = 50 * Settings.SCALE;
+	private final float walkSpeed = 0.5f * Settings.SCALE;
 	
 	private Hitbox attackBox;
 	private boolean attacking = false;
@@ -33,7 +35,7 @@ public class Goldy extends Enemy implements Attackable {
 	public Goldy(float x, float y, int UniqueTickOffset) {
 		super(ResourceLoader.GOLDY_SPRITES, x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 5); //maxHealth = 5
 		this.startX = x;
-		this.knockbackSpeed = 0.2f * Game.SCALE;
+		this.knockbackSpeed = 0.2f * Settings.SCALE;
 		tick = UniqueTickOffset;
 		this.goldyState = IDLE;
 		setAttackBox();

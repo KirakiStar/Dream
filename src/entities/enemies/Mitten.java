@@ -1,14 +1,15 @@
-package entities;
+package entities.enemies;
 
+import entities.player.Player;
 import java.util.List;
 import java.awt.Graphics2D;
 
-import main.Game;
 import display.Camera;
 import collision.CollisionChecker;
 import helpers.ResourceLoader;
 import helpers.EntityConstants.MittenState;
 import static helpers.EntityConstants.MittenState.*;
+import helpers.Settings;
 
 public class Mitten extends Enemy {
 	private MittenState mittenState;
@@ -22,10 +23,10 @@ public class Mitten extends Enemy {
 	private final int randomAction;// 1:idle, 2:patrol, other:jump
 	
 	private final float startX;
-	private float maxWalkDistance = 50 * Game.SCALE;
-	private final float walkSpeed = 0.3f * Game.SCALE;
+	private float maxWalkDistance = 50 * Settings.SCALE;
+	private final float walkSpeed = 0.3f * Settings.SCALE;
 	
-	private float jumpSpeed = -2f * Game.SCALE;
+	private float jumpSpeed = -2f * Settings.SCALE;
 	public static final int jumpInterval = 300;
 	
 	public Mitten(float x, float y, int UniqueTickOffset) {

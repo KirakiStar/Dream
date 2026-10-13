@@ -117,26 +117,49 @@ public class EntityConstants {
 	}
 	
 	public enum ItemType implements EntityAnimation {
-		STRAWBERRY(0, 4, true, 1),
-		MAGICIAN(1, 1, false, 2),
-		PUPPETEER(2, 1, false, 3),
-		HYPNOTIST(3, 1, false, 5);
+		STRAWBERRY(0, 4, true, 1, null),
+		MAGICIAN(1, 1, false, 2, BossId.SHABI),
+		PUPPETEER(2, 1, false, 3, BossId.ALICE),
+		HYPNOTIST(3, 1, false, 5, BossId.NIGHTMARE);
 
 		private final int id;
 		private final int animationAmount;
 		private final boolean looping;
 		private final int healAmount;
+		private final BossId bossId;
 
-		ItemType(int id, int animationAmount, boolean looping, int healAmount) {
+		ItemType(int id, int animationAmount, boolean looping, int healAmount, BossId bossId) {
 			this.id = id;
 			this.animationAmount = animationAmount;
 			this.looping = looping;
 			this.healAmount = healAmount;
+			this.bossId = bossId;
 		}
 
 		@Override public int getId() { return id; }
 		@Override public int getAnimationAmount() { return animationAmount; }
 		@Override public boolean isLooping() { return looping; }
 		public int getHealAmount() { return healAmount; }
+		public BossId getBossId() { return bossId; }
+	}
+	
+	public enum BossId {
+		SHABI(10,5,4),
+		ALICE(11,5,5),
+		NIGHTMARE(12,5,6);
+		
+		private final int id;
+		private final int iconRow;
+		private final int iconCol;
+		
+		BossId (int id, int iconRow, int iconCol) {
+			this.id = id;
+			this.iconRow = iconRow;
+			this.iconCol = iconCol;
+		}
+		
+		public int getId() { return id; }
+		public int getIconRow() { return iconRow; }
+		public int getIconCol() { return iconCol; }
 	}
 }

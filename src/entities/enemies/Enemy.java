@@ -1,19 +1,21 @@
-package entities;
+package entities.enemies;
 
+import entities.player.Player;
 import java.util.List;
 import java.awt.Graphics2D;
 
-import main.Game;
 import display.Camera;
 import collision.CollisionChecker;
+import entities.MovingEntity;
+import helpers.Settings;
 import helpers.ResourceLoader;
 
 public abstract class Enemy extends MovingEntity {
 	protected boolean hit = false;
 	protected int hitDuration = 15;
 	protected int hitTick = 0;
-	protected float knockbackSpeed = 0.5f * Game.SCALE;
-	protected float knockbackHeight = -0.5f * Game.SCALE;
+	protected float knockbackSpeed = 0.5f * Settings.SCALE;
+	protected float knockbackHeight = -0.5f * Settings.SCALE;
 	protected int knockbackDir = 1; // 1: right, -1: left
 	protected float xSpeed = 0;
 
@@ -54,7 +56,7 @@ public abstract class Enemy extends MovingEntity {
 	@Override
 	protected void updateXPos(float xSpeed, boolean candidateIsSlope, List<Integer> cd, int lw, int lh, Camera camera) {
 		float nextX = x + xSpeed;
-		float mapRightX = (lw * Game.TILES_SIZE) - width;
+		float mapRightX = (lw * Settings.TILES_SIZE) - width;
 
 		if (nextX < 0 || nextX > mapRightX) {
 			moving = false;

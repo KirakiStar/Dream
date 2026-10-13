@@ -5,11 +5,24 @@ import java.awt.image.BufferedImage;
 
 import gamestates.Playing;
 import helpers.ResourceLoader;
-import main.Game;
+import helpers.Settings;
 
 public class PlayingUI implements GUI_Methods {
 	private Playing playing;
+	
 	private BufferedImage[][] fontCharacters;
+//	private final int imgRow = 9;
+//	private final int imgCol = 10;
+	
+	private final int screenWidth = Settings.GAME_WIDTH;
+	private final int screenHeight = Settings.GAME_HEIGHT;
+	
+	private final int scale = (int) Settings.SCALE;
+	private final int x10 = 10 * scale;
+	private final int x20 = x10 * 2;
+	private final int x16 = 16 * scale;
+	private final int x32 = x16 * 2;
+	private final int x64 = x32 * 2;
 
 	public PlayingUI(Playing playing) {
 		this.playing = playing;
@@ -23,26 +36,21 @@ public class PlayingUI implements GUI_Methods {
 
 	@Override
 	public void draw(Graphics2D g2) {
-		drawPlayerHealth(g2);
+		drawPlayerStats(g2);
+		drawPlayerScore(g2);
 		drawCollectedDolls(g2);
 		drawBossBar(g2);
 	}
 	
-	private void drawPlayerHealth(Graphics2D g2) {
-		int scale = (int) Game.SCALE;
-		int x10 = 10 * scale;
-		int x20 = x10 * 2;
-		int x32 = 32 * scale;
-		int x64 = x32 * 2;
-
+	private void drawPlayerStats(Graphics2D g2) {
 		String hp = Integer.toString(playing.getPlayer().getCurrentHealth());
 		boolean isHit = playing.getPlayer().isHit();
 		
 		// silver icon
-		g2.drawImage(fontCharacters[5][2], x10, x20, x32, x32, null);
+		g2.drawImage(fontCharacters[5][3], x10, x20, x32, x32, null);
 
-		BufferedImage heartIcon = isHit ? fontCharacters[2][1] : fontCharacters[2][0];
-		BufferedImage[] hpAmount = isHit ? fontCharacters[1] : fontCharacters[0];
+		BufferedImage heartIcon = isHit ? fontCharacters[2][2] : fontCharacters[2][1];
+		BufferedImage[] hpAmount = isHit ? fontCharacters[0] : fontCharacters[1];
 
 		g2.drawImage(heartIcon, x32, x10, x32, x32, null);
 
@@ -50,6 +58,19 @@ public class PlayingUI implements GUI_Methods {
 			int numIndex = hp.charAt(i) - '0';
 			g2.drawImage(hpAmount[numIndex], x64 + (i * x20), x10, x32, x32, null);
 		}
+		
+		int attackDamage = playing.getPlayer().getDamage();
+		for (int i = 0; i < attackDamage; i++) {
+			// attack icon
+			g2.drawImage(fontCharacters[2][6], x32 + (i * x10), x32, x16, x16, null);
+		}
+	}
+	
+	private void drawPlayerScore(Graphics2D g2) {
+		g2.drawImage(fontCharacters[5][4], x10, screenHeight - x32, x32, x32, null);
+		g2.drawImage(fontCharacters[5][5], x10 + x32, screenHeight - x32, x32, x32, null);
+		g2.drawImage(fontCharacters[5][6], x10 + x64, screenHeight - x32, x32, x32, null);
+		g2.drawImage(fontCharacters[5][7], x10 + x64 + x32, screenHeight - x32, x32, x32, null);
 	}
 	
 	private void drawCollectedDolls(Graphics2D g2) {

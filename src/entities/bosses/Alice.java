@@ -1,5 +1,6 @@
-package entities;
+package entities.bosses;
 
+import entities.player.Player;
 import helpers.EntityConstants;
 import java.awt.Graphics2D;
 import java.util.List;
@@ -25,7 +26,8 @@ public class Alice extends Boss {
 	private int actionInterval = 300;
 
 	public Alice(float x, float y) {
-		super(ResourceLoader.ALICE_SPRITES, x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 30); //maxhealth = 30
+		super(EntityConstants.BossId.ALICE, ResourceLoader.ALICE_SPRITES, 
+				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 30); //maxhealth = 30
 		this.aliceState = IDLE;
 		setAttackBox();
 	}

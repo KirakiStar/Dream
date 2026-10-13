@@ -1,15 +1,14 @@
-package inputs;
+package main;
 
-import gamestates.Gamestate;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import main.GamePanel;
+import gamestates.Gamestate;
 
-public class KeyboardInputs implements KeyListener{
+public class Inputs implements KeyListener{
 	private GamePanel gamePanel;
 	
-	public KeyboardInputs(GamePanel gamePanel) {
+	public Inputs(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
 	}
 
@@ -18,7 +17,6 @@ public class KeyboardInputs implements KeyListener{
 		switch (Gamestate.state) {
 			case TITLESCREEN:
 				gamePanel.getGame().getTitleScreen().keyPressed(e);
-//				System.out.println("Start");
 				break;
 			case PLAYING:
 				gamePanel.getGame().getPlaying().keyPressed(e);

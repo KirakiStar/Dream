@@ -8,12 +8,13 @@ import java.awt.geom.AffineTransform;
 import main.Game;
 import display.Camera;
 import display.PlayingUI;
-import helpers.EntityManager;
-import entities.Player;
-import entities.Boss;
+import entities.EntityManager;
+import entities.player.Player;
+import entities.bosses.Boss;
 import levels.Level;
 import levels.LevelData;
 import levels.LevelManager;
+import helpers.Settings;
 
 public class Playing extends State implements StateMethods {
 	private Player player;
@@ -39,7 +40,7 @@ public class Playing extends State implements StateMethods {
 		entityManager = new EntityManager(this);
 		Level current = levelManager.getCurrentLevel();
 
-		player = new Player(this, current.getSpawnX() * Game.SCALE, current.getSpawnY() * Game.SCALE);
+		player = new Player(this, current.getSpawnX() * Settings.SCALE, current.getSpawnY() * Settings.SCALE);
 		camera = new Camera(this);
 
 		loadLevelData(levelManager, current.getSpawnX(), current.getSpawnY());
@@ -78,7 +79,7 @@ public class Playing extends State implements StateMethods {
 		this.entityData = currentLevel.getEntityData();
 
 		if (player != null) {
-			player.setPosition(spawnX * Game.SCALE, spawnY * Game.SCALE);
+			player.setPosition(spawnX * Settings.SCALE, spawnY * Settings.SCALE);
 		}
 		
 		if (entityManager != null) {
@@ -88,8 +89,8 @@ public class Playing extends State implements StateMethods {
 	
 	public void respawnPlayer() {
 		Level currentLevel = levelManager.getCurrentLevel();
-		float spawnX = currentLevel.getSpawnX() * Game.SCALE;
-		float spawnY = currentLevel.getSpawnY() * Game.SCALE;
+		float spawnX = currentLevel.getSpawnX() * Settings.SCALE;
+		float spawnY = currentLevel.getSpawnY() * Settings.SCALE;
 
 		player.reset(spawnX, spawnY);
 		camera.setLevelBounds();
@@ -100,15 +101,15 @@ public class Playing extends State implements StateMethods {
 		if (triggers == null) return;
 
 		for (LevelData.TriggerData trigger : triggers) {
-			float tx = trigger.getX() * Game.SCALE;
-			float ty = trigger.getY() * Game.SCALE;
+			float tx = trigger.getX() * Settings.SCALE;
+			float ty = trigger.getY() * Settings.SCALE;
 			float tw = (trigger.getWidth() == -1)?
-						levelWidth * Game.TILES_SIZE * Game.SCALE 
-						: trigger.getWidth() * Game.SCALE;
+						levelWidth * Settings.TILES_SIZE * Settings.SCALE 
+						: trigger.getWidth() * Settings.SCALE;
 
 			float th = (trigger.getHeight() == -1)?
-						levelHeight * Game.TILES_SIZE * Game.SCALE 
-						: trigger.getHeight() * Game.SCALE;
+						levelHeight * Settings.TILES_SIZE * Settings.SCALE 
+						: trigger.getHeight() * Settings.SCALE;
 
 			if (player.getHitbox().getBounds().intersects(tx, ty, tw, th)) {
 				boolean isAuto = "AUTO".equalsIgnoreCase(trigger.getActivation());
@@ -130,9 +131,9 @@ public class Playing extends State implements StateMethods {
 		Boss activeBoss = entityManager.getActiveBoss();
 
 		if (activeBoss != null && activeBoss.isAlive()) {
-			if (!camera.isLocked() && player.getX() >= arenaMinX * Game.SCALE) {
-				float minX = arenaMinX * Game.SCALE;
-				float maxX = arenaMaxX * Game.SCALE;
+			if (!camera.isLocked() && player.getX() >= arenaMinX * Settings.SCALE) {
+				float minX = arenaMinX * Settings.SCALE;
+				float maxX = arenaMaxX * Settings.SCALE;
 				camera.lockToArea(minX, maxX);
 			}
 		} else if (camera.isLocked()) {
@@ -142,64 +143,33 @@ public class Playing extends State implements StateMethods {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		switch(e.getKeyCode()) {
-			case KeyEvent.VK_RIGHT:
-			case KeyEvent.VK_D:
-				player.setRight(true);
-				break;
-			case KeyEvent.VK_LEFT:
-			case KeyEvent.VK_A:
-				player.setLeft(true);
-				break;
-			case KeyEvent.VK_UP:
-			case KeyEvent.VK_W:
-				player.setUp(true);
-				break;
-			case KeyEvent.VK_DOWN:
-			case KeyEvent.VK_S:
-				player.setDown(true);
-				break;
-			case KeyEvent.VK_SPACE:
-			case KeyEvent.VK_Z:
-				player.setJump(true);
-				break;
-			case KeyEvent.VK_X:
-			case KeyEvent.VK_SHIFT:
-				player.attack();
-				break;
-			case KeyEvent.VK_K:
-				player.takeDamage(1);
-				break;
-			case KeyEvent.VK_R:
+		switch (e.getKeyCode()) {
+			case KeyEvent.VK_RIGHT, KeyEvent.VK_D -> player.setRight(true);
+			case KeyEvent.VK_LEFT, KeyEvent.VK_A -> player.setLeft(true);
+			case KeyEvent.VK_UP, KeyEvent.VK_W -> player.setUp(true);
+			case KeyEvent.VK_DOWN, KeyEvent.VK_S -> player.setDown(true);
+			case KeyEvent.VK_SPACE, KeyEvent.VK_Z -> player.setJump(true);
+			case KeyEvent.VK_X, KeyEvent.VK_SHIFT -> player.attack();
+			case KeyEvent.VK_K -> player.takeDamage(1);
+			case KeyEvent.VK_L -> player.takeDamage(player.getCurrentHealth());
+			case KeyEvent.VK_R -> {
 				Gamestate.state = Gamestate.TITLESCREEN;
-//				resetAll();
-				break;
+	//          resetAll();
+			}
+			case KeyEvent.VK_7 -> player.activateCheat();
+			default -> {}
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
-			case KeyEvent.VK_RIGHT:
-			case KeyEvent.VK_D:
-				player.setRight(false);
-				break;
-			case KeyEvent.VK_LEFT:
-			case KeyEvent.VK_A:
-				player.setLeft(false);
-				break;
-			case KeyEvent.VK_UP:
-			case KeyEvent.VK_W:
-				player.setUp(false);
-				break;
-			case KeyEvent.VK_DOWN:
-			case KeyEvent.VK_S:
-				player.setDown(false);
-				break;
-			case KeyEvent.VK_SPACE:
-			case KeyEvent.VK_Z:
-				player.setJump(false);
-				break;
+			case KeyEvent.VK_RIGHT, KeyEvent.VK_D -> player.setRight(false);
+			case KeyEvent.VK_LEFT, KeyEvent.VK_A -> player.setLeft(false);
+			case KeyEvent.VK_UP, KeyEvent.VK_W -> player.setUp(false);
+			case KeyEvent.VK_DOWN, KeyEvent.VK_S -> player.setDown(false);
+			case KeyEvent.VK_SPACE, KeyEvent.VK_Z -> player.setJump(false);
+			default -> {}
 		}
 	}
 	

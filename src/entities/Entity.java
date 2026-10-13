@@ -3,8 +3,8 @@ package entities;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import main.Game;
 import collision.Hitbox;
+import helpers.Settings;
 import helpers.ResourceLoader;
 import helpers.ResourceLoader.SpriteSheet;
 
@@ -34,8 +34,8 @@ public abstract class Entity {
 		this.entitySprites = entitySprites;
 		this.x = x;
 		this.y = y;
-		this.width = (int)(width * Game.SCALE);
-		this.height = (int)(height * Game.SCALE);
+		this.width = (int)(width * Settings.SCALE);
+		this.height = (int)(height * Settings.SCALE);
 		this.hitbox = new Hitbox(this, offsetX, offsetY, width, height);
 		
 		this.imgWidth = entitySprites.getWidth();
@@ -92,6 +92,7 @@ public abstract class Entity {
 	
 	protected void die() {
 		if (!alive) return;
+		currentHealth = 0;
 		alive = false;
 	}
 
@@ -122,8 +123,8 @@ public abstract class Entity {
 		
 		int drawX = (int) x;
 		int drawY = (int) y;
-		int drawWidth = (int)(imgWidth * Game.SCALE);
-		int drawHeight = (int)(imgHeight * Game.SCALE);
+		int drawWidth = (int)(imgWidth * Settings.SCALE);
+		int drawHeight = (int)(imgHeight * Settings.SCALE);
 
 		if (sprites != null && actionId < sprites.length && sprites[actionId] != null) {
 			if (facingLeft) {

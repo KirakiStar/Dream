@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-import main.Game;
 import entities.Entity;
+import helpers.Settings;
 
 public class Hitbox {
 	private final Entity owner;
@@ -18,10 +18,10 @@ public class Hitbox {
 
 	public Hitbox(Entity owner, float offsetX, float offsetY, int width, int height) {
 		this.owner = owner;
-		this.offsetX = offsetX * Game.SCALE;
-		this.offsetY = offsetY * Game.SCALE;
-		this.width = (int)(width * Game.SCALE);
-		this.height = (int)(height * Game.SCALE);
+		this.offsetX = offsetX * Settings.SCALE;
+		this.offsetY = offsetY * Settings.SCALE;
+		this.width = (int)(width * Settings.SCALE);
+		this.height = (int)(height * Settings.SCALE);
 		this.bounds = new Rectangle(
 			(int) (owner.getX() + this.offsetX),
 			(int) (owner.getY() + this.offsetY),

@@ -1,9 +1,9 @@
 package display;
 
+import helpers.Settings;
 import gamestates.Playing;
-import main.Game;
 
-public class Camera {
+public final class Camera {
 	private float x;
 	private float y;
 	private int width;
@@ -25,14 +25,14 @@ public class Camera {
 		this.playing = playing;
 		this.x = 0;
 		this.y = 0;
-		this.width = Game.GAME_WIDTH;
-		this.height = Game.GAME_HEIGHT;
+		this.width = Settings.GAME_WIDTH;
+		this.height = Settings.GAME_HEIGHT;
 		setLevelBounds();
 	}
 
 	public void update() {
-		float targetX = playing.getPlayer().getX() - (width/2) + (playing.getPlayer().getWidth() * Game.SCALE);
-		float targetY = playing.getPlayer().getY() - (height/2) + Game.CAMERA_Y_RATIO * (playing.getPlayer().getHeight() * Game.SCALE);
+		float targetX = playing.getPlayer().getX() - (width/2) + (playing.getPlayer().getWidth() * Settings.SCALE);
+		float targetY = playing.getPlayer().getY() - (height/2) + Settings.CAMERA_Y_RATIO * (playing.getPlayer().getHeight() * Settings.SCALE);
 
 		x += (targetX - this.x) * panningSpeed;
 		y += (targetY - this.y) * panningSpeed;
@@ -71,8 +71,8 @@ public class Camera {
 	public float getLockMaxX() { return lockMaxX + width; }
 
 	public void setLevelBounds() {
-		this.levelWidth = playing.getLevelWidth() * Game.TILES_SIZE;
-		this.levelHeight = playing.getLevelHeight() * Game.TILES_SIZE;
+		this.levelWidth = playing.getLevelWidth() * Settings.TILES_SIZE;
+		this.levelHeight = playing.getLevelHeight() * Settings.TILES_SIZE;
 	}
 
 	public float getX() { return x; }

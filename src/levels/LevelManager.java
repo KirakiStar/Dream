@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import helpers.ResourceLoader;
-import static main.Game.TILES_SIZE;
+import static helpers.Settings.TILES_SIZE;
 
 public final class LevelManager {
 	private Playing playing;

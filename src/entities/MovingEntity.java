@@ -2,17 +2,17 @@ package entities;
 
 import java.util.List;
 
-import main.Game;
 import collision.CollisionChecker;
+import helpers.Settings;
 import helpers.ResourceLoader;
 
 public abstract class MovingEntity extends Entity {
 	protected float entitySpeed;
 	protected float airSpeed = 0f;
-	protected float fallSpeed = 0.5f * Game.SCALE;
+	protected float fallSpeed = 0.5f * Settings.SCALE;
 	protected boolean inAir = false;
 	protected boolean moving = false;
-	protected final float gravity = 0.05f * Game.SCALE;
+	protected final float gravity = 0.05f * Settings.SCALE;
 
 	public MovingEntity(ResourceLoader.SpriteSheet entitySprites, float x, float y, int width, int height, float offsetX, float offsetY, int maxHealth) {
 		super(entitySprites, x, y, width, height, offsetX, offsetY, maxHealth);
@@ -22,7 +22,7 @@ public abstract class MovingEntity extends Entity {
 		if (!CollisionChecker.isSolid(hitbox, x + xSpeed, y, cd, lw, lh, camera)) {
 			this.x += xSpeed;
 			moving = true;
-		} else if (candidateIsSlope && !CollisionChecker.isSolid(hitbox, x + xSpeed, y - (4.0f * Game.SCALE), cd, lw, lh, camera)) {
+		} else if (candidateIsSlope && !CollisionChecker.isSolid(hitbox, x + xSpeed, y - (4.0f * Settings.SCALE), cd, lw, lh, camera)) {
 			this.x += xSpeed;
 			moving = true;
 		}

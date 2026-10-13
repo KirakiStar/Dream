@@ -1,12 +1,14 @@
-package helpers;
+package entities;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.Game;
-import entities.*;
+import entities.enemies.*;
+import entities.bosses.*;
+import entities.player.Player;
 import gamestates.Playing;
+import helpers.Settings;
 
 public final class EntityManager {
 	private Playing playing;
@@ -30,8 +32,8 @@ public final class EntityManager {
 
 			int tileX = i % levelWidth;
 			int tileY = i / levelWidth;
-			float x = tileX * Game.TILES_SIZE;
-			float y = tileY * Game.TILES_SIZE;
+			float x = tileX * Settings.TILES_SIZE;
+			float y = tileY * Settings.TILES_SIZE;
 			
 			switch (tileID) {
 				case 1:

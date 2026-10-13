@@ -8,22 +8,12 @@ import gamestates.TitleScreen;
 import helpers.ResourceLoader;
 
 public class Game{
-	private GameWindow gameWindow;
-	private GamePanel gamePanel;
+	private final GameWindow gameWindow;
+	private final GamePanel gamePanel;
 	private GameLoop gameLoop;
 	
 	private TitleScreen titleScreen;
 	private Playing playing;
-	
-	public final static float SCALE = 2f;
-	public final static int TILES_DEFAULT_SIZE = 32;
-	public final static int TILES_IN_WIDTH = 13;
-	public final static int TILES_IN_HEIGHT = 10;
-	public final static int TILES_SIZE = (int)(TILES_DEFAULT_SIZE * SCALE);
-	public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
-	public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
-	public final static float CAMERA_Y_RATIO = 0.5f;
-	
 	
 	public Game() {
 		init();
