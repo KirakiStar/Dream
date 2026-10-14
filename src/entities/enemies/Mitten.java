@@ -2,6 +2,7 @@ package entities.enemies;
 
 import entities.player.Player;
 import java.util.List;
+import java.util.Random;
 import java.awt.Graphics2D;
 
 import display.Camera;
@@ -34,7 +35,8 @@ public class Mitten extends Enemy {
 		this.startX = x;
 		mittenState = IDLE;
 		tick = UniqueTickOffset;
-		randomAction = (int)(Math.random() * 4);
+		Random random = new Random();
+		randomAction = random.nextInt(4);
 	}
 	
 	@Override
@@ -53,7 +55,7 @@ public class Mitten extends Enemy {
 		switch (randomAction) {
 			case 1:
 				facePlayer(player.getX());
-				return;
+				break;
 			case 2:
 				patrol(collisionData, levelWidth, levelHeight);
 				break;

@@ -12,7 +12,7 @@ public abstract class MovingEntity extends Entity {
 	protected float fallSpeed = 0.5f * Settings.SCALE;
 	protected boolean inAir = false;
 	protected boolean moving = false;
-	protected final float gravity = 0.05f * Settings.SCALE;
+	protected float gravity = 0.05f * Settings.SCALE;
 
 	public MovingEntity(ResourceLoader.SpriteSheet entitySprites, float x, float y, int width, int height, float offsetX, float offsetY, int maxHealth) {
 		super(entitySprites, x, y, width, height, offsetX, offsetY, maxHealth);

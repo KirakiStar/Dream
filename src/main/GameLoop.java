@@ -2,7 +2,7 @@ package main;
 
 public class GameLoop implements Runnable {
 	private Thread gameThread;
-	private Game game;
+	private final Game game;
 	private final int FPS_SET = 60;
 	private final int UPS_SET = 100;
 	

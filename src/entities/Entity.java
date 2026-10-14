@@ -61,6 +61,34 @@ public abstract class Entity {
 			}
 		}
 	}
+
+	public void update() {
+		updateHitbox();
+		updateInvincibility();
+	}
+
+	public void draw(Graphics2D g2, int actionId) {
+		if (hitbox.isInvincible()) {
+			int blinkInterval = 7;
+			if ((invincibilityTick / blinkInterval) % 2 != 0) {
+				return;
+			}
+		}
+		
+		int drawX = (int) x;
+		int drawY = (int) y;
+		int drawWidth = (int)(imgWidth * Settings.SCALE);
+		int drawHeight = (int)(imgHeight * Settings.SCALE);
+
+		if (sprites != null && actionId < sprites.length && sprites[actionId] != null) {
+			if (facingLeft) {
+				g2.drawImage(sprites[actionId][aniIndex], drawX + drawWidth, drawY, -drawWidth, drawHeight, null);
+			} else {
+				g2.drawImage(sprites[actionId][aniIndex], drawX, drawY, drawWidth, drawHeight, null);
+			}
+		}
+		drawHitbox(g2);
+	}
 	
 	public void takeDamage(int amount) {
 		if (!alive || hitbox.isInvincible()) return;
@@ -111,34 +139,6 @@ public abstract class Entity {
 				}
 			}
 		}
-	}
-
-	public void draw(Graphics2D g2, int actionId) {
-		if (hitbox.isInvincible()) {
-			int blinkInterval = 7;
-			if ((invincibilityTick / blinkInterval) % 2 != 0) {
-				return;
-			}
-		}
-		
-		int drawX = (int) x;
-		int drawY = (int) y;
-		int drawWidth = (int)(imgWidth * Settings.SCALE);
-		int drawHeight = (int)(imgHeight * Settings.SCALE);
-
-		if (sprites != null && actionId < sprites.length && sprites[actionId] != null) {
-			if (facingLeft) {
-				g2.drawImage(sprites[actionId][aniIndex], drawX + drawWidth, drawY, -drawWidth, drawHeight, null);
-			} else {
-				g2.drawImage(sprites[actionId][aniIndex], drawX, drawY, drawWidth, drawHeight, null);
-			}
-		}
-		drawHitbox(g2);
-	}
-
-	public void update() {
-		updateHitbox();
-		updateInvincibility();
 	}
 	
 	public abstract void draw(Graphics2D g2);

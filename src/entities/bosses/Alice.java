@@ -4,8 +4,9 @@ import java.awt.Graphics2D;
 import java.util.List;
 
 import display.Camera;
-import collision.Hitbox;
 import entities.player.Player;
+import collision.Hitbox;
+import helpers.Settings;
 import helpers.ResourceLoader;
 import helpers.EntityConstants;
 import static helpers.EntityConstants.AliceState.*;
@@ -22,12 +23,14 @@ public class Alice extends Boss {
 	private boolean attacking = false;
 	private final int attackDamage = 1;
 	
-	private int tick = 0;
+	private int tick = 1;
 	private int actionInterval = 300;
 
 	public Alice(float x, float y) {
 		super(EntityConstants.BossId.ALICE, ResourceLoader.ALICE_SPRITES, 
 				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 30); //maxhealth = 30
+		this.walkSpeed = 1f * Settings.SCALE;
+		this.jumpSpeed = -3f * Settings.SCALE;
 		this.aliceState = IDLE;
 		setAttackBox();
 	}
@@ -66,13 +69,9 @@ public class Alice extends Boss {
 	}
 
 	@Override
-	protected void updateBossBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player) {
+	protected void updateBossBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera) {
 		if (aliceState == IDLE)
 			facePlayer(player.getX());
-	}
-
-	private void facePlayer(float playerX) {
-		facingLeft = (playerX < this.x);
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package entities;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import entities.enemies.*;
 import entities.bosses.*;
@@ -35,15 +36,16 @@ public final class EntityManager {
 			float x = tileX * Settings.TILES_SIZE;
 			float y = tileY * Settings.TILES_SIZE;
 			
+			Random random = new Random();
 			switch (tileID) {
 				case 1:
 					entities.add(new Item(x, y));
 					break;
 				case 2:
-					entities.add(new Mitten(x, y, (int)(Math.random() * Mitten.jumpInterval)));
+					entities.add(new Mitten(x, y, random.nextInt(Mitten.jumpInterval)));
 					break;
 				case 3:
-					entities.add(new Goldy(x, y, (int)(Math.random() * Goldy.attackInterval)));
+					entities.add(new Goldy(x, y, random.nextInt(Goldy.attackInterval)));
 					break;
 				case 10:
 					entities.add(new Shabi(x, y));
@@ -68,7 +70,8 @@ public final class EntityManager {
 			if (e instanceof Enemy enemy) {
 				enemy.update(cd, lw, lh, player, playing.getCamera());
 			} else if (e instanceof Boss boss) {
-				boss.update(cd, lw, lh, player, playing.getCamera());
+				if (playing.getCamera().isLocked())
+					boss.update(cd, lw, lh, player, playing.getCamera());
 			} else {
 				e.update();
 			}
@@ -107,7 +110,7 @@ public final class EntityManager {
 		for (Entity e : entities) {
 			if (e.isAlive() && e instanceof Attackable attacker &&
 				(attacker.isAttacking() || attacker instanceof Goldy || attacker instanceof Alice)) {
-				if (attacker.getAttackBox().entityIntersects(player.getHitbox())) {
+				if (attacker.getAttackBox() != null && attacker.getAttackBox().entityIntersects(player.getHitbox())) {
 					player.takeDamage(attacker.getDamage(), e.getX());
 				}
 			}

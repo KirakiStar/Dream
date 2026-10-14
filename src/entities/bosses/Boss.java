@@ -4,7 +4,6 @@ import java.util.List;
 import java.awt.Graphics2D;
 
 import display.Camera;
-import collision.CollisionChecker;
 import entities.Attackable;
 import entities.player.Player;
 import entities.MovingEntity;
@@ -15,6 +14,8 @@ public abstract class Boss extends MovingEntity implements Attackable {
 	protected BossId bossId;
 	protected boolean hit = false;
 	protected float xSpeed = 0;
+	protected float walkSpeed;
+	protected float jumpSpeed;
 
 	public Boss(BossId bossId, ResourceLoader.SpriteSheet entitySprites, float x, float y, int width, int height, float offsetX, float offsetY, int maxHealth) {
 		super(entitySprites, x, y, width, height, offsetX, offsetY, maxHealth);
@@ -23,15 +24,8 @@ public abstract class Boss extends MovingEntity implements Attackable {
 	
 	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera) {
 		super.update();
-		
-		if (CollisionChecker.isWater(hitbox, collisionData, levelWidth, levelHeight)) {
-			die();
-			return;
-		}
-
 		xSpeed = 0;
-		updateBossBehavior(collisionData, levelWidth, levelHeight, player);
-
+		updateBossBehavior(collisionData, levelWidth, levelHeight, player, camera);
 		updateGroundPosition(xSpeed, collisionData, levelWidth, levelHeight, false, camera);
 	}
 	
@@ -41,7 +35,11 @@ public abstract class Boss extends MovingEntity implements Attackable {
 		hitbox.drawDebug(g2);
 	}
 	
-	protected abstract void updateBossBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player);
+	protected void facePlayer(float playerX) {
+		facingLeft = (playerX < this.x);
+	}
+	
+	protected abstract void updateBossBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera);
 	protected abstract void onDeath();
 	
 	public int getId() { return bossId.getId(); }

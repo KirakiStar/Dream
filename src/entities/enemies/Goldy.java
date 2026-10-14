@@ -83,7 +83,7 @@ public class Goldy extends Enemy implements Attackable {
 	protected void updateBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player) {
 		if (!attacking && !hit) {
 			tick++;
-//			patrol(collisionData, levelWidth, levelHeight);
+			patrol(collisionData, levelWidth, levelHeight);
 			if (tick >= attackInterval) {
 				attack();
 				tick = 0;

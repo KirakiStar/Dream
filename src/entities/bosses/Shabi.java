@@ -2,10 +2,13 @@ package entities.bosses;
 
 import java.awt.Graphics2D;
 import java.util.List;
+import java.util.Random;
 
 import display.Camera;
-import collision.Hitbox;
 import entities.player.Player;
+import collision.Hitbox;
+import collision.CollisionChecker;
+import helpers.Settings;
 import helpers.ResourceLoader;
 import helpers.EntityConstants;
 import static helpers.EntityConstants.ShabiState.*;
@@ -18,57 +21,101 @@ public class Shabi extends Boss {
 	private static final float OFFSET_X = 32f;
 	private static final float OFFSET_Y = 40f;
 	
-	private Hitbox attackBox;
 	private boolean attacking = false;
 	private final int attackDamage = 1;
 	
 	private int tick = 0;
-	private int actionInterval = 150;
+	private int action = 0; // 0:idle, 1:patrol, 2: jump + move 3:jump + spawn fire, 3:spawn fire
+	private int[] actionInterval = {100,200,10,150,100};
 
 	public Shabi(float x, float y) {
 		super(EntityConstants.BossId.SHABI, ResourceLoader.SHABI_SPRITES, 
 				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 15); //maxhealth = 15
+		this.walkSpeed = 0.5f * Settings.SCALE;
+		this.jumpSpeed = -2f * Settings.SCALE;
+		this.gravity = 0.03f * Settings.SCALE;
 		facingLeft = true;
 		this.shabiState = IDLE;
-		setAttackBox();
 	}
 	
 	@Override
 	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera) {
 		super.update(collisionData, levelWidth, levelHeight, player, camera);
-		updateAttackBox();
 		updateAnimationTick();
-	}
-	
-	private void setAttackBox() {
-		float offsetX = 32f;
-		float offsetY = 50f;
-		int attackWidth = 16;
-		int attackHeight = 32;
-		this.attackBox = new Hitbox(this, offsetX, offsetY, attackWidth, attackHeight);
-	}
-	
-	private void updateAttackBox() {
-		if (facingLeft) {
-			attackBox.update(x - (attackBox.getWidth()), y);
-		} else {
-			attackBox.update(x + this.width, y);
-		}
 	}
 
 	@Override
 	public void draw(Graphics2D g2) {
 		super.draw(g2, shabiState.getId());
-		attackBox.drawDebug(g2);
 	}
 	
 	protected void updateAnimationTick() {
 		super.updateAnimationTick(shabiState.getAnimationAmount(), shabiState.isLooping());
 	}
+	
+	private void updateAction() {
+		attacking = false;
+		Random random = new Random();
+		action = random.nextInt(5);
+		tick = 0;
+	}
 
 	@Override
-	protected void updateBossBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player) {
+	protected void updateBossBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera) {
+		if (!(hit || attacking)) tick++;
 		
+		if (!inAir) {
+			if (tick >= actionInterval[action] || attacking) updateAction();
+
+			switch (action) {
+				case 1:
+					patrol(collisionData, levelWidth, levelHeight, camera);
+					break;
+				case 2:
+					jump();
+					patrol(collisionData, levelWidth, levelHeight, camera);
+					break;
+				case 3:
+					jump();
+				case 4:
+					facePlayer(player.getX());
+					attack();
+					break;
+				default:
+					facePlayer(player.getX());
+					break;
+			}
+		} else {
+			if (action == 2)
+				patrol(collisionData, levelWidth, levelHeight, camera);
+		}
+	}
+	
+	private void patrol(List<Integer> cd, int lw, int lh, Camera camera) {
+		float trueXSpeed = facingLeft ? -walkSpeed : walkSpeed;
+		float nextX = x + trueXSpeed;
+
+		if (CollisionChecker.isSolid(hitbox, nextX, y, cd, lw, lh, camera)) {
+			turnAround();
+			return;
+		}
+
+		this.xSpeed = trueXSpeed;
+		moving = true;
+	}
+	
+	private void turnAround() {
+		facingLeft = !facingLeft;
+		this.moving = false;
+		this.xSpeed = 0;
+		this.shabiState = IDLE;
+	}
+	
+	private void jump() {
+		if (!inAir) {
+			inAir = true;
+			airSpeed = jumpSpeed;
+		}
 	}
 
 	@Override
@@ -78,10 +125,10 @@ public class Shabi extends Boss {
 
 	@Override
 	public void attack() {
-		
+		attacking = true;
 	}
 
-	@Override public Hitbox getAttackBox() { return this.attackBox; }
+	@Override public Hitbox getAttackBox() { return null; }
 	@Override public int getDamage() { return attackDamage; }
 	@Override public boolean isAttacking() { return attacking; }
 }
