@@ -92,8 +92,9 @@ public class Playing extends State implements StateMethods {
 		float spawnX = currentLevel.getSpawnX() * Settings.SCALE;
 		float spawnY = currentLevel.getSpawnY() * Settings.SCALE;
 
+		loadLevelData(levelManager, spawnX, spawnY);
 		player.reset(spawnX, spawnY);
-		camera.setLevelBounds();
+		camera.snapToPlayer();
 	}
 	
 	private void checkNextLevelTriggers() {

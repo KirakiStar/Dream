@@ -1,9 +1,11 @@
 package entities.bosses;
 
 import java.util.List;
+import java.util.Random;
 import java.awt.Graphics2D;
 
 import display.Camera;
+import gamestates.Playing;
 import entities.Attackable;
 import entities.player.Player;
 import entities.MovingEntity;
@@ -16,10 +18,18 @@ public abstract class Boss extends MovingEntity implements Attackable {
 	protected float xSpeed = 0;
 	protected float walkSpeed;
 	protected float jumpSpeed;
+	
+	protected Playing playing;
+	Random random;
 
 	public Boss(BossId bossId, ResourceLoader.SpriteSheet entitySprites, float x, float y, int width, int height, float offsetX, float offsetY, int maxHealth) {
 		super(entitySprites, x, y, width, height, offsetX, offsetY, maxHealth);
 		this.bossId = bossId;
+		this.random = new Random();
+	}
+	
+	public void setPlaying(Playing playing) {
+		this.playing = playing;
 	}
 	
 	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera) {
@@ -39,6 +49,7 @@ public abstract class Boss extends MovingEntity implements Attackable {
 		facingLeft = (playerX < this.x);
 	}
 	
+	protected abstract void updateAnimation();
 	protected abstract void updateBossBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera);
 	protected abstract void onDeath();
 	

@@ -74,7 +74,7 @@ public class Player extends MovingEntity implements Attackable {
 		super.update();
 		updatePosition();
 		updateAttackBox();
-		updatePlayerAction();
+		updatePlayerAnimation();
 		updateAnimationTick();
 	}
 
@@ -114,29 +114,17 @@ public class Player extends MovingEntity implements Attackable {
 		}
 	}
 	
-	private void updatePlayerAction() {
+	private void updatePlayerAnimation() {
 		if (!alive) {
 			setAnimation(DEATH);
-			return;
-		}
-		
-		if (hit) {
+		} else if (hit) {
 			setAnimation(ATTACKED);
-			return;
-		}
-		
-		if (attacking) {
+		} else if (attacking) {
 			setAnimation(ATTACK);
-			return;
-		}
-		
-		if (inAir) {
+		} else if (inAir) {
 			if (airSpeed < 0) {
-				if (jumpCount < 2) {
-					setAnimation(JUMPING);
-				} else {
-					setAnimation(JUMPING2);
-				}
+				if (jumpCount < 2) setAnimation(JUMPING);
+				else setAnimation(JUMPING2);
 			} else setAnimation(FALLING);
 		} else if (climbing) {
 			if (moving)setAnimation(CLIMBING);

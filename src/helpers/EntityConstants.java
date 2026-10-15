@@ -97,9 +97,9 @@ public class EntityConstants {
 	
 	public enum ShabiState implements EntityAnimation {
 		IDLE(0, 4, true),
-		WALKING(1, 2, true),
-		ATTACK1(2, 4, false),
-		ATTACK2(3, 4, false);
+		WALKING(1, 4, true),
+		JUMPING(2, 2, false),
+		ATTACK(3, 4, true);
 
 		private final int id;
 		private final int animationAmount;
@@ -118,9 +118,10 @@ public class EntityConstants {
 	
 	public enum ItemType implements EntityAnimation {
 		STRAWBERRY(0, 4, true, 1, null),
-		MAGICIAN(1, 1, false, 2, BossId.SHABI),
-		PUPPETEER(2, 1, false, 3, BossId.ALICE),
-		HYPNOTIST(3, 1, false, 5, BossId.NIGHTMARE);
+		VAMP(1, 1, false, 0, null),
+		MAGICIAN(2, 1, false, 2, BossId.SHABI),
+		PUPPETEER(3, 1, false, 3, BossId.ALICE),
+		HYPNOTIST(4, 1, false, 5, BossId.NIGHTMARE);
 
 		private final int id;
 		private final int animationAmount;
@@ -161,5 +162,23 @@ public class EntityConstants {
 		public int getId() { return id; }
 		public int getIconRow() { return iconRow; }
 		public int getIconCol() { return iconCol; }
+	}
+	
+	public enum Obstacle implements EntityAnimation {
+		FIRE_BALL(0, 3, true);
+
+		private final int id;
+		private final int animationAmount;
+		private final boolean looping;
+
+		Obstacle(int id, int animationAmount, boolean looping) {
+			this.id = id;
+			this.animationAmount = animationAmount;
+			this.looping = looping;
+		}
+
+		@Override public int getId() { return id; }
+		@Override public int getAnimationAmount() { return animationAmount; }
+		@Override public boolean isLooping() { return looping; }
 	}
 }

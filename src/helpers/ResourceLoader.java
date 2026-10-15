@@ -46,7 +46,7 @@ public final class ResourceLoader {
 	public static final SpriteSheet ITEM_SPRITES = new SpriteSheet("items.png", 4, 4, 64, 64);
 	public static final SpriteSheet MITTEN_SPRITES = new SpriteSheet("mitten.png", 4, 4, 64, 64);
 	public static final SpriteSheet GOLDY_SPRITES = new SpriteSheet("goldy.png", 4, 4, 64, 64);
-	public static final SpriteSheet SHABI_SPRITES = new SpriteSheet("alice.png", 4, 4, 96, 96);
+	public static final SpriteSheet SHABI_SPRITES = new SpriteSheet("shabi.png", 4, 4, 96, 96);
 	public static final SpriteSheet ALICE_SPRITES = new SpriteSheet("alice.png", 4, 4, 96, 96);
 
 	public static List<String> levelFiles = new ArrayList<>(List.of("testMap", "level1", "level1_1", "level1_2", 

@@ -39,7 +39,8 @@ public class Alice extends Boss {
 	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera) {
 		super.update(collisionData, levelWidth, levelHeight, player, camera);
 		updateAttackBox();
-		updateAnimationTick();
+//		updateAnimationTick();
+		updateAnimation();
 	}
 	
 	private void setAttackBox() {
@@ -64,8 +65,13 @@ public class Alice extends Boss {
 		attackBox.drawDebug(g2);
 	}
 	
-	protected void updateAnimationTick() {
-		super.updateAnimationTick(aliceState.getAnimationAmount(), aliceState.isLooping());
+//	protected void updateAnimationTick() {
+//		super.updateAnimationTick(aliceState.getAnimationAmount(), aliceState.isLooping());
+//	}
+	
+	@Override
+	protected void updateAnimation() {
+		
 	}
 
 	@Override

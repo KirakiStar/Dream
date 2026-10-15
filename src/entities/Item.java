@@ -44,7 +44,6 @@ public class Item extends Entity {
 			default:
 			case STRAWBERRY:
 				player.heal(item.getHealAmount());
-//				System.out.println("heal");
 				break;
 		}
 		

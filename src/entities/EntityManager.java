@@ -16,6 +16,7 @@ public final class EntityManager {
 	private List<Integer> entityData;
 	private int levelWidth;
 	private List<Entity> entities;
+	private List<Entity> pendingEntities = new ArrayList<>();
 
 	public EntityManager(Playing playing) {
 		this.playing = playing;
@@ -48,14 +49,22 @@ public final class EntityManager {
 					entities.add(new Goldy(x, y, random.nextInt(Goldy.attackInterval)));
 					break;
 				case 10:
-					entities.add(new Shabi(x, y));
+					Shabi shabi = new Shabi(x, y);
+					shabi.setPlaying(playing);
+					entities.add(shabi);
 					break;
 				case 11:
-					entities.add(new Alice(x, y));
+					Alice alice = new Alice(x, y);
+					alice.setPlaying(playing);
+					entities.add(alice);
 					break;
 				default: break;
 			}
 		}
+	}
+	
+	public void addEntity(Entity newbie) {
+		pendingEntities.add(newbie);
 	}
 	
 	public void update() {
@@ -75,6 +84,11 @@ public final class EntityManager {
 			} else {
 				e.update();
 			}
+		}
+		
+		if (!pendingEntities.isEmpty()) {
+			entities.addAll(pendingEntities);
+			pendingEntities.clear();
 		}
 		
 		checkEnemyHit(player);
@@ -132,7 +146,6 @@ public final class EntityManager {
 				} else if (e instanceof Item item) {
 					if (player.getHitbox().itemIntersects(item.getHitbox())) {
 						int healAmount = item.getHealAmount();
-						player.heal(healAmount);
 						item.collect(player);
 						if (healAmount > 1) {
 							player.maxhealthUp(healAmount);

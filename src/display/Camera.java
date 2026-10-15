@@ -51,6 +51,19 @@ public final class Camera {
 		if (y > levelHeight - height) y = levelHeight - height;
 	}
 	
+	public void snapToPlayer() {
+		this.locked = false;
+		if (playing.getPlayer() != null) {
+			this.x = playing.getPlayer().getX() - (width / 2f) + (playing.getPlayer().getWidth() * Settings.SCALE);
+			this.y = playing.getPlayer().getY() - (height / 2f) + Settings.CAMERA_Y_RATIO * (playing.getPlayer().getHeight() * Settings.SCALE);
+
+			if (x < 0) x = 0;
+			if (x > levelWidth - width) x = levelWidth - width;
+			if (y < 0) y = 0;
+			if (y > levelHeight - height) y = levelHeight - height;
+		}
+	}
+	
 	public void lockToArea(float targetMinX, float targetMaxX) {
 		if (!locked) {
 			this.locked = true;

@@ -2,15 +2,16 @@ package entities.bosses;
 
 import java.awt.Graphics2D;
 import java.util.List;
-import java.util.Random;
 
 import display.Camera;
 import entities.player.Player;
+import entities.enemies.Fireball;
 import collision.Hitbox;
 import collision.CollisionChecker;
 import helpers.Settings;
 import helpers.ResourceLoader;
 import helpers.EntityConstants;
+import helpers.EntityConstants.ShabiState;
 import static helpers.EntityConstants.ShabiState.*;
 
 public class Shabi extends Boss {
@@ -41,6 +42,7 @@ public class Shabi extends Boss {
 	@Override
 	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera) {
 		super.update(collisionData, levelWidth, levelHeight, player, camera);
+		updateAnimation();
 		updateAnimationTick();
 	}
 
@@ -51,11 +53,39 @@ public class Shabi extends Boss {
 	
 	protected void updateAnimationTick() {
 		super.updateAnimationTick(shabiState.getAnimationAmount(), shabiState.isLooping());
+		
+		if (attacking) {
+			if (aniIndex >= shabiState.getAnimationAmount() - 1) {
+				spawnFire();
+			}
+		}
 	}
 	
-	private void updateAction() {
+	@Override
+	protected void updateAnimation() {
+		if (!alive) return;
+		if (attacking) {
+			setAnimation(ATTACK);
+		} else if (inAir && airSpeed < 0) {
+			setAnimation(JUMPING);
+		} else if (moving && !inAir) {
+			setAnimation(WALKING);
+		} else {
+			setAnimation(IDLE);
+		}
+	}
+	
+	private void setAnimation(ShabiState newAction) {
+		if (this.shabiState.getId() != newAction.getId()) {
+			this.shabiState = newAction;
+			this.aniTick = 0;
+			this.aniIndex = 0;
+		}
+	}
+	
+	private void setNewAction() {
+		moving = false;
 		attacking = false;
-		Random random = new Random();
 		action = random.nextInt(5);
 		tick = 0;
 	}
@@ -65,7 +95,7 @@ public class Shabi extends Boss {
 		if (!(hit || attacking)) tick++;
 		
 		if (!inAir) {
-			if (tick >= actionInterval[action] || attacking) updateAction();
+			if (tick >= actionInterval[action] || attacking) setNewAction();
 
 			switch (action) {
 				case 1:
@@ -77,6 +107,9 @@ public class Shabi extends Boss {
 					break;
 				case 3:
 					jump();
+					facePlayer(player.getX());
+					attack();
+					break;
 				case 4:
 					facePlayer(player.getX());
 					attack();
@@ -125,7 +158,19 @@ public class Shabi extends Boss {
 
 	@Override
 	public void attack() {
-		attacking = true;
+		if (!attacking) {
+			attacking = true;
+		}
+	}
+	
+	public void spawnFire() {
+		int fireAmount = random.nextInt(1,4);
+			for (int i = 0; i < fireAmount; i++) {
+				float offsetX = random.nextFloat(-128f, 128f);
+				float offsetY = random.nextFloat(-128f, -32f);
+				playing.getEntityManager().addEntity(new Fireball(x + offsetX, y + offsetY));
+			}
+		attacking = false;
 	}
 
 	@Override public Hitbox getAttackBox() { return null; }
