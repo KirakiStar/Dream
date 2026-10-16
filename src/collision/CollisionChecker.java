@@ -76,12 +76,12 @@ public final class CollisionChecker {
 		}
 		return false;
 	}
-
+	
 	public static float getSlopeY(Hitbox hitbox, float nextX, float nextY, List<Integer> collisionData, int levelWidth, int levelHeight) {
 		int leftTile   = (int) Math.floor((nextX + hitbox.getOffsetX()) / Settings.TILES_SIZE);
 		int rightTile  = (int) Math.floor((nextX + hitbox.getOffsetX() + hitbox.getWidth() - 1) / Settings.TILES_SIZE);
 		int topTile    = (int) Math.floor((nextY + hitbox.getOffsetY()) / Settings.TILES_SIZE);
-		int bottomTile = (int) Math.floor((nextY + hitbox.getOffsetY() + hitbox.getHeight()) / Settings.TILES_SIZE);
+		int bottomTile = (int) Math.floor((nextY + hitbox.getOffsetY() + hitbox.getHeight() + Settings.TILES_SIZE) / Settings.TILES_SIZE);
 
 		float slopeY = -1f;
 

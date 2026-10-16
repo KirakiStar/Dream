@@ -57,8 +57,12 @@ public abstract class MovingEntity extends Entity {
 		}
 
 		if (slopeFloorY != -1 && airSpeed >= 0) {
-			y = slopeFloorY - hitbox.getOffsetY() - hitbox.getHeight();
-			resetInAir();
+			float targetY = slopeFloorY - hitbox.getOffsetY() - hitbox.getHeight();
+			float error = 7.0f * Settings.SCALE;
+			if (Math.abs(y - targetY) <= error) {
+				y = targetY;
+				resetInAir();
+			}
 		} else {
 			boolean solidGround = CollisionChecker.isSolid(hitbox, x, y + 1.0f, cd, lw, lh);
 			boolean platformGround = CollisionChecker.isPlatform(hitbox, y, y + 1.0f, 1.0f, cd, lw, lh);
@@ -79,7 +83,7 @@ public abstract class MovingEntity extends Entity {
 		}
 
 		if (inAir) {
-			updateYPos(airSpeed, cd, lw, lh); // Y movement is unaffected by camera bounds
+			updateYPos(airSpeed, cd, lw, lh);
 		}
 	}
 
