@@ -69,7 +69,8 @@ public final class CollisionChecker {
 
 			if (tileType == TileType.PLATFORM || isTopLadder) {
 				float platformTop = tileY * Settings.TILES_SIZE;
-				if (prevFeetY <= platformTop + 2.0f) {
+				float error = 5.0f;
+				if (prevFeetY <= platformTop + error) {
 					return true;
 				}
 			}
@@ -81,7 +82,7 @@ public final class CollisionChecker {
 		int leftTile   = (int) Math.floor((nextX + hitbox.getOffsetX()) / Settings.TILES_SIZE);
 		int rightTile  = (int) Math.floor((nextX + hitbox.getOffsetX() + hitbox.getWidth() - 1) / Settings.TILES_SIZE);
 		int topTile    = (int) Math.floor((nextY + hitbox.getOffsetY()) / Settings.TILES_SIZE);
-		int bottomTile = (int) Math.floor((nextY + hitbox.getOffsetY() + hitbox.getHeight() + Settings.TILES_SIZE) / Settings.TILES_SIZE);
+		int bottomTile = (int) Math.floor((nextY + hitbox.getOffsetY() + hitbox.getHeight() + 2f * Settings.SCALE) / Settings.TILES_SIZE);
 
 		float slopeY = -1f;
 
@@ -139,7 +140,7 @@ public final class CollisionChecker {
 	public static float GetYFromBlocks(Hitbox hitbox, float nextY, float airSpeed) {
 		if (airSpeed > 0) {
 			float feetY = nextY + hitbox.getOffsetY() + hitbox.getHeight();
-			int tileY = (int) Math.floor((feetY - 0.01f) / Settings.TILES_SIZE);
+			int tileY = (int) Math.floor(feetY / Settings.TILES_SIZE);
 			float yIndex = tileY * Settings.TILES_SIZE;
 			float yOffset = hitbox.getOffsetY() + hitbox.getHeight();
 

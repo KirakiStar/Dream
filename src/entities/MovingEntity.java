@@ -48,7 +48,7 @@ public abstract class MovingEntity extends Entity {
 			}
 		}
 	}
-
+	
 	protected void updateGroundPosition(float xSpeed, List<Integer> cd, int lw, int lh, boolean wantsToDropPlatform, display.Camera camera) {
 		float slopeFloorY = CollisionChecker.getSlopeY(hitbox, x + xSpeed, y, cd, lw, lh);
 
@@ -63,20 +63,20 @@ public abstract class MovingEntity extends Entity {
 				y = targetY;
 				resetInAir();
 			}
-		} else {
+		} else if (!inAir) {
 			boolean solidGround = CollisionChecker.isSolid(hitbox, x, y + 1.0f, cd, lw, lh);
 			boolean platformGround = CollisionChecker.isPlatform(hitbox, y, y + 1.0f, 1.0f, cd, lw, lh);
 
-			if ((solidGround || platformGround) && airSpeed >= 0) {
+			if (solidGround || platformGround) {
 				if (wantsToDropPlatform && platformGround && !solidGround) {
 					inAir = true;
-					y += 3.0f;
+					y += 7.0f;
 					airSpeed = fallSpeed;
 					dropFromEdgeOrPlatform();
 				} else {
 					resetInAir();
 				}
-			} else if (!inAir) {
+			} else {
 				inAir = true;
 				dropFromEdgeOrPlatform();
 			}
