@@ -81,6 +81,10 @@ public abstract class Enemy extends MovingEntity {
 			airSpeed = knockbackHeight;
 		}
 	}
+	
+	protected void facePlayer(float playerX) {
+		facingLeft = (playerX < this.x);
+	}
 
 	protected abstract void updateBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player);
 }

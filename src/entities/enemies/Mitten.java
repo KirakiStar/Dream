@@ -112,10 +112,6 @@ public class Mitten extends Enemy {
 		this.mittenState = IDLE;
 	}
 	
-	private void facePlayer(float playerX) {
-		facingLeft = (playerX < this.x);
-	}
-	
 	private void jump() {
 		if (!inAir) {
 			inAir = true;

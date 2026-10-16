@@ -30,6 +30,7 @@ public class Goldy extends Enemy implements Attackable {
 	private Hitbox attackBox;
 	private boolean attacking = false;
 	private final int attackDamage = 1;
+	private final float attackRange = 64f * Settings.SCALE;
 	public static final int attackInterval = 180;
 
 	public Goldy(float x, float y, int UniqueTickOffset) {
@@ -82,11 +83,15 @@ public class Goldy extends Enemy implements Attackable {
 	@Override
 	protected void updateBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player) {
 		if (!attacking && !hit) {
-			tick++;
-			patrol(collisionData, levelWidth, levelHeight);
-			if (tick >= attackInterval) {
-				attack();
-				tick = 0;
+			if (nearPlayer(player.getX(), player.getY())) {
+				tick++;
+				facePlayer(player.getX());
+				if (tick >= attackInterval) {
+					attack();
+					tick = 0;
+				}
+			} else {
+				patrol(collisionData, levelWidth, levelHeight);
 			}
 		}
 	}
@@ -134,6 +139,12 @@ public class Goldy extends Enemy implements Attackable {
 		this.goldyState = IDLE;
 	}
 	
+	private boolean nearPlayer(float playerX, float playerY) {
+		if (Math.abs(playerY - this.y) > attackRange) return false;
+		return Math.abs(playerX - this.x) <= attackRange;
+	}
+	
+	@Override
 	public void attack() {
 		attacking = true;
 		facingLeft = !facingLeft;
