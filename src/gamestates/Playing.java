@@ -20,14 +20,18 @@ public class Playing extends State implements StateMethods {
 	private Player player;
 	private Camera camera;
 	private PlayingUI playingUI;
+	
 	private static LevelManager levelManager;
 	private List<Integer> collisionData;
 	private int levelWidth;
 	private int levelHeight;
 	private float arenaMinX;
 	private float arenaMaxX;
+	
 	private static EntityManager entityManager;
 	private List<Integer> entityData;
+	
+	private final java.util.Set<Integer> pressedKeys = new java.util.HashSet<>();
 	
 	public Playing(Game game) {
 		super(game);
@@ -148,6 +152,8 @@ public class Playing extends State implements StateMethods {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		if (!pressedKeys.add(e.getKeyCode()))  return;
+		
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_RIGHT, KeyEvent.VK_D -> player.setRight(true);
 			case KeyEvent.VK_LEFT, KeyEvent.VK_A -> player.setLeft(true);
@@ -158,8 +164,8 @@ public class Playing extends State implements StateMethods {
 			case KeyEvent.VK_K -> player.takeDamage(1);
 			case KeyEvent.VK_L -> player.takeDamage(player.getCurrentHealth());
 			case KeyEvent.VK_R -> {
+//				resetAll();
 				Gamestate.state = Gamestate.TITLESCREEN;
-	//          resetAll();
 			}
 			case KeyEvent.VK_7 -> player.activateCheat();
 			default -> {}
@@ -168,6 +174,8 @@ public class Playing extends State implements StateMethods {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		pressedKeys.remove(e.getKeyCode());
+		
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_RIGHT, KeyEvent.VK_D -> player.setRight(false);
 			case KeyEvent.VK_LEFT, KeyEvent.VK_A -> player.setLeft(false);

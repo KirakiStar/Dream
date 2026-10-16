@@ -1,11 +1,11 @@
 package entities.enemies;
 
-import entities.player.Player;
 import java.util.List;
 import java.awt.Graphics2D;
 
 import display.Camera;
 import collision.CollisionChecker;
+import entities.player.Player;
 import entities.MovingEntity;
 import helpers.Settings;
 import helpers.ResourceLoader;

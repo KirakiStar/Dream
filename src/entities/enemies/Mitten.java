@@ -1,16 +1,16 @@
 package entities.enemies;
 
-import entities.player.Player;
 import java.util.List;
 import java.util.Random;
 import java.awt.Graphics2D;
 
 import display.Camera;
+import entities.player.Player;
 import collision.CollisionChecker;
+import helpers.Settings;
 import helpers.ResourceLoader;
 import helpers.EntityConstants.MittenState;
 import static helpers.EntityConstants.MittenState.*;
-import helpers.Settings;
 
 public class Mitten extends Enemy {
 	private MittenState mittenState;

@@ -15,24 +15,16 @@ public class Inputs implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch (Gamestate.state) {
-			case TITLESCREEN:
-				gamePanel.getGame().getTitleScreen().keyPressed(e);
-				break;
-			case PLAYING:
-				gamePanel.getGame().getPlaying().keyPressed(e);
-				break;
+			case TITLESCREEN -> gamePanel.getGame().getTitleScreen().keyPressed(e);
+			case PLAYING -> gamePanel.getGame().getPlaying().keyPressed(e);
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		switch (Gamestate.state) {
-			case TITLESCREEN:
-				gamePanel.getGame().getTitleScreen().keyReleased(e);
-				break;
-			case PLAYING:
-				gamePanel.getGame().getPlaying().keyReleased(e);
-				break;
+			case TITLESCREEN -> gamePanel.getGame().getTitleScreen().keyReleased(e);
+			case PLAYING -> gamePanel.getGame().getPlaying().keyReleased(e);
 		}
 	}
 	

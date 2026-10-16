@@ -1,7 +1,7 @@
 package entities.bosses;
 
-import java.awt.Graphics2D;
 import java.util.List;
+import java.awt.Graphics2D;
 
 import display.Camera;
 import entities.player.Player;
@@ -98,25 +98,21 @@ public class Shabi extends Boss {
 			if (tick >= actionInterval[action] || attacking) setNewAction();
 
 			switch (action) {
-				case 1:
-					patrol(collisionData, levelWidth, levelHeight, camera);
-					break;
-				case 2:
+				case 1 -> patrol(collisionData, levelWidth, levelHeight, camera);
+				case 2 -> {
 					jump();
 					patrol(collisionData, levelWidth, levelHeight, camera);
-					break;
-				case 3:
+				}
+				case 3 -> {
 					jump();
 					facePlayer(player.getX());
 					attack();
-					break;
-				case 4:
+				}
+				case 4 -> {
 					facePlayer(player.getX());
 					attack();
-					break;
-				default:
-					facePlayer(player.getX());
-					break;
+				}
+				default -> facePlayer(player.getX());
 			}
 		} else {
 			if (action == 2)
@@ -164,11 +160,12 @@ public class Shabi extends Boss {
 	}
 	
 	public void spawnFire() {
+		float scale = Settings.SCALE;
 		int fireAmount = random.nextInt(1,4);
 			for (int i = 0; i < fireAmount; i++) {
-				float offsetX = random.nextFloat(-128f, 128f);
-				float offsetY = random.nextFloat(-128f, -32f);
-				playing.getEntityManager().addEntity(new Fireball(x + offsetX, y + offsetY));
+				float offsetX = random.nextFloat(-128f, 128f) * scale;
+				float offsetY = random.nextFloat(32f, 64f) * scale;
+				playing.getEntityManager().addEntity(new Fireball(x + offsetX, y - offsetY));
 			}
 		attacking = false;
 	}

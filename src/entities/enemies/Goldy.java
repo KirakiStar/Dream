@@ -1,6 +1,5 @@
 package entities.enemies;
 
-import entities.player.Player;
 import java.util.List;
 import java.awt.Graphics2D;
 
@@ -8,6 +7,7 @@ import display.Camera;
 import collision.Hitbox;
 import collision.CollisionChecker;
 import entities.Attackable;
+import entities.player.Player;
 import helpers.Settings;
 import helpers.ResourceLoader;
 import helpers.EntityConstants.GoldyState;

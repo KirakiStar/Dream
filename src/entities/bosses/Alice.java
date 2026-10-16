@@ -1,7 +1,7 @@
 package entities.bosses;
 
-import java.awt.Graphics2D;
 import java.util.List;
+import java.awt.Graphics2D;
 
 import display.Camera;
 import entities.player.Player;
@@ -39,7 +39,7 @@ public class Alice extends Boss {
 	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera) {
 		super.update(collisionData, levelWidth, levelHeight, player, camera);
 		updateAttackBox();
-//		updateAnimationTick();
+		updateAnimationTick();
 		updateAnimation();
 	}
 	
@@ -65,9 +65,9 @@ public class Alice extends Boss {
 		attackBox.drawDebug(g2);
 	}
 	
-//	protected void updateAnimationTick() {
-//		super.updateAnimationTick(aliceState.getAnimationAmount(), aliceState.isLooping());
-//	}
+	protected void updateAnimationTick() {
+		super.updateAnimationTick(aliceState.getAnimationAmount(), aliceState.isLooping());
+	}
 	
 	@Override
 	protected void updateAnimation() {
