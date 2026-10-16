@@ -100,9 +100,9 @@
       "y": 64,
       "width": 7,
       "height": 160,
-      "targetLevel": 0,
-      "spawnX": 40,
-      "spawnY": 0
+      "targetLevel": 7,
+      "spawnX": 256,
+      "spawnY": 7
     }
   ]
 }
