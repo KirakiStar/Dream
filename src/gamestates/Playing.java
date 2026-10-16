@@ -1,8 +1,8 @@
 package gamestates;
 
+import java.util.List;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.util.List;
 import java.awt.geom.AffineTransform;
 
 import main.Game;
@@ -82,6 +82,11 @@ public class Playing extends State implements StateMethods {
 			player.setPosition(spawnX * Settings.SCALE, spawnY * Settings.SCALE);
 		}
 		
+		if (camera != null) {
+			camera.setLevelBounds();
+			camera.snapToPlayer();
+		}
+		
 		if (entityManager != null) {
 			entityManager.loadEntities();
 		}
@@ -94,7 +99,6 @@ public class Playing extends State implements StateMethods {
 
 		loadLevelData(levelManager, spawnX, spawnY);
 		player.reset(spawnX, spawnY);
-		camera.snapToPlayer();
 	}
 	
 	private void checkNextLevelTriggers() {
