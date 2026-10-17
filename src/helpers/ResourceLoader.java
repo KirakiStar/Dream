@@ -43,7 +43,7 @@ public final class ResourceLoader {
 	
 	public static final SpriteSheet GUI_ITEMS = new SpriteSheet("gui.png", 9, 10, 32, 32);
 	public static final SpriteSheet PLAYER_SPRITES = new SpriteSheet("silver.png", 11, 4, 64, 64);
-	public static final SpriteSheet ITEM_SPRITES = new SpriteSheet("items.png", 4, 4, 64, 64);
+	public static final SpriteSheet ITEM_SPRITES = new SpriteSheet("items.png", 5, 4, 64, 64);
 	
 	public static final SpriteSheet MITTEN_SPRITES = new SpriteSheet("mitten.png", 4, 4, 64, 64);
 	public static final SpriteSheet GOLDY_SPRITES = new SpriteSheet("goldy.png", 4, 4, 64, 64);

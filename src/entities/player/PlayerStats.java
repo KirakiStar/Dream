@@ -10,14 +10,23 @@ public final class PlayerStats {
 	private int maxJump;
 	private int attackDamage;
 	
-	private int currentMaxHealth;
+	private int currentMaxHealth = 0;
+	private int currentAttack = 0;
 	
-	PlayerStats(int currentMaxHealth) {
-		setCurrentMaxHealth(currentMaxHealth);
+	PlayerStats(int defaultMaxHealth, int defaultAttack) {
+		MaxHealthUp(defaultMaxHealth);
+		attackDamageUp(defaultAttack);
 		resetCheat();
 	}
 	
-	public void setCurrentMaxHealth(int currentMaxHealth) { this.currentMaxHealth = currentMaxHealth; }
+	public void MaxHealthUp(int amount) {
+		this.currentMaxHealth += amount;
+		resetCheat();
+	}
+	public void attackDamageUp(int amount) {
+		this.currentAttack += amount;
+		resetCheat();
+	}
 
 	public int getMaxHealth() { return maxHealth; }
 	public float getPlayerSpeed() { return playerSpeed; }
@@ -33,7 +42,7 @@ public final class PlayerStats {
 			playerSpeed = 7f * Settings.SCALE;
 			jumpSpeed = -4f * Settings.SCALE;
 			maxJump = 77;
-			attackDamage = 77;
+			attackDamage = 7;
 		}
 	}
 	
@@ -43,6 +52,6 @@ public final class PlayerStats {
 		playerSpeed = 1.5f * Settings.SCALE;
 		jumpSpeed = -2.3f * Settings.SCALE;
 		maxJump = 2;
-		attackDamage = 1;
+		attackDamage = currentAttack;
 	}
 }

@@ -13,6 +13,7 @@ public abstract class MovingEntity extends Entity {
 	protected boolean inAir = false;
 	protected boolean moving = false;
 	protected float gravity = 0.05f * Settings.SCALE;
+	protected float maxFallSpeed = 7.0f * Settings.SCALE;
 
 	public MovingEntity(ResourceLoader.SpriteSheet entitySprites, float x, float y, int width, int height, float offsetX, float offsetY, int maxHealth) {
 		super(entitySprites, x, y, width, height, offsetX, offsetY, maxHealth);
@@ -36,6 +37,9 @@ public abstract class MovingEntity extends Entity {
 			this.y += ySpeed;
 			if (inAir) {
 				airSpeed += gravity;
+				if (airSpeed > maxFallSpeed) {
+					airSpeed = maxFallSpeed;
+				}
 			}
 			moving = true;
 		} else {

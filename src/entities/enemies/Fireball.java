@@ -18,6 +18,7 @@ public class Fireball extends Enemy {
 		this.fireball = FIRE_BALL;
 		Random random = new Random();
 		this.facingLeft = random.nextBoolean();
+		this.invincibilityDuration = 0;
 		this.knockbackSpeed = 0f;
 		this.knockbackHeight = 0f;
 	}
@@ -42,5 +43,5 @@ public class Fireball extends Enemy {
 	}
 	
 	@Override
-	public void takeDamage(int amount) { }
+	public void takeDamage(int amount, float PlayerX) { die(); }
 }

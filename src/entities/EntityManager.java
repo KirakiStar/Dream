@@ -10,6 +10,7 @@ import entities.bosses.*;
 import entities.player.Player;
 import gamestates.Playing;
 import helpers.Settings;
+import helpers.EntityConstants.ItemType;
 
 public final class EntityManager {
 	private Playing playing;
@@ -42,12 +43,13 @@ public final class EntityManager {
 				case 1 -> entities.add(new Item(x, y));
 				case 2 -> entities.add(new Mitten(x, y, random.nextInt(Mitten.jumpInterval)));
 				case 3 -> entities.add(new Goldy(x, y, random.nextInt(Goldy.attackInterval)));
-//				case 4 -> entities.add(new Shadow(x,y));
-//				case 5 -> entities.add(new JumpSheep(x, y));
-//				case 6 -> entities.add(new StalkSheep(x, y));
+//				case 4 -> entities.add(new Shadow(x,y)); //stand still
+//				case 5 -> entities.add(new JumpSheep(x, y)); //jump left and right
+//				case 6 -> entities.add(new StalkSheep(x, y)); // always walks towards player
 				case 4 -> entities.add(new Mitten(x, y, random.nextInt(Mitten.jumpInterval)));
 				case 5 -> entities.add(new Mitten(x, y, random.nextInt(Mitten.jumpInterval)));
 				case 6 -> entities.add(new Goldy(x, y, random.nextInt(Goldy.attackInterval)));
+				case 9 -> entities.add(new Item(x, y, ItemType.BAT));
 				case 10 -> {
 					Shabi shabi = new Shabi(x, y);
 					shabi.setPlaying(playing);
@@ -145,13 +147,7 @@ public final class EntityManager {
 					}
 				} else if (e instanceof Item item) {
 					if (player.getHitbox().itemIntersects(item.getHitbox())) {
-						int healAmount = item.getHealAmount();
 						item.collect(player);
-						if (healAmount > 1) {
-							player.maxhealthUp(healAmount);
-							player.attackDamageUp(1);
-							player.heal(10);
-						}
 					}
 				}
 			}

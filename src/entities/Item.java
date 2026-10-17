@@ -11,10 +11,10 @@ public class Item extends Entity {
 	private ItemType item;
 	private boolean collected = false;
 	
-	private static final int WIDTH = 24;
-	private static final int HEIGHT = 24;
-	private static final float OFFSET_X = 20f;
-	private static final float OFFSET_Y = 20f;
+	private static final int WIDTH = 40;
+	private static final int HEIGHT = 40;
+	private static final float OFFSET_X = 12f;
+	private static final float OFFSET_Y = 12f;
 	
 	public Item(float x, float y, ItemType item) {
 		super(ResourceLoader.ITEM_SPRITES, x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 1);
@@ -41,10 +41,14 @@ public class Item extends Entity {
 		if (collected) return;
 
 		switch (item) {
-			default:
-			case STRAWBERRY:
-				player.heal(item.getHealAmount());
-				break;
+			case STRAWBERRY -> player.heal(item.getHealAmount());
+//			case BAT -> item.getBossId().setCollected();
+			default -> {
+				player.maxHealthUp(item.getHealAmount());
+				player.heal(10);
+				item.getBossId().setCollected();
+				player.attackDamageUp(1);
+			}
 		}
 		
 		collected = true;

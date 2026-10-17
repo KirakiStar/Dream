@@ -54,6 +54,4 @@ public abstract class Boss extends MovingEntity implements Attackable {
 	protected abstract void onDeath();
 	
 	public int getId() { return bossId.getId(); }
-	public int getIconRow() { return bossId.getIconRow(); }
-	public int getIconCol() { return bossId.getIconCol(); }
 }

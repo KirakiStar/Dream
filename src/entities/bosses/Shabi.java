@@ -4,6 +4,7 @@ import java.util.List;
 import java.awt.Graphics2D;
 
 import display.Camera;
+import entities.Item;
 import entities.player.Player;
 import entities.enemies.Fireball;
 import collision.Hitbox;
@@ -146,10 +147,17 @@ public class Shabi extends Boss {
 			airSpeed = jumpSpeed;
 		}
 	}
+	
+	@Override
+	public void die() {
+		onDeath();
+		super.die();
+	}
 
 	@Override
 	protected void onDeath() {
-		
+		this.bossId.SHABI.setCollected();
+		playing.getEntityManager().addEntity(new Item(x, y, EntityConstants.ItemType.MAGICIAN));
 	}
 
 	@Override

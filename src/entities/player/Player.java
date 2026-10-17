@@ -46,7 +46,7 @@ public class Player extends MovingEntity implements Attackable {
 
 	public Player(Playing playing, float x, float y) {
 		super(ResourceLoader.PLAYER_SPRITES, x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 5); //default maxHealth = 5
-		this.stats = new PlayerStats(maxHealth);
+		this.stats = new PlayerStats(maxHealth, 1); //default attack damage = 1
 		this.playing = playing;
 		this.playerAction = IDLE;
 		setStats();
@@ -330,10 +330,13 @@ public class Player extends MovingEntity implements Attackable {
 	@Override public boolean isAttacking() { return attacking; }
 	public boolean isHit() { return hit; }
 
-	public void attackDamageUp(int amount) { this.attackDamage += amount; }
-	public void maxhealthUp(int amount) {
-		this.maxHealth += amount;
-		stats.setCurrentMaxHealth(maxHealth);
+	public void attackDamageUp(int amount) {
+		stats.attackDamageUp(amount);
+		setStats();
+	}
+	public void maxHealthUp(int amount) {
+		stats.MaxHealthUp(amount);
+		setStats();
 	}
 	
 	public void activateCheat() {
