@@ -8,11 +8,13 @@ import entities.player.Player;
 import collision.Hitbox;
 import helpers.Settings;
 import helpers.ResourceLoader;
-import helpers.EntityConstants;
+import helpers.BossesKillStatus;
+import helpers.EntityConstants.AliceState;
 import static helpers.EntityConstants.AliceState.*;
+import static helpers.EntityConstants.ItemType.PUPPETEER;
 
 public class Alice extends Boss {
-	private EntityConstants.AliceState aliceState;
+	private AliceState aliceState;
 	
 	private static final int WIDTH = 32;
 	private static final int HEIGHT = 56;
@@ -27,7 +29,7 @@ public class Alice extends Boss {
 	private int actionInterval = 300;
 
 	public Alice(float x, float y) {
-		super(EntityConstants.BossId.ALICE, ResourceLoader.ALICE_SPRITES, 
+		super(BossesKillStatus.ALICE, ResourceLoader.ALICE_SPRITES, 
 				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 30); //maxhealth = 30
 		this.walkSpeed = 1f * Settings.SCALE;
 		this.jumpSpeed = -3f * Settings.SCALE;

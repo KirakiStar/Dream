@@ -10,10 +10,10 @@ import entities.Attackable;
 import entities.player.Player;
 import entities.MovingEntity;
 import helpers.ResourceLoader;
-import helpers.EntityConstants.BossId;
+import helpers.BossesKillStatus;
 
 public abstract class Boss extends MovingEntity implements Attackable {
-	protected BossId bossId;
+	protected BossesKillStatus bossId;
 	protected boolean hit = false;
 	protected float xSpeed = 0;
 	protected float walkSpeed;
@@ -22,7 +22,7 @@ public abstract class Boss extends MovingEntity implements Attackable {
 	protected Playing playing;
 	Random random;
 
-	public Boss(BossId bossId, ResourceLoader.SpriteSheet entitySprites, float x, float y, int width, int height, float offsetX, float offsetY, int maxHealth) {
+	public Boss(BossesKillStatus bossId, ResourceLoader.SpriteSheet entitySprites, float x, float y, int width, int height, float offsetX, float offsetY, int maxHealth) {
 		super(entitySprites, x, y, width, height, offsetX, offsetY, maxHealth);
 		this.bossId = bossId;
 		this.random = new Random();
@@ -52,6 +52,4 @@ public abstract class Boss extends MovingEntity implements Attackable {
 	protected abstract void updateAnimation();
 	protected abstract void updateBossBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera);
 	protected abstract void onDeath();
-	
-	public int getId() { return bossId.getId(); }
 }

@@ -11,6 +11,7 @@ import entities.player.Player;
 import gamestates.Playing;
 import helpers.Settings;
 import helpers.EntityConstants.ItemType;
+import static helpers.BossesKillStatus.*;
 
 public final class EntityManager {
 	private Playing playing;
@@ -49,16 +50,23 @@ public final class EntityManager {
 				case 4 -> entities.add(new Mitten(x, y, random.nextInt(Mitten.jumpInterval)));
 				case 5 -> entities.add(new Mitten(x, y, random.nextInt(Mitten.jumpInterval)));
 				case 6 -> entities.add(new Goldy(x, y, random.nextInt(Goldy.attackInterval)));
-				case 9 -> entities.add(new Item(x, y, ItemType.BAT));
+				case 9 -> {
+					if (!BIG_V.isKilled())
+						entities.add(new Item(x, y, ItemType.BAT));
+				}
 				case 10 -> {
-					Shabi shabi = new Shabi(x, y);
-					shabi.setPlaying(playing);
-					entities.add(shabi);
+					if (!SHABI.isKilled()) {
+						Shabi shabi = new Shabi(x, y);
+						shabi.setPlaying(playing);
+						entities.add(shabi);
+					}
 				}
 				case 11 -> {
-					Alice alice = new Alice(x, y);
-					alice.setPlaying(playing);
-					entities.add(alice);
+					if (!ALICE.isKilled()) {
+						Alice alice = new Alice(x, y);
+						alice.setPlaying(playing);
+						entities.add(alice);
+					}
 				}
 				default -> { }
 			}
@@ -67,6 +75,10 @@ public final class EntityManager {
 	
 	public void addEntity(Entity newbie) {
 		pendingEntities.add(newbie);
+	}
+	
+	public void removeWantedEntity(Class<?> wantedEntity) {
+		entities.removeIf(e -> wantedEntity.isInstance(e));
 	}
 	
 	public void update() {
@@ -116,6 +128,10 @@ public final class EntityManager {
 				} else if (e instanceof Boss boss) {
 					if (player.getAttackBox().entityIntersects(boss.getHitbox())) {
 						boss.takeDamage(player.getDamage());
+					}
+				} else if (e instanceof Item item && !(item.getItemType() == ItemType.STRAWBERRY)) {
+					if (player.getAttackBox().entityIntersects(item.getHitbox())) {
+						item.collect(player);
 					}
 				}
 			}

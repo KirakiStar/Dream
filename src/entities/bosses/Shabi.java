@@ -11,12 +11,13 @@ import collision.Hitbox;
 import collision.CollisionChecker;
 import helpers.Settings;
 import helpers.ResourceLoader;
-import helpers.EntityConstants;
+import helpers.BossesKillStatus;
 import helpers.EntityConstants.ShabiState;
 import static helpers.EntityConstants.ShabiState.*;
+import static helpers.EntityConstants.ItemType.MAGICIAN;
 
 public class Shabi extends Boss {
-	private EntityConstants.ShabiState shabiState;
+	private ShabiState shabiState;
 	
 	private static final int WIDTH = 32;
 	private static final int HEIGHT = 56;
@@ -31,7 +32,7 @@ public class Shabi extends Boss {
 	private int[] actionInterval = {100,200,10,150,100};
 
 	public Shabi(float x, float y) {
-		super(EntityConstants.BossId.SHABI, ResourceLoader.SHABI_SPRITES, 
+		super(BossesKillStatus.SHABI, ResourceLoader.SHABI_SPRITES, 
 				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 15); //maxhealth = 15
 		this.walkSpeed = 0.5f * Settings.SCALE;
 		this.jumpSpeed = -2f * Settings.SCALE;
@@ -156,8 +157,9 @@ public class Shabi extends Boss {
 
 	@Override
 	protected void onDeath() {
-		this.bossId.SHABI.setCollected();
-		playing.getEntityManager().addEntity(new Item(x, y, EntityConstants.ItemType.MAGICIAN));
+		playing.getEntityManager().removeWantedEntity(Fireball.class);
+		playing.getPlayer().takeDamage(0);
+		playing.getEntityManager().addEntity(new Item(x, y, MAGICIAN));
 	}
 
 	@Override

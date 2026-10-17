@@ -4,8 +4,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import gamestates.Playing;
-import helpers.ResourceLoader;
 import helpers.Settings;
+import helpers.ResourceLoader;
+import helpers.BossesKillStatus;
 
 public class PlayingUI implements GUI_Methods {
 	private Playing playing;
@@ -67,10 +68,14 @@ public class PlayingUI implements GUI_Methods {
 	}
 	
 	private void drawPlayerScore(Graphics2D g2) {
-		g2.drawImage(fontCharacters[5][4], x10, screenHeight - x32, x32, x32, null);
-		g2.drawImage(fontCharacters[5][5], x10 + x32, screenHeight - x32, x32, x32, null);
-		g2.drawImage(fontCharacters[5][6], x10 + x64, screenHeight - x32, x32, x32, null);
-		g2.drawImage(fontCharacters[5][7], x10 + x64 + x32, screenHeight - x32, x32, x32, null);
+		for (int i = 0; i < 4; i++) {
+			if (BossesKillStatus.getBossAtId(i).isKilled())
+				g2.drawImage(fontCharacters[5][4+i], x10 + i * x32, screenHeight - x32, x32, x32, null);
+		}
+//		g2.drawImage(fontCharacters[5][4], x10, screenHeight - x32, x32, x32, null);
+//		g2.drawImage(fontCharacters[5][5], x10 + x32, screenHeight - x32, x32, x32, null);
+//		g2.drawImage(fontCharacters[5][6], x10 + x64, screenHeight - x32, x32, x32, null);
+//		g2.drawImage(fontCharacters[5][7], x10 + x64 + x32, screenHeight - x32, x32, x32, null);
 	}
 	
 	private void drawCollectedDolls(Graphics2D g2) {

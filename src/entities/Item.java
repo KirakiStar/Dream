@@ -1,8 +1,8 @@
 package entities;
 
-import entities.player.Player;
 import java.awt.Graphics2D;
 
+import entities.player.Player;
 import helpers.ResourceLoader;
 import helpers.EntityConstants.ItemType;
 import static helpers.EntityConstants.ItemType.*;
@@ -42,11 +42,11 @@ public class Item extends Entity {
 
 		switch (item) {
 			case STRAWBERRY -> player.heal(item.getHealAmount());
-//			case BAT -> item.getBossId().setCollected();
+			case BAT -> item.getBossId().setKilled();
 			default -> {
 				player.maxHealthUp(item.getHealAmount());
 				player.heal(10);
-				item.getBossId().setCollected();
+				item.getBossId().setKilled();
 				player.attackDamageUp(1);
 			}
 		}
@@ -56,4 +56,5 @@ public class Item extends Entity {
 	}
 	
 	public int getHealAmount() { return item.getHealAmount(); }
+	public ItemType getItemType() { return item; }
 }

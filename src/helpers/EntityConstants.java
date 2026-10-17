@@ -118,18 +118,18 @@ public class EntityConstants {
 	
 	public enum ItemType implements EntityAnimation {
 		STRAWBERRY(0, 4, true, 1, null),
-		BAT(1, 1, false, 0, BossId.BIG_V),
-		MAGICIAN(2, 1, false, 2, BossId.SHABI),
-		PUPPETEER(3, 1, false, 3, BossId.ALICE),
-		HYPNOTIST(4, 1, false, 5, BossId.NIGHTMARE);
+		BAT(1, 4, true, 0, BossesKillStatus.BIG_V),
+		MAGICIAN(2, 4, true, 2, BossesKillStatus.SHABI),
+		PUPPETEER(3, 4, true, 3, BossesKillStatus.ALICE),
+		HYPNOTIST(4, 4, true, 5, BossesKillStatus.NIGHTMARE);
 
 		private final int id;
 		private final int animationAmount;
 		private final boolean looping;
 		private final int healAmount;
-		private final BossId bossId;
+		private final BossesKillStatus bossId;
 
-		ItemType(int id, int animationAmount, boolean looping, int healAmount, BossId bossId) {
+		ItemType(int id, int animationAmount, boolean looping, int healAmount, BossesKillStatus bossId) {
 			this.id = id;
 			this.animationAmount = animationAmount;
 			this.looping = looping;
@@ -141,7 +141,7 @@ public class EntityConstants {
 		@Override public int getAnimationAmount() { return animationAmount; }
 		@Override public boolean isLooping() { return looping; }
 		public int getHealAmount() { return healAmount; }
-		public BossId getBossId() { return bossId; }
+		public BossesKillStatus getBossId() { return bossId; }
 	}
 	
 	public enum Obstacle implements EntityAnimation {
@@ -162,29 +162,35 @@ public class EntityConstants {
 		@Override public boolean isLooping() { return looping; }
 	}
 	
-	public static enum BossId {
-		BIG_V(9,5,3,false),
-		SHABI(10,5,4,false),
-		ALICE(11,5,5,false),
-		NIGHTMARE(12,5,6,false);
-		
-		private final int id;
-		private final int iconRow; // in gui.png
-		private final int iconCol; // in gui.png
-		private boolean collected;
-		
-		BossId (int id, int iconRow, int iconCol, boolean collected) {
-			this.id = id;
-			this.iconRow = iconRow;
-			this.iconCol = iconCol;
-			this.collected = collected;
-		}
-
-		public int getId() { return id; }
-		public int getIconRow() { return iconRow; }
-		public int getIconCol() { return iconCol; }
-		public boolean isKilled() { return collected; }
-		
-		public void setCollected() { this.collected = true; }
-	}
+//	public enum BossesKillStatus {
+//		BIG_V(5,3,false),
+//		SHABI(5,4,false),
+//		ALICE(5,5,false),
+//		NIGHTMARE(5,6,false);
+//		
+//		private final int iconRow; // in gui.png
+//		private final int iconCol; // in gui.png
+//		private boolean collected;
+//		
+//		BossesKillStatus (int iconRow, int iconCol, boolean collected) {
+//			this.iconRow = iconRow;
+//			this.iconCol = iconCol;
+//			this.collected = collected;
+//		}
+//		
+//		public static BossesKillStatus getBossAtId(int id) {
+//			return switch (id) {
+//				default -> BIG_V;
+//				case 1,10 -> SHABI;
+//				case 2,11 -> ALICE;
+//				case 3,12 -> NIGHTMARE;
+//			};
+//		}
+//
+//		public int getIconRow() { return iconRow; }
+//		public int getIconCol() { return iconCol; }
+//		public boolean isKilled() { return collected; }
+//		
+//		public void setKilled() { this.collected = true; }
+//	}
 }
