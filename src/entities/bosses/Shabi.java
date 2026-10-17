@@ -34,9 +34,9 @@ public class Shabi extends Boss {
 	public Shabi(float x, float y) {
 		super(BossesKillStatus.SHABI, ResourceLoader.SHABI_SPRITES, 
 				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 15); //maxhealth = 15
-		this.walkSpeed = 0.5f * Settings.SCALE;
-		this.jumpSpeed = -2f * Settings.SCALE;
-		this.gravity = 0.03f * Settings.SCALE;
+		this.walkSpeed = 0.5f * Settings.getCurrentScale();
+		this.jumpSpeed = -2f * Settings.getCurrentScale();
+		this.gravity = 0.03f * Settings.getCurrentScale();
 		facingLeft = true;
 		this.shabiState = IDLE;
 	}
@@ -170,7 +170,7 @@ public class Shabi extends Boss {
 	}
 	
 	public void spawnFire() {
-		float scale = Settings.SCALE;
+		float scale = Settings.getCurrentScale();
 		int fireAmount = random.nextInt(1,4);
 			for (int i = 0; i < fireAmount; i++) {
 				float offsetX = random.nextFloat(-128f, 128f) * scale;

@@ -24,19 +24,19 @@ public class Goldy extends Enemy implements Attackable {
 	private int tick = 0;
 	
 	private final float startX;
-	private float maxWalkDistance = 50 * Settings.SCALE;
-	private final float walkSpeed = 0.5f * Settings.SCALE;
+	private float maxWalkDistance = 50 * Settings.getCurrentScale();
+	private final float walkSpeed = 0.5f * Settings.getCurrentScale();
 	
 	private Hitbox attackBox;
 	private boolean attacking = false;
 	private final int attackDamage = 1;
-	private final float attackRange = 64f * Settings.SCALE;
+	private final float attackRange = 64f * Settings.getCurrentScale();
 	public static final int attackInterval = 180;
 
 	public Goldy(float x, float y, int UniqueTickOffset) {
 		super(ResourceLoader.GOLDY_SPRITES, x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 5); //maxHealth = 5
 		this.startX = x;
-		this.knockbackSpeed = 0.2f * Settings.SCALE;
+		this.knockbackSpeed = 0.2f * Settings.getCurrentScale();
 		tick = UniqueTickOffset;
 		this.goldyState = IDLE;
 		setAttackBox();

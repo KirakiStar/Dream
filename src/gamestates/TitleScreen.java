@@ -28,23 +28,28 @@ public class TitleScreen extends State implements StateMethods{
 
 	@Override
 	public void draw(Graphics2D g2) {
-		g2.drawImage(background, 0, 0, Settings.GAME_WIDTH, Settings.GAME_HEIGHT, null);
+		g2.drawImage(background, 0, 0, Settings.getGameWidth(), Settings.getGameHeight(), null);
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
-			case KeyEvent.VK_Z:
-			case KeyEvent.VK_ENTER:
-			case KeyEvent.VK_SPACE:
+			case KeyEvent.VK_Z, KeyEvent.VK_ENTER, KeyEvent.VK_SPACE -> {
+				game.resetPlaying();
 				Gamestate.state = Gamestate.PLAYING;
-				break;
+			}
+			case KeyEvent.VK_RIGHT, KeyEvent.VK_D -> {
+				Settings.setNewScale(1);
+				game.getGameWindow().resizeWindow(game.getGamePanel());
+			}
+			case KeyEvent.VK_LEFT, KeyEvent.VK_A -> {
+				Settings.setNewScale(-1);
+				game.getGameWindow().resizeWindow(game.getGamePanel());
+			}
 		}
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		
-	}
+	public void keyReleased(KeyEvent e) { }
 	
 }

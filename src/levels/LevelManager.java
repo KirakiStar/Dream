@@ -1,13 +1,13 @@
 package levels;
 
-import gamestates.Playing;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.ArrayList;
 
+import gamestates.Playing;
 import helpers.ResourceLoader;
-import static helpers.Settings.TILES_SIZE;
+import helpers.Settings;
 
 public final class LevelManager {
 	private Playing playing;
@@ -68,7 +68,8 @@ public final class LevelManager {
 				if (tileID == 0) continue;
 				int tileX = j % current.getLevelWidth();
 				int tileY = j / current.getLevelWidth();
-				g2.drawImage(tiles[tileID], tileX * TILES_SIZE, tileY * TILES_SIZE, TILES_SIZE, TILES_SIZE, null);
+				g2.drawImage(tiles[tileID], tileX * Settings.getTileSize(), tileY * Settings.getTileSize(), 
+							Settings.getTileSize(), Settings.getTileSize(), null);
 			}
 		}
 	}

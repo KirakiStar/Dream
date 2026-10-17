@@ -9,10 +9,10 @@ public final class CollisionChecker {
 	private CollisionChecker() { }
 
 	public static boolean isSolid(Hitbox hitbox, float nextX, float nextY, List<Integer> collisionData, int levelWidth, int levelHeight) {
-		int leftTile   = (int) Math.floor((nextX + hitbox.getOffsetX()) / Settings.TILES_SIZE);
-		int rightTile  = (int) (nextX + hitbox.getOffsetX() + hitbox.getWidth() - 1) / Settings.TILES_SIZE;
-		int topTile    = (int) Math.floor((nextY + hitbox.getOffsetY()) / Settings.TILES_SIZE);
-		int bottomTile = (int) (nextY + hitbox.getOffsetY() + hitbox.getHeight() - 1) / Settings.TILES_SIZE;
+		int leftTile   = (int) Math.floor((nextX + hitbox.getOffsetX()) / Settings.getTileSize());
+		int rightTile  = (int) (nextX + hitbox.getOffsetX() + hitbox.getWidth() - 1) / Settings.getTileSize();
+		int topTile    = (int) Math.floor((nextY + hitbox.getOffsetY()) / Settings.getTileSize());
+		int bottomTile = (int) (nextY + hitbox.getOffsetY() + hitbox.getHeight() - 1) / Settings.getTileSize();
 
 		for (int tileX = leftTile; tileX <= rightTile; tileX++) {
 			for (int tileY = topTile; tileY <= bottomTile; tileY++) {
@@ -52,9 +52,9 @@ public final class CollisionChecker {
 		float prevFeetY = currentY + hitbox.getOffsetY() + hitbox.getHeight();
 
 		float customHitboxX = customX + hitbox.getOffsetX();
-		int leftTile  = (int) Math.floor(customHitboxX / Settings.TILES_SIZE);
-		int rightTile = (int) (customHitboxX + hitbox.getWidth() - 1) / Settings.TILES_SIZE;
-		int tileY     = (int) Math.floor(feetY / Settings.TILES_SIZE);
+		int leftTile  = (int) Math.floor(customHitboxX / Settings.getTileSize());
+		int rightTile = (int) (customHitboxX + hitbox.getWidth() - 1) / Settings.getTileSize();
+		int tileY     = (int) Math.floor(feetY / Settings.getTileSize());
 
 		for (int tileX = leftTile; tileX <= rightTile; tileX++) {
 			TileType tileType = getTileType(tileX, tileY, collisionData, levelWidth, levelHeight);
@@ -68,7 +68,7 @@ public final class CollisionChecker {
 			}
 
 			if (tileType == TileType.PLATFORM || isTopLadder) {
-				float platformTop = tileY * Settings.TILES_SIZE;
+				float platformTop = tileY * Settings.getTileSize();
 				float error = 5.0f;
 				if (prevFeetY <= platformTop + error) {
 					return true;
@@ -79,10 +79,10 @@ public final class CollisionChecker {
 	}
 	
 	public static float getSlopeY(Hitbox hitbox, float nextX, float nextY, List<Integer> collisionData, int levelWidth, int levelHeight) {
-		int leftTile   = (int) Math.floor((nextX + hitbox.getOffsetX()) / Settings.TILES_SIZE);
-		int rightTile  = (int) Math.floor((nextX + hitbox.getOffsetX() + hitbox.getWidth() - 1) / Settings.TILES_SIZE);
-		int topTile    = (int) Math.floor((nextY + hitbox.getOffsetY()) / Settings.TILES_SIZE);
-		int bottomTile = (int) Math.floor((nextY + hitbox.getOffsetY() + hitbox.getHeight() + 2f * Settings.SCALE) / Settings.TILES_SIZE);
+		int leftTile   = (int) Math.floor((nextX + hitbox.getOffsetX()) / Settings.getTileSize());
+		int rightTile  = (int) Math.floor((nextX + hitbox.getOffsetX() + hitbox.getWidth() - 1) / Settings.getTileSize());
+		int topTile    = (int) Math.floor((nextY + hitbox.getOffsetY()) / Settings.getTileSize());
+		int bottomTile = (int) Math.floor((nextY + hitbox.getOffsetY() + hitbox.getHeight() + 2f * Settings.getCurrentScale()) / Settings.getTileSize());
 
 		float slopeY = -1f;
 
@@ -94,15 +94,15 @@ public final class CollisionChecker {
 				if (tileType == TileType.SLOPE_UP || tileType == TileType.SLOPE_DOWN) {
 					float xToCheck;
 					if (tileType == TileType.SLOPE_UP) {
-						xToCheck = Math.min(nextX + hitbox.getOffsetX() + hitbox.getWidth() - 1, (tileX + 1) * Settings.TILES_SIZE - 0.01f);
+						xToCheck = Math.min(nextX + hitbox.getOffsetX() + hitbox.getWidth() - 1, (tileX + 1) * Settings.getTileSize() - 0.01f);
 					} else {
-						xToCheck = Math.max(nextX + hitbox.getOffsetX(), tileX * Settings.TILES_SIZE);
+						xToCheck = Math.max(nextX + hitbox.getOffsetX(), tileX * Settings.getTileSize());
 					}
 
-					float xInTile = xToCheck - (tileX * Settings.TILES_SIZE);
-					float yOffsetInTile = (tileType == TileType.SLOPE_UP) ? (Settings.TILES_SIZE - xInTile) : xInTile;
+					float xInTile = xToCheck - (tileX * Settings.getTileSize());
+					float yOffsetInTile = (tileType == TileType.SLOPE_UP) ? (Settings.getTileSize() - xInTile) : xInTile;
 
-					float calculatedSlopeY = (tileY * Settings.TILES_SIZE) + yOffsetInTile;
+					float calculatedSlopeY = (tileY * Settings.getTileSize()) + yOffsetInTile;
 
 					if (slopeY == -1f || calculatedSlopeY < slopeY) {
 						slopeY = calculatedSlopeY;
@@ -115,17 +115,17 @@ public final class CollisionChecker {
 	}
 
 	public static boolean isLadder(Hitbox hitbox, List<Integer> collisionData, int levelWidth, int levelHeight) {
-		int centerX = (int) Math.floor((hitbox.getBounds().x + (hitbox.getWidth() / 2f)) / Settings.TILES_SIZE);
-		int bottomY = (int) Math.floor((hitbox.getBounds().y + hitbox.getHeight() - 1f) / Settings.TILES_SIZE);
+		int centerX = (int) Math.floor((hitbox.getBounds().x + (hitbox.getWidth() / 2f)) / Settings.getTileSize());
+		int bottomY = (int) Math.floor((hitbox.getBounds().y + hitbox.getHeight() - 1f) / Settings.getTileSize());
 
 		return getTileType(centerX, bottomY, collisionData, levelWidth, levelHeight) == TileType.LADDER;
 	}
 
 	public static boolean isWater(Hitbox hitbox, List<Integer> collisionData, int levelWidth, int levelHeight) {
-		int leftTile   = (int) Math.floor((hitbox.getBounds().x) / Settings.TILES_SIZE);
-		int rightTile  = (int) (hitbox.getBounds().x + hitbox.getWidth() - 1) / Settings.TILES_SIZE;
-		int topTile    = (int) Math.floor((hitbox.getBounds().y) / Settings.TILES_SIZE);
-		int bottomTile = (int) Math.floor((hitbox.getBounds().y + hitbox.getHeight() - 1) / Settings.TILES_SIZE);
+		int leftTile   = (int) Math.floor((hitbox.getBounds().x) / Settings.getTileSize());
+		int rightTile  = (int) (hitbox.getBounds().x + hitbox.getWidth() - 1) / Settings.getTileSize();
+		int topTile    = (int) Math.floor((hitbox.getBounds().y) / Settings.getTileSize());
+		int bottomTile = (int) Math.floor((hitbox.getBounds().y + hitbox.getHeight() - 1) / Settings.getTileSize());
 
 		for (int tileX = leftTile; tileX <= rightTile; tileX++) {
 			for (int tileY = topTile; tileY <= bottomTile; tileY++) {
@@ -140,18 +140,18 @@ public final class CollisionChecker {
 	public static float GetYFromBlocks(Hitbox hitbox, float nextY, float airSpeed) {
 		if (airSpeed > 0) {
 			float feetY = nextY + hitbox.getOffsetY() + hitbox.getHeight();
-			int tileY = (int) Math.floor(feetY / Settings.TILES_SIZE);
-			float yIndex = tileY * Settings.TILES_SIZE;
+			int tileY = (int) Math.floor(feetY / Settings.getTileSize());
+			float yIndex = tileY * Settings.getTileSize();
 			float yOffset = hitbox.getOffsetY() + hitbox.getHeight();
 
 			return yIndex - yOffset;
 		} else {
 			float headY = nextY + hitbox.getOffsetY();
-			int tileY = (int) Math.floor(headY / Settings.TILES_SIZE);
-			float yIndex = tileY * Settings.TILES_SIZE;
+			int tileY = (int) Math.floor(headY / Settings.getTileSize());
+			float yIndex = tileY * Settings.getTileSize();
 			float yOffset = hitbox.getOffsetY();
 
-			return yIndex + Settings.TILES_SIZE - yOffset;
+			return yIndex + Settings.getTileSize() - yOffset;
 		}
 	}
 

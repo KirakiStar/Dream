@@ -15,10 +15,10 @@ public class PlayingUI implements GUI_Methods {
 //	private final int imgRow = 9;
 //	private final int imgCol = 10;
 	
-	private final int screenWidth = Settings.GAME_WIDTH;
-	private final int screenHeight = Settings.GAME_HEIGHT;
+	private final int screenWidth = Settings.getGameWidth();
+	private final int screenHeight = Settings.getGameHeight();
 	
-	private final int scale = (int) Settings.SCALE;
+	private final int scale = (int) Settings.getCurrentScale();
 	private final int x10 = 10 * scale;
 	private final int x20 = x10 * 2;
 	private final int x16 = 16 * scale;

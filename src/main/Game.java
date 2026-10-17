@@ -38,27 +38,28 @@ public class Game{
 	
 	public void update() {
 		switch (Gamestate.state) {
-			case TITLESCREEN:
-				titleScreen.update();
-				break;
-			case PLAYING:
-				playing.update();
-				break;
+			case TITLESCREEN -> titleScreen.update();
+			case PLAYING -> playing.update();
 		}
 	}
 	
 	public void render(Graphics2D g2) {
 		switch (Gamestate.state) {
-			case TITLESCREEN:
-				titleScreen.draw(g2);
-				break;
-			case PLAYING:
-				playing.draw(g2);
-				break;
+			case TITLESCREEN -> titleScreen.draw(g2);
+			case PLAYING -> playing.draw(g2);
 		}
 	}
 	
 	public GamePanel getGamePanel() { return gamePanel; }
-	public Playing getPlaying() { return playing; }
+	public GameWindow getGameWindow() { return gameWindow; }
 	public TitleScreen getTitleScreen() { return titleScreen; }
+	
+	public Playing getPlaying() {
+		if (playing == null) {
+			playing = new Playing(this);
+		}
+		return playing;
+	}
+	
+	public void resetPlaying() { playing = new Playing(this); }
 }

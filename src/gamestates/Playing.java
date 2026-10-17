@@ -21,7 +21,7 @@ public class Playing extends State implements StateMethods {
 	private Camera camera;
 	private PlayingUI playingUI;
 	
-	private static LevelManager levelManager;
+	private LevelManager levelManager;
 	private List<Integer> collisionData;
 	private int levelWidth;
 	private int levelHeight;
@@ -41,12 +41,10 @@ public class Playing extends State implements StateMethods {
 	private void init() {
 		playingUI = new PlayingUI(this);
 		levelManager = new LevelManager(this);
-		entityManager = new EntityManager(this);
 		Level current = levelManager.getCurrentLevel();
-
-		player = new Player(this, current.getSpawnX() * Settings.SCALE, current.getSpawnY() * Settings.SCALE);
+		player = new Player(this, current.getSpawnX() * Settings.getCurrentScale(), current.getSpawnY() * Settings.getCurrentScale());
+		entityManager = new EntityManager(this);
 		camera = new Camera(this);
-
 		loadLevelData(levelManager, current.getSpawnX(), current.getSpawnY());
 	}
 
@@ -83,7 +81,7 @@ public class Playing extends State implements StateMethods {
 		this.entityData = currentLevel.getEntityData();
 
 		if (player != null) {
-			player.setPosition(spawnX * Settings.SCALE, spawnY * Settings.SCALE);
+			player.setPosition(spawnX * Settings.getCurrentScale(), spawnY * Settings.getCurrentScale());
 		}
 		
 		if (camera != null) {
@@ -98,8 +96,8 @@ public class Playing extends State implements StateMethods {
 	
 	public void respawnPlayer() {
 		Level currentLevel = levelManager.getCurrentLevel();
-		float spawnX = currentLevel.getSpawnX() * Settings.SCALE;
-		float spawnY = currentLevel.getSpawnY() * Settings.SCALE;
+		float spawnX = currentLevel.getSpawnX() * Settings.getCurrentScale();
+		float spawnY = currentLevel.getSpawnY() * Settings.getCurrentScale();
 
 		loadLevelData(levelManager, spawnX, spawnY);
 		player.reset(spawnX, spawnY);
@@ -110,15 +108,15 @@ public class Playing extends State implements StateMethods {
 		if (triggers == null) return;
 
 		for (LevelData.TriggerData trigger : triggers) {
-			float tx = trigger.getX() * Settings.SCALE;
-			float ty = trigger.getY() * Settings.SCALE;
+			float tx = trigger.getX() * Settings.getCurrentScale();
+			float ty = trigger.getY() * Settings.getCurrentScale();
 			float tw = (trigger.getWidth() == -1)?
-						levelWidth * Settings.TILES_SIZE * Settings.SCALE 
-						: trigger.getWidth() * Settings.SCALE;
+						levelWidth * Settings.getTileSize() * Settings.getCurrentScale() 
+						: trigger.getWidth() * Settings.getCurrentScale();
 
 			float th = (trigger.getHeight() == -1)?
-						levelHeight * Settings.TILES_SIZE * Settings.SCALE 
-						: trigger.getHeight() * Settings.SCALE;
+						levelHeight * Settings.getTileSize() * Settings.getCurrentScale() 
+						: trigger.getHeight() * Settings.getCurrentScale();
 
 			if (player.getHitbox().getBounds().intersects(tx, ty, tw, th)) {
 				boolean isAuto = "AUTO".equalsIgnoreCase(trigger.getActivation());
@@ -140,9 +138,9 @@ public class Playing extends State implements StateMethods {
 		Boss activeBoss = entityManager.getActiveBoss();
 
 		if (activeBoss != null && activeBoss.isAlive()) {
-			if (!camera.isLocked() && player.getX() >= arenaMinX * Settings.SCALE) {
-				float minX = arenaMinX * Settings.SCALE;
-				float maxX = arenaMaxX * Settings.SCALE;
+			if (!camera.isLocked() && player.getX() >= arenaMinX * Settings.getCurrentScale()) {
+				float minX = arenaMinX * Settings.getCurrentScale();
+				float maxX = arenaMaxX * Settings.getCurrentScale();
 				camera.lockToArea(minX, maxX);
 			}
 		} else if (camera.isLocked()) {
@@ -164,7 +162,7 @@ public class Playing extends State implements StateMethods {
 			case KeyEvent.VK_K -> player.takeDamage(1);
 			case KeyEvent.VK_L -> player.takeDamage(player.getCurrentHealth());
 			case KeyEvent.VK_R -> {
-//				resetAll();
+				game.resetPlaying();
 				Gamestate.state = Gamestate.TITLESCREEN;
 			}
 			case KeyEvent.VK_7 -> player.activateCheat();
@@ -185,12 +183,6 @@ public class Playing extends State implements StateMethods {
 			default -> {}
 		}
 	}
-	
-//	private void resetAll() {
-//		player.reset();
-//		levelManager.reset();
-//		camera.reset();
-//	}
 	
 	public Player getPlayer() { return player; }
 	public Camera getCamera() { return camera; }

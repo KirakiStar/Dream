@@ -39,8 +39,8 @@ public final class PlayerStats {
 		else {
 			cheating = true;
 			maxHealth = 77;
-			playerSpeed = 7f * Settings.SCALE;
-			jumpSpeed = -4f * Settings.SCALE;
+			playerSpeed = 7f * Settings.getCurrentScale();
+			jumpSpeed = -4f * Settings.getCurrentScale();
 			maxJump = 77;
 			attackDamage = 7;
 		}
@@ -49,8 +49,8 @@ public final class PlayerStats {
 	private void resetCheat() {
 		cheating = false;
 		maxHealth = currentMaxHealth;
-		playerSpeed = 1.5f * Settings.SCALE;
-		jumpSpeed = -2.3f * Settings.SCALE;
+		playerSpeed = 1.5f * Settings.getCurrentScale();
+		jumpSpeed = -2.3f * Settings.getCurrentScale();
 		maxJump = 2;
 		attackDamage = currentAttack;
 	}

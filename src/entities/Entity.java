@@ -34,8 +34,8 @@ public abstract class Entity {
 		this.entitySprites = entitySprites;
 		this.x = x;
 		this.y = y;
-		this.width = (int)(width * Settings.SCALE);
-		this.height = (int)(height * Settings.SCALE);
+		this.width = (int)(width * Settings.getCurrentScale());
+		this.height = (int)(height * Settings.getCurrentScale());
 		this.hitbox = new Hitbox(this, offsetX, offsetY, width, height);
 		
 		this.imgWidth = entitySprites.getWidth();
@@ -77,8 +77,8 @@ public abstract class Entity {
 		
 		int drawX = (int) x;
 		int drawY = (int) y;
-		int drawWidth = (int)(imgWidth * Settings.SCALE);
-		int drawHeight = (int)(imgHeight * Settings.SCALE);
+		int drawWidth = (int)(imgWidth * Settings.getCurrentScale());
+		int drawHeight = (int)(imgHeight * Settings.getCurrentScale());
 
 		if (sprites != null && actionId < sprites.length && sprites[actionId] != null) {
 			if (facingLeft) {

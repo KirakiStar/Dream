@@ -36,8 +36,8 @@ public final class EntityManager {
 
 			int tileX = i % levelWidth;
 			int tileY = i / levelWidth;
-			float x = tileX * Settings.TILES_SIZE;
-			float y = tileY * Settings.TILES_SIZE;
+			float x = tileX * Settings.getTileSize();
+			float y = tileY * Settings.getTileSize();
 			
 			Random random = new Random();
 			switch (tileID) {

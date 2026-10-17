@@ -18,10 +18,10 @@ public class Hitbox {
 
 	public Hitbox(Entity owner, float offsetX, float offsetY, int width, int height) {
 		this.owner = owner;
-		this.offsetX = offsetX * Settings.SCALE;
-		this.offsetY = offsetY * Settings.SCALE;
-		this.width = (int)(width * Settings.SCALE);
-		this.height = (int)(height * Settings.SCALE);
+		this.offsetX = offsetX * Settings.getCurrentScale();
+		this.offsetY = offsetY * Settings.getCurrentScale();
+		this.width = (int)(width * Settings.getCurrentScale());
+		this.height = (int)(height * Settings.getCurrentScale());
 		this.bounds = new Rectangle(
 			(int) (owner.getX() + this.offsetX),
 			(int) (owner.getY() + this.offsetY),

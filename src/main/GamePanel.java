@@ -5,8 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
-import static helpers.Settings.GAME_HEIGHT;
-import static helpers.Settings.GAME_WIDTH;
+import helpers.Settings;
 
 public class GamePanel extends JPanel{
 	private Game game;
@@ -19,7 +18,7 @@ public class GamePanel extends JPanel{
 	}
 	
 	private void setPanelSize() {
-		Dimension size = new Dimension(GAME_WIDTH, GAME_HEIGHT);
+		Dimension size = new Dimension(Settings.getGameWidth(), Settings.getGameHeight());
 		setPreferredSize(size);
 //		System.out.println("Game size: " + GAME_WIDTH + " * " + GAME_HEIGHT);
 	}

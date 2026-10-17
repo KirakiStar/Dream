@@ -36,8 +36,8 @@ public class Player extends MovingEntity implements Attackable {
 	
 	private int jumpCount = 0;
 	private boolean climbable = false;
-	private final float drownSpeed = 0.5f * Settings.SCALE;
-	private final float HEIGHT_DROP_LADDER = HEIGHT / 2 * Settings.SCALE;
+	private final float drownSpeed = 0.5f * Settings.getCurrentScale();
+	private final float HEIGHT_DROP_LADDER = HEIGHT / 2 * Settings.getCurrentScale();
 	
 	private Hitbox attackBox;
 	private boolean attacking = false;

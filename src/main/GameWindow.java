@@ -5,6 +5,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import javax.swing.JFrame;
 
+import helpers.Settings;
 import helpers.ResourceLoader;
 
 public class GameWindow {
@@ -38,5 +39,13 @@ public class GameWindow {
 		jframe.setVisible(true);
 
 		gamePanel.requestFocusInWindow(); 
+	}
+	
+	public void resizeWindow(GamePanel gamePanel) {
+		gamePanel.setPreferredSize(new java.awt.Dimension(Settings.getGameWidth(), Settings.getGameHeight()));
+		gamePanel.revalidate();
+
+		jframe.pack();
+		jframe.setLocationRelativeTo(null);
 	}
 }
