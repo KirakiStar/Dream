@@ -12,8 +12,9 @@ import helpers.Settings;
 public final class LevelManager {
 	private Playing playing;
 	private BufferedImage[] tiles;
+	private BufferedImage backgroundImg;
 	private List<Level> levels;
-	private int currentLevelIndex = 1;
+	private int currentLevelIndex = 0;
 	
 	public LevelManager(Playing playing) {
 		this.playing = playing;
@@ -36,7 +37,8 @@ public final class LevelManager {
 		Level current = getCurrentLevel();
 
 		setTiles(current.getTilesetImg(), current.getTileRow() * current.getTileColumn(), current.getTileColumn());
-
+		backgroundImg = ResourceLoader.ImagesLoader(current.getBgImg());
+		
 		if (playing != null) {
 			playing.loadLevelData(this, spawnX, spawnY);
 		}
@@ -60,6 +62,26 @@ public final class LevelManager {
 	
 	public void draw(Graphics2D g2) {
 		Level current = getCurrentLevel();
+		if (backgroundImg == null) return;
+
+		float screenWidth = Settings.getGameWidth();
+		float levelWidthPx = current.getLevelWidth() * Settings.getTileSize();
+		float bgWidth = current.getBgWidth() * Settings.getCurrentScale();
+		float bgHeight = current.getBgHeight() * Settings.getCurrentScale();
+
+		float bgX = 0;
+		if (bgWidth > screenWidth && levelWidthPx > screenWidth) {
+			float camX = (playing != null && playing.getCamera() != null) ? playing.getCamera().getX() : 0;
+			float maxCamX = levelWidthPx - screenWidth;
+
+			if (maxCamX > 0) {
+				float progress = Math.max(0f, Math.min(1f, camX / maxCamX));
+				bgX = progress * (levelWidthPx - bgWidth);
+			}
+		}
+
+		g2.drawImage(backgroundImg, (int)bgX, 0, (int)bgWidth, (int)bgHeight, null);
+
 		int layers = current.getLevelLayers();
 		int levelSize = current.getLevelWidth() * current.getLevelHeight();
 		for (int i = 2; i < layers; i++) {

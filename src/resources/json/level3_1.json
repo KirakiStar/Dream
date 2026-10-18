@@ -152,14 +152,17 @@
       "y": 0,
       "width": 7,
       "height": -1,
-      "targetLevel": 0,
+      "targetLevel": 8,
       "spawnX": 40,
-      "spawnY": 0
+      "spawnY": 192
     }
   ],
   "appearance": {
     "tileset": "level1.png",
     "tileSetColumn": 9,
-    "tileSetRow": 5
+    "tileSetRow": 5,
+    "bgImg": "test_background.png",
+    "bgWidth": 1872,
+    "bgHeight": 960
   }
 }

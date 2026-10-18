@@ -56,9 +56,9 @@ public final class ResourceLoader {
 	public static final SpriteSheet ALICE_SPRITES = new SpriteSheet("alice.png", 4, 4, 96, 96);
 
 	public static List<String> levelFiles = new ArrayList<>(List.of(
-													"testMap", "level1", "level1_1", "level1_2", 
+													"house1", "level1", "level1_1", "level1_2", 
 													"level2_1", "level2_2", "level2_3", 
-													"level3_1"));
+													"level3_1", "backAt1"));
 
 	public static void loadFonts() {
 		int rows = GUI_ITEMS.getRow();

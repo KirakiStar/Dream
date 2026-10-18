@@ -62,9 +62,15 @@ public class LevelData {
 		private String tileset;
 		private int tileSetColumn;
 		private int tileSetRow;
+		private String bgImg;
+		private int bgWidth;
+		private int bgHeight;
 		
 		public String getTileset() { return tileset; }
 		public int getTileSetColumn() { return tileSetColumn; }
 		public int getTileSetRow() { return tileSetRow; }
+		public String getBgImg() { return bgImg; }
+		public int getBgWidth() { return bgWidth; }
+		public int getBgHeight() { return bgHeight; }
 	}
 }

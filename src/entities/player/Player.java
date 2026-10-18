@@ -49,6 +49,7 @@ public class Player extends MovingEntity implements Attackable {
 		this.stats = new PlayerStats(maxHealth, 1); //default attack damage = 1
 		this.playing = playing;
 		this.playerAction = IDLE;
+		this.facingLeft = true;
 		setStats();
 		setAttackBox();
 		this.invincibilityDuration = 120;

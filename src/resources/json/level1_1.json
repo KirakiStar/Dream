@@ -116,6 +116,9 @@
   "appearance": {
     "tileset": "level1.png",
     "tileSetColumn": 9,
-    "tileSetRow": 5
+    "tileSetRow": 5,
+    "bgImg": "dark_forest.png",
+    "bgWidth": 640,
+    "bgHeight": 320
   }
 }

@@ -111,7 +111,8 @@ public final class EntityManager {
 	}
 
 	public void draw(Graphics2D g2) {
-		for (Entity e : entities) {
+		List<Entity> tempEntities = new ArrayList<>(entities);
+		for (Entity e : tempEntities) {
 			e.draw(g2);
 		}
 	}

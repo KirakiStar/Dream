@@ -99,7 +99,7 @@
       "height": 64,
       "targetLevel": 0,
       "spawnX": 40,
-      "spawnY": 0
+      "spawnY": 192
     },
     {
       "type": "LEVEL_TRANSITION",
@@ -116,6 +116,9 @@
   "appearance": {
     "tileset": "level1.png",
     "tileSetColumn": 9,
-    "tileSetRow": 5
+    "tileSetRow": 5,
+    "bgImg": "village.png",
+    "bgWidth": 640,
+    "bgHeight": 320
   }
 }

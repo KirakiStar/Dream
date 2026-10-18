@@ -105,6 +105,9 @@
   "appearance": {
     "tileset": "level1.png",
     "tileSetColumn": 9,
-    "tileSetRow": 5
+    "tileSetRow": 5,
+    "bgImg": "test_background.png",
+    "bgWidth": 1872,
+    "bgHeight": 960
   }
 }

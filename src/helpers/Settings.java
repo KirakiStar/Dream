@@ -5,8 +5,8 @@ public final class Settings {
 	private static int scaleIndex = 2;
 
 	private final static int DEFAULT_TILE_SIZE = 32;
-	private final static int GAME_WIDTH_IN_TILES = 13;
-	private final static int GAME_HEIGHT_IN_TILES = 10;
+	private final static int GAME_WIDTH_IN_TILES = 13;	// 416
+	private final static int GAME_HEIGHT_IN_TILES = 10;	// 320
 
 	private static float currentScale = SCALE[scaleIndex];
 	private static int tileSize = (int)(DEFAULT_TILE_SIZE * currentScale);
