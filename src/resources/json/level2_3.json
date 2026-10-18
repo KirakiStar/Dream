@@ -1,13 +1,10 @@
 {
-  "tileset": "level1.png",
   "width": 53,
   "height": 10,
   "tileWidth": 32,
   "tileHeight": 32,
   "arenaMinX" : 576,
   "arenaMaxX" : 1024,
-  "tileSetColumn": 9,
-  "tileSetRow": 5,
   "spawnX": 64,
   "spawnY": 192,
   "layers": [
@@ -104,5 +101,10 @@
       "spawnX": 192,
       "spawnY": 7
     }
-  ]
+  ],
+  "appearance": {
+    "tileset": "level1.png",
+    "tileSetColumn": 9,
+    "tileSetRow": 5
+  }
 }

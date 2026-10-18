@@ -104,10 +104,10 @@ public class Playing extends State implements StateMethods {
 	}
 	
 	private void checkNextLevelTriggers() {
-		List<LevelData.TriggerData> triggers = levelManager.getCurrentLevel().getTriggers();
+		List<LevelData.Trigger> triggers = levelManager.getCurrentLevel().getTriggers();
 		if (triggers == null) return;
 
-		for (LevelData.TriggerData trigger : triggers) {
+		for (LevelData.Trigger trigger : triggers) {
 			float tx = trigger.getX() * Settings.getCurrentScale();
 			float ty = trigger.getY() * Settings.getCurrentScale();
 			float tw = (trigger.getWidth() == -1)?
