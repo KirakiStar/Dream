@@ -14,7 +14,7 @@ public final class LevelManager {
 	private BufferedImage[] tiles;
 	private BufferedImage backgroundImg;
 	private List<Level> levels;
-	private int currentLevelIndex = 5;
+	private int currentLevelIndex = 0;
 	
 	public LevelManager(Playing playing) {
 		this.playing = playing;
