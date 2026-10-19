@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import display.Camera;
 import entities.Item;
 import entities.player.Player;
-import entities.enemies.Fireball;
+import entities.enemies.ShadowFire;
 import collision.Hitbox;
 import collision.CollisionChecker;
 import helpers.Settings;
@@ -15,6 +15,7 @@ import helpers.BossesKillStatus;
 import helpers.EntityConstants.ShabiState;
 import static helpers.EntityConstants.ShabiState.*;
 import static helpers.EntityConstants.ItemType.MAGICIAN;
+import static helpers.EntityConstants.Obstacle.FIREBALL;
 
 public class Shabi extends Boss {
 	private ShabiState shabiState;
@@ -157,7 +158,7 @@ public class Shabi extends Boss {
 
 	@Override
 	protected void onDeath() {
-		playing.getEntityManager().removeWantedEntity(Fireball.class);
+		playing.getEntityManager().removeWantedEntity(ShadowFire.class);
 		playing.getPlayer().takeDamage(0);
 		playing.getEntityManager().addEntity(new Item(x, y, MAGICIAN));
 	}
@@ -175,7 +176,7 @@ public class Shabi extends Boss {
 			for (int i = 0; i < fireAmount; i++) {
 				float offsetX = random.nextFloat(-128f, 128f) * scale;
 				float offsetY = random.nextFloat(32f, 64f) * scale;
-				playing.getEntityManager().addEntity(new Fireball(x + offsetX, y - offsetY));
+				playing.getEntityManager().addEntity(new ShadowFire(x + offsetX, y - offsetY, FIREBALL));
 			}
 		attacking = false;
 	}

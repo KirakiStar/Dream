@@ -8,12 +8,12 @@ public enum BossesKillStatus {
 
 	private final int iconRow; // in gui.png
 	private final int iconCol; // in gui.png
-	private boolean collected;
+	private boolean killed;
 
-	BossesKillStatus (int iconRow, int iconCol, boolean collected) {
+	BossesKillStatus (int iconRow, int iconCol, boolean killed) {
 		this.iconRow = iconRow;
 		this.iconCol = iconCol;
-		this.collected = collected;
+		this.killed = killed;
 	}
 
 	public static BossesKillStatus getBossAtId(int id) {
@@ -24,10 +24,17 @@ public enum BossesKillStatus {
 			case 3,12 -> NIGHTMARE;
 		};
 	}
+	
+	public static void resetBossKillStatus() {
+		BIG_V.killed = false;
+		SHABI.killed = false;
+		ALICE.killed = false;
+		NIGHTMARE.killed = false;
+	}
 
 	public int getIconRow() { return iconRow; }
 	public int getIconCol() { return iconCol; }
-	public boolean isKilled() { return collected; }
+	public boolean isKilled() { return killed; }
 
-	public void setKilled() { this.collected = true; }
+	public void setKilled() { this.killed = true; }
 }

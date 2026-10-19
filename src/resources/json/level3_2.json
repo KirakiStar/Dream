@@ -94,6 +94,6 @@
     "tileSetRow": 5,
     "bgImg": "sheep_sheep_sheep.png",
     "bgWidth": 640,
-    "bgHeight": 600
+    "bgHeight": 400
   }
 }

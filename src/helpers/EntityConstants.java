@@ -145,7 +145,8 @@ public class EntityConstants {
 	}
 	
 	public enum Obstacle implements EntityAnimation {
-		FIRE_BALL(0, 3, true);
+		FIREBALL(0, 3, true),
+		SHADOW(1, 3, true);
 
 		private final int id;
 		private final int animationAmount;

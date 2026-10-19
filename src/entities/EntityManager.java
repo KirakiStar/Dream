@@ -11,6 +11,7 @@ import entities.player.Player;
 import gamestates.Playing;
 import helpers.Settings;
 import helpers.EntityConstants.ItemType;
+import helpers.EntityConstants.Obstacle;
 import static helpers.BossesKillStatus.*;
 
 public final class EntityManager {
@@ -44,10 +45,10 @@ public final class EntityManager {
 				case 1 -> entities.add(new Item(x, y));
 				case 2 -> entities.add(new Mitten(x, y, random.nextInt(Mitten.jumpInterval)));
 				case 3 -> entities.add(new Goldy(x, y, random.nextInt(Goldy.attackInterval)));
-//				case 4 -> entities.add(new Shadow(x,y)); //stand still
+				case 4 -> entities.add(new ShadowFire(x, y, Obstacle.SHADOW));
 //				case 5 -> entities.add(new JumpSheep(x, y)); //jump left and right
 //				case 6 -> entities.add(new StalkSheep(x, y)); // always walks towards player
-				case 4 -> entities.add(new Mitten(x, y, random.nextInt(Mitten.jumpInterval)));
+//				case 4 -> entities.add(new Mitten(x, y, random.nextInt(Mitten.jumpInterval)));
 				case 5 -> entities.add(new Mitten(x, y, random.nextInt(Mitten.jumpInterval)));
 				case 6 -> entities.add(new Goldy(x, y, random.nextInt(Goldy.attackInterval)));
 				case 9 -> {
