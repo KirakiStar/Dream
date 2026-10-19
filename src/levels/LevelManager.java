@@ -14,7 +14,7 @@ public final class LevelManager {
 	private BufferedImage[] tiles;
 	private BufferedImage backgroundImg;
 	private List<Level> levels;
-	private int currentLevelIndex = 0;
+	private int currentLevelIndex = 5;
 	
 	public LevelManager(Playing playing) {
 		this.playing = playing;
@@ -65,7 +65,11 @@ public final class LevelManager {
 		if (backgroundImg == null) return;
 
 		float screenWidth = Settings.getGameWidth();
+		float screenHeight = Settings.getGameHeight();
+
 		float levelWidthPx = current.getLevelWidth() * Settings.getTileSize();
+		float levelHeightPx = current.getLevelHeight() * Settings.getTileSize();
+
 		float bgWidth = current.getBgWidth() * Settings.getCurrentScale();
 		float bgHeight = current.getBgHeight() * Settings.getCurrentScale();
 
@@ -75,12 +79,23 @@ public final class LevelManager {
 			float maxCamX = levelWidthPx - screenWidth;
 
 			if (maxCamX > 0) {
-				float progress = Math.max(0f, Math.min(1f, camX / maxCamX));
-				bgX = progress * (levelWidthPx - bgWidth);
+				float progressX = Math.max(0f, Math.min(1f, camX / maxCamX));
+				bgX = progressX * (levelWidthPx - bgWidth);
 			}
 		}
 
-		g2.drawImage(backgroundImg, (int)bgX, 0, (int)bgWidth, (int)bgHeight, null);
+		float bgY = 0;
+		if (bgHeight > screenHeight && levelHeightPx > screenHeight) {
+			float camY = (playing != null && playing.getCamera() != null) ? playing.getCamera().getY() : 0;
+			float maxCamY = levelHeightPx - screenHeight;
+
+			if (maxCamY > 0) {
+				float progressY = Math.max(0f, Math.min(1f, camY / maxCamY));
+				bgY = progressY * (levelHeightPx - bgHeight);
+			}
+		}
+
+		g2.drawImage(backgroundImg, (int)bgX, (int)bgY, (int)bgWidth, (int)bgHeight, null);
 
 		int layers = current.getLevelLayers();
 		int levelSize = current.getLevelWidth() * current.getLevelHeight();

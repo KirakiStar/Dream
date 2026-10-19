@@ -58,7 +58,7 @@ public final class ResourceLoader {
 	public static List<String> levelFiles = new ArrayList<>(List.of(
 													"house1", "level1", "level1_1", "level1_2", 
 													"level2_1", "level2_2", "level2_3", 
-													"level3_1", "backAt1"));
+													"level3_1", "backAt1", "house2"));
 
 	public static void loadFonts() {
 		int rows = GUI_ITEMS.getRow();

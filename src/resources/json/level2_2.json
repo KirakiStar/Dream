@@ -172,8 +172,8 @@
     "tileset": "level1.png",
     "tileSetColumn": 9,
     "tileSetRow": 5,
-    "bgImg": "test_background.png",
-    "bgWidth": 1872,
-    "bgHeight": 960
+    "bgImg": "manor_wall.png",
+    "bgWidth": 1696,
+    "bgHeight": 400
   }
 }
