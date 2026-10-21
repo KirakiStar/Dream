@@ -48,7 +48,6 @@ public final class EntityManager {
 				case 4 -> entities.add(new ShadowFire(x, y, Obstacle.SHADOW));
 //				case 5 -> entities.add(new JumpSheep(x, y)); //jump left and right
 //				case 6 -> entities.add(new StalkSheep(x, y)); // always walks towards player
-//				case 4 -> entities.add(new Mitten(x, y, random.nextInt(Mitten.jumpInterval)));
 				case 5 -> entities.add(new Mitten(x, y, random.nextInt(Mitten.jumpInterval)));
 				case 6 -> entities.add(new Goldy(x, y, random.nextInt(Goldy.attackInterval)));
 				case 9 -> {
@@ -69,13 +68,27 @@ public final class EntityManager {
 						entities.add(alice);
 					}
 				}
+				case 12 -> {
+					if (!NIGHTMARE.isKilled()) {
+						Nightmare nightmare = new Nightmare(x, y);
+						nightmare.setPlaying(playing);
+						entities.add(nightmare);
+					}
+				}
 				default -> { }
 			}
 		}
 	}
 	
 	public void addEntity(Entity newbie) {
-		pendingEntities.add(newbie);
+		if (newbie == null) return;
+
+		int count = 0;
+		for (Entity e : entities) {
+			if (e.getClass().equals(newbie.getClass()))
+				count++;
+		}
+		if (count < 7) pendingEntities.add(newbie);
 	}
 	
 	public void removeWantedEntity(Class<?> wantedEntity) {

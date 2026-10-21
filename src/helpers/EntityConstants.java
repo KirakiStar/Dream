@@ -74,6 +74,25 @@ public class EntityConstants {
 		@Override public boolean isLooping() { return looping; }
 	}
 	
+	public enum SheepState implements EntityAnimation {
+		IDLE(0, 2, true),
+		JUMPING(1, 1, false);
+
+		private final int id;
+		private final int animationAmount;
+		private final boolean looping;
+
+		SheepState(int id, int animationAmount, boolean looping) {
+			this.id = id;
+			this.animationAmount = animationAmount;
+			this.looping = looping;
+		}
+
+		@Override public int getId() { return id; }
+		@Override public int getAnimationAmount() { return animationAmount; }
+		@Override public boolean isLooping() { return looping; }
+	}
+	
 	public enum ShabiState implements EntityAnimation {
 		IDLE(0, 4, true),
 		WALKING(1, 4, true),
@@ -106,6 +125,25 @@ public class EntityConstants {
 		private final boolean looping;
 
 		AliceState(int id, int animationAmount, boolean looping) {
+			this.id = id;
+			this.animationAmount = animationAmount;
+			this.looping = looping;
+		}
+
+		@Override public int getId() { return id; }
+		@Override public int getAnimationAmount() { return animationAmount; }
+		@Override public boolean isLooping() { return looping; }
+	}
+	
+	public enum NightmareState implements EntityAnimation {
+		IDLE(0, 2, true),
+		JUMPING(1, 1, false);
+
+		private final int id;
+		private final int animationAmount;
+		private final boolean looping;
+
+		NightmareState(int id, int animationAmount, boolean looping) {
 			this.id = id;
 			this.animationAmount = animationAmount;
 			this.looping = looping;

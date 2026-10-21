@@ -4,8 +4,9 @@ import java.util.List;
 import java.awt.Graphics2D;
 
 import display.Camera;
-import entities.player.Player;
 import collision.Hitbox;
+import entities.Item;
+import entities.player.Player;
 import helpers.Settings;
 import helpers.ResourceLoader;
 import helpers.BossesKillStatus;
@@ -25,7 +26,7 @@ public class Alice extends Boss {
 	private boolean attacking = false;
 	private final int attackDamage = 1;
 	
-	private int tick = 1;
+	private int tick = 0;
 	private int actionInterval = 300;
 
 	public Alice(float x, float y) {
@@ -83,8 +84,15 @@ public class Alice extends Boss {
 	}
 	
 	@Override
+	public void die() {
+		onDeath();
+		super.die();
+	}
+	
+	@Override
 	protected void onDeath() {
-		
+		playing.getPlayer().takeDamage(0);
+		playing.getEntityManager().addEntity(new Item(x, y, PUPPETEER));
 	}
 
 	@Override

@@ -54,6 +54,7 @@ public final class ResourceLoader {
 	
 	public static final SpriteSheet SHABI_SPRITES = new SpriteSheet("shabi.png", 4, 4, 96, 96);
 	public static final SpriteSheet ALICE_SPRITES = new SpriteSheet("alice.png", 4, 4, 96, 96);
+	public static final SpriteSheet NIGHTMARE_SPRITES = new SpriteSheet("goldy.png", 4, 4, 64, 64);
 
 	public static List<String> levelFiles = new ArrayList<>(List.of(
 													"house1", "level1", "level1_1", "level1_2", 
