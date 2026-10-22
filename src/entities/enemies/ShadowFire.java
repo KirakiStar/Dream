@@ -14,7 +14,7 @@ public class ShadowFire extends Enemy {
 	private Obstacle type;
 	
 	public ShadowFire(float x, float y, Obstacle type) {
-		super(ResourceLoader.PLAYER_SPRITES, x, y, 20, 20, 10, 10, 333); // 40 * 40
+		super(ResourceLoader.SHADOWFIRE_SPRITES, x, y, 20, 20, 10, 20, 333); // 40 * 40
 		this.type = type;
 		Random random = new Random();
 		this.facingLeft = random.nextBoolean();

@@ -50,9 +50,9 @@ public final class ResourceLoader {
 	public static final SpriteSheet SHADOW_SPRITES = new SpriteSheet("silver.png", 11, 4, 64, 64);
 	public static final SpriteSheet WHITESHEEP_SPRITES = new SpriteSheet("mitten.png", 4, 4, 64, 64);
 	public static final SpriteSheet BLACKSHEEP_SPRITES = new SpriteSheet("goldy.png", 4, 4, 64, 64);
-	public static final SpriteSheet FIRE_SPRITES = new SpriteSheet("goldy.png", 11, 4, 64, 64);
+	public static final SpriteSheet SHADOWFIRE_SPRITES = new SpriteSheet("magic.png", 2, 2, 40, 40);
 	
-	public static final SpriteSheet SHABI_SPRITES = new SpriteSheet("shabi.png", 4, 4, 96, 96);
+	public static final SpriteSheet SHABI_SPRITES = new SpriteSheet("shabi.png", 6, 4, 96, 96);
 	public static final SpriteSheet ALICE_SPRITES = new SpriteSheet("alice.png", 4, 4, 96, 96);
 	public static final SpriteSheet NIGHTMARE_SPRITES = new SpriteSheet("goldy.png", 4, 4, 64, 64);
 

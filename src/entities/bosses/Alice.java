@@ -91,8 +91,10 @@ public class Alice extends Boss {
 	
 	@Override
 	protected void onDeath() {
+		resetInAir();
 		playing.getPlayer().takeDamage(0);
-		playing.getEntityManager().addEntity(new Item(x, y, PUPPETEER));
+		dying = true;
+		playing.getEntityManager().addEntity(new Item(x, y - Settings.getTileSize(), PUPPETEER));
 	}
 
 	@Override

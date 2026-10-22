@@ -18,6 +18,7 @@ public abstract class Boss extends MovingEntity implements Attackable {
 	protected float xSpeed = 0;
 	protected float walkSpeed;
 	protected float jumpSpeed;
+	protected boolean dying = false;
 	
 	protected Playing playing;
 	Random random;
@@ -33,6 +34,7 @@ public abstract class Boss extends MovingEntity implements Attackable {
 	}
 	
 	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera) {
+		if (dying) return;
 		super.update();
 		xSpeed = 0;
 		updateBossBehavior(collisionData, levelWidth, levelHeight, player, camera);

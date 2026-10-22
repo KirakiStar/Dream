@@ -27,7 +27,7 @@ public class Mitten extends Enemy {
 	private float maxWalkDistance = 50 * Settings.getCurrentScale();
 	private final float walkSpeed = 0.3f * Settings.getCurrentScale();
 	
-	private float jumpSpeed = -2f * Settings.getCurrentScale();
+	private final float jumpSpeed = -2f * Settings.getCurrentScale();
 	public static final int jumpInterval = 300;
 	
 	public Mitten(float x, float y, int UniqueTickOffset) {

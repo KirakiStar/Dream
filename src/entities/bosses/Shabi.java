@@ -20,10 +20,10 @@ import static helpers.EntityConstants.Obstacle.FIREBALL;
 public class Shabi extends Boss {
 	private ShabiState shabiState;
 	
-	private static final int WIDTH = 32;
-	private static final int HEIGHT = 56;
-	private static final float OFFSET_X = 32f;
-	private static final float OFFSET_Y = 40f;
+	private static final int WIDTH = 24;
+	private static final int HEIGHT = 47;
+	private static final float OFFSET_X = 36f;
+	private static final float OFFSET_Y = 32f;
 	
 	private boolean attacking = false;
 	private final int attackDamage = 1;
@@ -57,9 +57,10 @@ public class Shabi extends Boss {
 	protected void updateAnimationTick() {
 		super.updateAnimationTick(shabiState.getAnimationAmount(), shabiState.isLooping());
 		
-		if (attacking) {
+		if (dying) {
 			if (aniIndex >= shabiState.getAnimationAmount() - 1) {
-				spawnFire();
+				playing.getEntityManager().addEntity(new Item(x, y - Settings.getTileSize(), MAGICIAN));
+				super.die();
 			}
 		}
 	}
@@ -67,10 +68,15 @@ public class Shabi extends Boss {
 	@Override
 	protected void updateAnimation() {
 		if (!alive) return;
+		if (dying) {
+			setAnimation(DEATH);
+			return;
+		}
 		if (attacking) {
 			setAnimation(ATTACK);
-		} else if (inAir && airSpeed < 0) {
-			setAnimation(JUMPING);
+		} else if (inAir) {
+			if (airSpeed < 0) setAnimation(JUMPING);
+			else setAnimation(FALLING);
 		} else if (moving && !inAir) {
 			setAnimation(WALKING);
 		} else {
@@ -95,10 +101,15 @@ public class Shabi extends Boss {
 
 	@Override
 	protected void updateBossBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera) {
-		if (!(hit || attacking)) tick++;
+		tick++;
+		
+		if (inAir && attacking && (Math.abs(airSpeed) < 0.1)) spawnFire();
 		
 		if (!inAir) {
-			if (tick >= actionInterval[action] || attacking) setNewAction();
+			if (tick >= actionInterval[action]) {
+				if (attacking) spawnFire();
+				setNewAction();
+			}
 
 			switch (action) {
 				case 1 -> patrol(collisionData, levelWidth, levelHeight, camera);
@@ -153,14 +164,14 @@ public class Shabi extends Boss {
 	@Override
 	public void die() {
 		onDeath();
-		super.die();
 	}
 
 	@Override
 	protected void onDeath() {
+		resetInAir();
 		playing.getEntityManager().removeWantedEntity(ShadowFire.class);
 		playing.getPlayer().takeDamage(0);
-		playing.getEntityManager().addEntity(new Item(x, y, MAGICIAN));
+		dying = true;
 	}
 
 	@Override

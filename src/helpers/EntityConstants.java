@@ -95,9 +95,11 @@ public class EntityConstants {
 	
 	public enum ShabiState implements EntityAnimation {
 		IDLE(0, 4, true),
-		WALKING(1, 4, true),
-		JUMPING(2, 2, false),
-		ATTACK(3, 4, true);
+		WALKING(1, 2, true),
+		JUMPING(2, 2, true),
+		FALLING(3, 2, true),
+		ATTACK(4, 2, true),
+		DEATH(5, 4, true);
 
 		private final int id;
 		private final int animationAmount;
@@ -183,8 +185,8 @@ public class EntityConstants {
 	}
 	
 	public enum Obstacle implements EntityAnimation {
-		FIREBALL(0, 3, true),
-		SHADOW(1, 3, true);
+		FIREBALL(0, 2, true),
+		SHADOW(1, 2, true);
 
 		private final int id;
 		private final int animationAmount;
@@ -200,36 +202,4 @@ public class EntityConstants {
 		@Override public int getAnimationAmount() { return animationAmount; }
 		@Override public boolean isLooping() { return looping; }
 	}
-	
-//	public enum BossesKillStatus {
-//		BIG_V(5,3,false),
-//		SHABI(5,4,false),
-//		ALICE(5,5,false),
-//		NIGHTMARE(5,6,false);
-//		
-//		private final int iconRow; // in gui.png
-//		private final int iconCol; // in gui.png
-//		private boolean collected;
-//		
-//		BossesKillStatus (int iconRow, int iconCol, boolean collected) {
-//			this.iconRow = iconRow;
-//			this.iconCol = iconCol;
-//			this.collected = collected;
-//		}
-//		
-//		public static BossesKillStatus getBossAtId(int id) {
-//			return switch (id) {
-//				default -> BIG_V;
-//				case 1,10 -> SHABI;
-//				case 2,11 -> ALICE;
-//				case 3,12 -> NIGHTMARE;
-//			};
-//		}
-//
-//		public int getIconRow() { return iconRow; }
-//		public int getIconCol() { return iconCol; }
-//		public boolean isKilled() { return collected; }
-//		
-//		public void setKilled() { this.collected = true; }
-//	}
 }

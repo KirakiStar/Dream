@@ -81,8 +81,7 @@ public class Nightmare extends Boss {
 	private void spawnSheep() {
 		float scale = Settings.getCurrentScale();
 		float offsetX = random.nextFloat(-128f, 128f) * scale;
-		float offsetY = random.nextFloat(120f, 200f) * scale;
-		playing.getEntityManager().addEntity(new Sheep(x + offsetX, y - offsetY));
+		playing.getEntityManager().addEntity(new Sheep(x + offsetX, y -  320 * scale));
 		attacking = false;
 	}
 	
@@ -96,7 +95,7 @@ public class Nightmare extends Boss {
 	protected void onDeath() {
 		playing.getEntityManager().removeWantedEntity(Sheep.class);
 		playing.getPlayer().takeDamage(0);
-		playing.getEntityManager().addEntity(new Item(x, y, HYPNOTIST));
+		playing.getEntityManager().addEntity(new Item(x, y - Settings.getTileSize(), HYPNOTIST));
 	}
 
 	@Override
