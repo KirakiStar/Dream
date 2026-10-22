@@ -139,7 +139,7 @@ public class EntityConstants {
 	
 	public enum NightmareState implements EntityAnimation {
 		IDLE(0, 2, true),
-		JUMPING(1, 1, false);
+		WALKING(1, 4, true);
 
 		private final int id;
 		private final int animationAmount;

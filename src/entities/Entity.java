@@ -143,7 +143,7 @@ public abstract class Entity {
 	
 	public abstract void draw(Graphics2D g2);
 	protected final void drawHitbox(Graphics2D g2) { hitbox.drawDebug(g2); }
-	protected final void updateHitbox() { hitbox.update(x, y); }
+	protected void updateHitbox() { hitbox.update(x, y); }
 
 	public final Hitbox getHitbox() { return hitbox; }
 	public final float getX() { return x; }

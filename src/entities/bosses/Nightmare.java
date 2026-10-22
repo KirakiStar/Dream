@@ -18,10 +18,11 @@ import static helpers.EntityConstants.ItemType.HYPNOTIST;
 public class Nightmare extends Boss {
 	private NightmareState nightmare;
 	
-	private static final int WIDTH = 32;
-	private static final int HEIGHT = 56;
-	private static final float OFFSET_X = 32f;
-	private static final float OFFSET_Y = 40f;
+	private static final int WIDTH = 80;
+	private static final int HEIGHT = 90;
+	private static final float OFFSET_X = 10f;
+	private static final float OFFSET_Y = 32f;
+	private static final float OFFSET_X_LEFT = 50f;
 	
 	private boolean attacking = false;
 	private final int attackDamage = 1;
@@ -31,8 +32,9 @@ public class Nightmare extends Boss {
 
 	public Nightmare(float x, float y) {
 		super(BossesKillStatus.NIGHTMARE, ResourceLoader.NIGHTMARE_SPRITES, 
-				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 45); // maxHealth = 45
-		this.nightmare = IDLE;
+				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 50); // maxHealth = 45
+//		this.nightmare = IDLE;
+		this.nightmare = WALKING;
 	}
 	
 	@Override
@@ -40,6 +42,15 @@ public class Nightmare extends Boss {
 		super.update(collisionData, levelWidth, levelHeight, player, camera);
 //		updateAnimation();
 		updateAnimationTick();
+	}
+	
+	@Override
+	protected void updateHitbox() {
+		if (facingLeft) {
+			hitbox.update(x + OFFSET_X_LEFT, y);
+		} else {
+			hitbox.update(x, y);
+		}
 	}
 
 	@Override
