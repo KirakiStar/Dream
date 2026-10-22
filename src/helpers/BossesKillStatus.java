@@ -1,10 +1,10 @@
 package helpers;
 
 public enum BossesKillStatus {
-	BIG_V(5,3,false),
-	SHABI(5,4,false),
-	ALICE(5,5,false),
-	NIGHTMARE(5,6,false);
+	BIG_V(5,4,false),
+	SHABI(5,5,false),
+	ALICE(5,6,false),
+	NIGHTMARE(5,7,false);
 
 	private final int iconRow; // in gui.png
 	private final int iconCol; // in gui.png

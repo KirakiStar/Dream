@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import gamestates.Playing;
+import entities.bosses.Boss;
 import helpers.Settings;
 import helpers.ResourceLoader;
 import helpers.BossesKillStatus;
@@ -24,6 +25,7 @@ public class PlayingUI implements GUI_Methods {
 	private final int x16 = 16 * scale;
 	private final int x32 = x16 * 2;
 	private final int x64 = x32 * 2;
+	private final int x128 = x64 * 2;
 
 	public PlayingUI(Playing playing) {
 		this.playing = playing;
@@ -40,7 +42,7 @@ public class PlayingUI implements GUI_Methods {
 		drawPlayerStats(g2);
 		drawPlayerScore(g2);
 		drawCollectedDolls(g2);
-		drawBossBar(g2);
+		drawBossHealth(g2);
 	}
 	
 	private void drawPlayerStats(Graphics2D g2) {
@@ -72,17 +74,34 @@ public class PlayingUI implements GUI_Methods {
 			if (BossesKillStatus.getBossAtId(i).isKilled())
 				g2.drawImage(fontCharacters[5][4+i], x10 + i * x32, screenHeight - x32, x32, x32, null);
 		}
-//		g2.drawImage(fontCharacters[5][4], x10, screenHeight - x32, x32, x32, null);
-//		g2.drawImage(fontCharacters[5][5], x10 + x32, screenHeight - x32, x32, x32, null);
-//		g2.drawImage(fontCharacters[5][6], x10 + x64, screenHeight - x32, x32, x32, null);
-//		g2.drawImage(fontCharacters[5][7], x10 + x64 + x32, screenHeight - x32, x32, x32, null);
 	}
 	
 	private void drawCollectedDolls(Graphics2D g2) {
 		
 	}
 
-	private void drawBossBar(Graphics2D g2) {
+	private void drawBossHealth(Graphics2D g2) {
+		Boss boss = playing.getActiveBoss();
+		if (boss == null || !playing.getCamera().isLocked()) return;
 		
+		String hp = Integer.toString(playing.getActiveBoss().getCurrentHealth());
+		boolean isHit = playing.getActiveBoss().isHit();
+		
+		int startXPos = screenWidth - x128 + x20;
+		int yPos = screenHeight - x32 - x10;
+		
+		// boss icon
+		g2.drawImage(fontCharacters[5][boss.getBossId().getIconCol()], startXPos + x10, yPos, x32, x32, null);
+		
+		BufferedImage heartIcon = isHit ? fontCharacters[2][2] : fontCharacters[2][1];
+		BufferedImage[] hpAmount = isHit ? fontCharacters[0] : fontCharacters[1];
+		
+		g2.drawImage(heartIcon, startXPos + x32, screenHeight - x32, x32, x32, null);
+
+		startXPos += x64 - x10;
+		for (int i = 0; i < hp.length(); i++) {
+			int numIndex = hp.charAt(i) - '0';
+			g2.drawImage(hpAmount[numIndex], startXPos + (i * x20), yPos, x32, x32, null);
+		}
 	}
 }

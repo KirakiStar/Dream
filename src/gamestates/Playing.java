@@ -135,7 +135,7 @@ public class Playing extends State implements StateMethods {
 	public void checkBossTrigger() {
 		if (arenaMinX < 0 || arenaMaxX < 0) return;
 		
-		Boss activeBoss = entityManager.getActiveBoss();
+		Boss activeBoss = getActiveBoss();
 
 		if (activeBoss != null && activeBoss.isAlive()) {
 			if (!camera.isLocked() && player.getX() >= arenaMinX * Settings.getCurrentScale()) {
@@ -192,4 +192,5 @@ public class Playing extends State implements StateMethods {
 	public int getLevelHeight() { return levelHeight; }
 	public EntityManager getEntityManager() { return entityManager; }
 	public List<Integer> getEntityData() { return entityData; }
+	public Boss getActiveBoss() { return entityManager.getActiveBoss(); }
 }

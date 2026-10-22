@@ -54,4 +54,7 @@ public abstract class Boss extends MovingEntity implements Attackable {
 	protected abstract void updateAnimation();
 	protected abstract void updateBossBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera);
 	protected abstract void onDeath();
+	
+	public BossesKillStatus getBossId() { return bossId; }
+	public boolean isHit() { return hit; }
 }
