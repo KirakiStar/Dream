@@ -44,7 +44,6 @@ public abstract class Boss extends MovingEntity implements Attackable {
 	@Override
 	public void draw(Graphics2D g2, int entityState) {
 		super.draw(g2, entityState);
-		hitbox.drawDebug(g2);
 	}
 	
 	protected void facePlayer(float playerX) {

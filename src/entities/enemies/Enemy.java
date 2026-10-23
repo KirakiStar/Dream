@@ -50,7 +50,6 @@ public abstract class Enemy extends MovingEntity {
 	@Override
 	public void draw(Graphics2D g2, int entityState) {
 		super.draw(g2, entityState);
-		hitbox.drawDebug(g2);
 	}
 	
 	@Override

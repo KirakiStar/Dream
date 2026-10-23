@@ -82,7 +82,7 @@ public class Player extends MovingEntity implements Attackable {
 	@Override
 	public void draw(Graphics2D g2) {
 		super.draw(g2, playerAction.getId());
-		if (attacking) attackBox.drawDebug(g2);
+//		if (attacking) attackBox.drawDebug(g2);
 	}
 	
 	protected void updateAnimationTick() {

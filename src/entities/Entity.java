@@ -87,7 +87,7 @@ public abstract class Entity {
 				g2.drawImage(sprites[actionId][aniIndex], drawX, drawY, drawWidth, drawHeight, null);
 			}
 		}
-		drawHitbox(g2);
+//		drawHitbox(g2);
 	}
 	
 	public void takeDamage(int amount) {

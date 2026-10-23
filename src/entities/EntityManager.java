@@ -48,8 +48,7 @@ public final class EntityManager {
 				case 4 -> entities.add(new ShadowFire(x, y, Obstacle.SHADOW));
 				case 5 -> entities.add(new Sheep(x, y, false)); // no stalking
 				case 6 -> entities.add(new Sheep(x, y, true)); // stalking
-//				case 5 -> entities.add(new Mitten(x, y, random.nextInt(Mitten.jumpInterval)));
-//				case 6 -> entities.add(new Goldy(x, y, random.nextInt(Goldy.attackInterval)));
+				
 				case 9 -> {
 					if (!BIG_V.isKilled())
 						entities.add(new Item(x, y, ItemType.BAT));

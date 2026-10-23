@@ -34,7 +34,7 @@ public class Item extends Entity {
 	@Override
 	public void draw(Graphics2D g2) {
 		if (!collected) super.draw(g2, item.getId());
-		hitbox.drawDebug(g2);
+//		hitbox.drawDebug(g2);
 	}
 	
 	public void collect(Player player) {
@@ -42,7 +42,10 @@ public class Item extends Entity {
 
 		switch (item) {
 			case STRAWBERRY -> player.heal(item.getHealAmount());
-			case BAT -> item.getBossId().setKilled();
+			case BAT -> {
+				player.heal(3);
+				item.getBossId().setKilled();
+			}
 			default -> {
 				player.maxHealthUp(item.getHealAmount());
 				player.heal(10);

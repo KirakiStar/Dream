@@ -40,7 +40,7 @@ public class Alice extends Boss {
 
 	public Alice(float x, float y) {
 		super(BossesKillStatus.ALICE, ResourceLoader.ALICE_SPRITES, 
-				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 30); //maxhealth = 30
+				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 40); //maxhealth = 40
 		this.currentSpeed = walkSpeed;
 		this.jumpSpeed = -1f * Settings.getCurrentScale();
 		this.aliceState = ATTACK1;
@@ -76,7 +76,7 @@ public class Alice extends Boss {
 	@Override
 	public void draw(Graphics2D g2) {
 		super.draw(g2, aliceState.getId());
-		attackBox.drawDebug(g2);
+//		attackBox.drawDebug(g2);
 	}
 	
 	protected void updateAnimationTick() {

@@ -35,7 +35,7 @@ public class Nightmare extends Boss {
 
 	public Nightmare(float x, float y) {
 		super(BossesKillStatus.NIGHTMARE, ResourceLoader.NIGHTMARE_SPRITES, 
-				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 50); // maxHealth = 50
+				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 70); // maxHealth = 70
 		this.nightmare = IDLE;
 		this.currentSpeed = 0.2f * Settings.getCurrentScale();
 	}

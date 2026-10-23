@@ -60,7 +60,7 @@ public class Goldy extends Enemy implements Attackable {
 	@Override
 	public void draw(Graphics2D g2) {
 		super.draw(g2, goldyState.getId());
-		attackBox.drawDebug(g2);
+//		attackBox.drawDebug(g2);
 	}
 	
 	protected void updateAnimationTick() {
