@@ -61,5 +61,8 @@ public class Game{
 		return playing;
 	}
 	
-	public void resetPlaying() { playing = new Playing(this); }
+	public void resetPlaying() {
+		playing = new Playing(this);
+		helpers.BossesKillStatus.resetBossKillStatus();
+	}
 }
