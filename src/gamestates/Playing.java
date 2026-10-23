@@ -161,7 +161,7 @@ public class Playing extends State implements StateMethods {
 			case KeyEvent.VK_X, KeyEvent.VK_SHIFT -> player.attack();
 			case KeyEvent.VK_K -> player.takeDamage(1);
 			case KeyEvent.VK_L -> player.takeDamage(player.getCurrentHealth());
-			case KeyEvent.VK_R -> {
+			case KeyEvent.VK_0 -> {
 				game.resetPlaying();
 				Gamestate.state = Gamestate.TITLESCREEN;
 			}
