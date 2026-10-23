@@ -24,7 +24,7 @@ public class Mitten extends Enemy {
 	private final int randomAction;// 1:idle, 2:patrol, other:jump
 	
 	private final float startX;
-	private float maxWalkDistance = 50 * Settings.getCurrentScale();
+	private final float maxWalkDistance = 50 * Settings.getCurrentScale();
 	private final float walkSpeed = 0.3f * Settings.getCurrentScale();
 	
 	private final float jumpSpeed = -2f * Settings.getCurrentScale();

@@ -13,30 +13,27 @@ import helpers.EntityConstants.SheepState;
 import static helpers.EntityConstants.SheepState.*;
 
 public class Sheep extends Enemy {
-	private static Random random = new Random();
 	private SheepState sheepState;
-	private Camera camera;
 	private final float scale = Settings.getCurrentScale();
-	
-	private float jumpSpeed;
-	private int jumpInterval = 300;
-	private int tick = 0;
+	private Random random = new Random();
+	private final boolean stalking;
 	
 	private final float walkSpeed = 0.3f * scale;
 	private final float runSpeed = 0.7f * scale;
-	private float currentSpeed = walkSpeed;
-	
-	private final float followRangeX = 64f * scale;
-	private final float followRangeY = 256f * scale;
+	private float currentSpeed;
+	private float startX;
+	private float maxWalkDistance;
 
-	public Sheep(float x, float y, Camera camera) {
-		super(random.nextBoolean()? 
-				ResourceLoader.WHITESHEEP_SPRITES : 
-				ResourceLoader.BLACKSHEEP_SPRITES,
+	public Sheep(float x, float y, boolean stalking) {
+		super(stalking?
+				ResourceLoader.BLACKSHEEP_SPRITES :
+				ResourceLoader.WHITESHEEP_SPRITES, 
 				x, y, 16, 32, 24, 31, 5); //maxHealth = 5
-		this.camera = camera;
+		this.stalking = stalking;
 		this.sheepState = IDLE;
-		jump();
+		this.startX = x;
+		this.maxWalkDistance = random.nextInt(64,128) * scale;
+		this.currentSpeed = stalking? runSpeed : walkSpeed;
 	}
 	
 	@Override
@@ -44,7 +41,7 @@ public class Sheep extends Enemy {
 		super.update(collisionData, levelWidth, levelHeight, player, camera);
 		updateAnimationTick(sheepState.getAnimationAmount(), sheepState.isLooping());
 	}
-	
+
 	@Override
 	public void draw(Graphics2D g2) {
 		super.draw(g2, sheepState.getId());
@@ -52,60 +49,42 @@ public class Sheep extends Enemy {
 
 	@Override
 	protected void updateBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player) {
-		if (inAir) patrol(collisionData, levelWidth, levelHeight);
-		
-		else {
-			tick++;
-			if (seePlayer(player.getX(), player.getY())) {
-				currentSpeed = runSpeed;
-				facePlayer(player.getX());
-				patrol(collisionData, levelWidth, levelHeight);
-				if (tick >= jumpInterval) {
-					jump();
-					updateInterval();
-				}
-			} else {
-				currentSpeed = walkSpeed;
-				if (random.nextInt(128) == 0) turnAround();
-				patrol(collisionData, levelWidth, levelHeight);
-			}
-		}
-	}
-	
-	private void updateInterval() {
-		jumpInterval = random.nextInt(150,300);
-		tick = 0;
+		patrol(collisionData, levelWidth, levelHeight);
+		if (stalking) facePlayer(player.getX());
 	}
 	
 	private void patrol(List<Integer> cd, int lw, int lh) {
 		float trueXSpeed = facingLeft ? -currentSpeed : currentSpeed;
 		float nextX = x + trueXSpeed;
 
-		if (CollisionChecker.isSolid(hitbox, nextX, y, cd, lw, lh, camera)) {
+		if (!stalking && Math.abs(nextX - startX) >= maxWalkDistance) {
 			turnAround();
 			return;
 		}
 
+		if (CollisionChecker.isSolid(hitbox, nextX, y, cd, lw, lh)) {
+			if (!stalking) turnAround();
+			return;
+		}
+
+		float checkX = facingLeft ? nextX - this.width : nextX + this.width;
+		float checkY = y + 1.0f;
+		boolean solidGround = CollisionChecker.isSolid(hitbox, checkX, checkY, cd, lw, lh);
+		boolean platformGround = CollisionChecker.isPlatform(hitbox, checkX, y, checkY, 1.0f, cd, lw, lh);
+
+		if (!solidGround && !platformGround) {
+			if (!stalking) turnAround();
+			return;
+		}
+
 		this.xSpeed = trueXSpeed;
-		moving = true;
+//		this.sheepState = WALKING;
 	}
 	
 	private void turnAround() {
 		facingLeft = !facingLeft;
 		this.xSpeed = 0;
-	}
-
-	private void jump() {
-		if (!inAir) {
-			jumpSpeed = -scale * random.nextFloat(2,5);
-			inAir = true;
-			airSpeed = jumpSpeed;
-		}
+		this.sheepState = IDLE;
 	}
 	
-	private boolean seePlayer(float playerX, float playerY) {
-		if (playerY > this.y || 
-			Math.abs(playerY - this.y) > followRangeY) return false;
-		return Math.abs(playerX - this.x) <= followRangeX;
-	}
 }

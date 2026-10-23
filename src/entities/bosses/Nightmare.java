@@ -7,7 +7,7 @@ import display.Camera;
 import collision.Hitbox;
 import collision.CollisionChecker;
 import entities.Item;
-import entities.enemies.Sheep;
+import entities.enemies.SheepSpawn;
 import entities.player.Player;
 import helpers.Settings;
 import helpers.ResourceLoader;
@@ -139,7 +139,7 @@ public class Nightmare extends Boss {
 	private void spawnSheep(Camera camera) {
 		float scale = Settings.getCurrentScale();
 		float offsetX = random.nextFloat(-128f, 128f) * scale;
-		playing.getEntityManager().addEntity(new Sheep(x + offsetX, y -  320 * scale, camera));
+		playing.getEntityManager().addEntity(new SheepSpawn(x + offsetX, y -  320 * scale, camera));
 		attacking = false;
 	}
 	
@@ -159,7 +159,7 @@ public class Nightmare extends Boss {
 
 	@Override
 	protected void onDeath() {
-		playing.getEntityManager().removeWantedEntity(Sheep.class);
+		playing.getEntityManager().removeWantedEntity(SheepSpawn.class);
 		playing.getPlayer().takeDamage(0);
 		dying = true;
 	}
