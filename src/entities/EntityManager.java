@@ -88,7 +88,7 @@ public final class EntityManager {
 			if (e.getClass().equals(newbie.getClass()))
 				count++;
 		}
-		if (count < 7) pendingEntities.add(newbie);
+		if (count < 5) pendingEntities.add(newbie);
 	}
 	
 	public void removeWantedEntity(Class<?> wantedEntity) {

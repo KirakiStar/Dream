@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 
 import display.Camera;
 import collision.Hitbox;
+import collision.CollisionChecker;
 import entities.Item;
 import entities.enemies.Sheep;
 import entities.player.Player;
@@ -24,24 +25,27 @@ public class Nightmare extends Boss {
 	private static final float OFFSET_Y = 32f;
 	private static final float OFFSET_X_LEFT = 50f;
 	
-	private boolean attacking = false;
+	private boolean attacking = true;
 	private final int attackDamage = 1;
 	
 	private int tick = 0;
 	private int spawnInterval = 500;
+	
+	private boolean idling = false;
 
 	public Nightmare(float x, float y) {
 		super(BossesKillStatus.NIGHTMARE, ResourceLoader.NIGHTMARE_SPRITES, 
-				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 50); // maxHealth = 45
-//		this.nightmare = IDLE;
-		this.nightmare = WALKING;
+				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 70); // maxHealth = 70
+		this.nightmare = IDLE;
+		this.walkSpeed = 0.2f * Settings.getCurrentScale();
+//		this.nightmare = WALKING;
 	}
 	
 	@Override
 	public void update(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera) {
 		super.update(collisionData, levelWidth, levelHeight, player, camera);
-//		updateAnimation();
-		updateAnimationTick();
+		updateAnimation();
+		updateAnimationTick(camera);
 	}
 	
 	@Override
@@ -58,42 +62,83 @@ public class Nightmare extends Boss {
 		super.draw(g2, nightmare.getId());
 	}
 	
-	protected void updateAnimationTick() {
+	protected void updateAnimationTick(Camera camera) {
 		super.updateAnimationTick(nightmare.getAnimationAmount(), nightmare.isLooping());
 		
 		if (attacking) {
 			if (aniIndex >= nightmare.getAnimationAmount() - 1) {
-				spawnSheep();
+				spawnSheep(camera);
 			}
 		}
 	}
 	
 	@Override
 	protected void updateAnimation() {
+		if (!alive) return;
 		
+		if (moving) setAnimation(WALKING);
+		else setAnimation(IDLE);
+	}
+	
+	private void setAnimation(NightmareState newAction) {
+		if (this.nightmare.getId() != newAction.getId()) {
+			this.nightmare = newAction;
+			this.aniTick = 0;
+			this.aniIndex = 0;
+		}
 	}
 
 	@Override
 	protected void updateBossBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera) {
 		if (!(hit || attacking)) tick++;
-		if (nightmare == IDLE) facePlayer(player.getX());
+		if (random.nextInt(128) == 0) idling = !idling;
 		
 		if (tick >= spawnInterval) {
+			facePlayer(player.getX());
 			attack();
 			updateInterval();
 			tick = 0;
+		} else if (!idling) {
+			patrol(collisionData, levelWidth, levelHeight, camera);
+		} else {
+			facePlayer(player.getX());
+			moving = false;
 		}
+	}
+	
+	private void patrol(List<Integer> cd, int lw, int lh, Camera camera) {
+		float trueXSpeed = facingLeft ? -walkSpeed : walkSpeed;
+		float nextX = x + trueXSpeed;
+
+		if (CollisionChecker.isSolid(hitbox, nextX, y, cd, lw, lh, camera)) {
+			turnAround();
+			return;
+		}
+		
+		if (random.nextInt(128) == 0) turnAround();
+
+		this.xSpeed = trueXSpeed;
+		moving = true;
 	}
 	
 	private void updateInterval() {
 		spawnInterval = random.nextInt(150,500);
 	}
 	
-	private void spawnSheep() {
+	private void spawnSheep(Camera camera) {
 		float scale = Settings.getCurrentScale();
 		float offsetX = random.nextFloat(-128f, 128f) * scale;
-		playing.getEntityManager().addEntity(new Sheep(x + offsetX, y -  320 * scale));
+		playing.getEntityManager().addEntity(new Sheep(x + offsetX, y -  320 * scale, camera));
 		attacking = false;
+	}
+	
+	private void turnAround() {
+		facingLeft = !facingLeft;
+		this.moving = false;
+		this.xSpeed = 0;
+		this.nightmare = IDLE;
+		if (facingLeft) x -= OFFSET_X_LEFT;
+		else x += OFFSET_X_LEFT;
 	}
 	
 	@Override
@@ -106,7 +151,7 @@ public class Nightmare extends Boss {
 	protected void onDeath() {
 		playing.getEntityManager().removeWantedEntity(Sheep.class);
 		playing.getPlayer().takeDamage(0);
-		playing.getEntityManager().addEntity(new Item(x, y - Settings.getTileSize(), HYPNOTIST));
+		playing.getEntityManager().addEntity(new Item(x, y, HYPNOTIST));
 	}
 
 	@Override
