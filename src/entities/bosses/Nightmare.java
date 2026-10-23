@@ -35,7 +35,7 @@ public class Nightmare extends Boss {
 
 	public Nightmare(float x, float y) {
 		super(BossesKillStatus.NIGHTMARE, ResourceLoader.NIGHTMARE_SPRITES, 
-				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 70); // maxHealth = 70
+				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 50); // maxHealth = 50
 		this.nightmare = IDLE;
 		this.currentSpeed = 0.2f * Settings.getCurrentScale();
 	}
@@ -64,6 +64,14 @@ public class Nightmare extends Boss {
 	protected void updateAnimationTick(Camera camera) {
 		super.updateAnimationTick(nightmare.getAnimationAmount(), nightmare.isLooping());
 		
+		if (dying) {
+			if (aniIndex >= nightmare.getAnimationAmount() - 1) {
+				playing.getEntityManager().addEntity(new Item(x, y - Settings.getTileSize(), HYPNOTIST));
+				super.die();
+			}
+				return;
+		}
+		
 		if (attacking) {
 			if (aniIndex >= nightmare.getAnimationAmount() - 1) {
 				spawnSheep(camera);
@@ -74,6 +82,10 @@ public class Nightmare extends Boss {
 	@Override
 	protected void updateAnimation() {
 		if (!alive) return;
+		if (dying) {
+			setAnimation(DEATH);
+			return;
+		}
 		
 		if (moving) setAnimation(WALKING);
 		else setAnimation(IDLE);
@@ -143,14 +155,13 @@ public class Nightmare extends Boss {
 	@Override
 	public void die() {
 		onDeath();
-		super.die();
 	}
 
 	@Override
 	protected void onDeath() {
 		playing.getEntityManager().removeWantedEntity(Sheep.class);
 		playing.getPlayer().takeDamage(0);
-		playing.getEntityManager().addEntity(new Item(x, y, HYPNOTIST));
+		dying = true;
 	}
 
 	@Override

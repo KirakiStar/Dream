@@ -143,7 +143,8 @@ public class EntityConstants {
 	
 	public enum NightmareState implements EntityAnimation {
 		IDLE(0, 2, true),
-		WALKING(1, 4, true);
+		WALKING(1, 4, true),
+		DEATH(2, 4, false);
 
 		private final int id;
 		private final int animationAmount;

@@ -40,7 +40,7 @@ public class Alice extends Boss {
 
 	public Alice(float x, float y) {
 		super(BossesKillStatus.ALICE, ResourceLoader.ALICE_SPRITES, 
-				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 40); //maxhealth = 40
+				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 30); //maxhealth = 30
 		this.currentSpeed = walkSpeed;
 		this.jumpSpeed = -1f * Settings.getCurrentScale();
 		this.aliceState = ATTACK1;
