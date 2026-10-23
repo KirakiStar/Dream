@@ -37,8 +37,7 @@ public class Nightmare extends Boss {
 		super(BossesKillStatus.NIGHTMARE, ResourceLoader.NIGHTMARE_SPRITES, 
 				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 70); // maxHealth = 70
 		this.nightmare = IDLE;
-		this.walkSpeed = 0.2f * Settings.getCurrentScale();
-//		this.nightmare = WALKING;
+		this.currentSpeed = 0.2f * Settings.getCurrentScale();
 	}
 	
 	@Override
@@ -91,7 +90,7 @@ public class Nightmare extends Boss {
 	@Override
 	protected void updateBossBehavior(List<Integer> collisionData, int levelWidth, int levelHeight, Player player, Camera camera) {
 		if (!(hit || attacking)) tick++;
-		if (random.nextInt(128) == 0) idling = !idling;
+		if (random.nextInt(128) == 1) idling = !idling;
 		
 		if (tick >= spawnInterval) {
 			facePlayer(player.getX());
@@ -107,7 +106,7 @@ public class Nightmare extends Boss {
 	}
 	
 	private void patrol(List<Integer> cd, int lw, int lh, Camera camera) {
-		float trueXSpeed = facingLeft ? -walkSpeed : walkSpeed;
+		float trueXSpeed = facingLeft ? -currentSpeed : currentSpeed;
 		float nextX = x + trueXSpeed;
 
 		if (CollisionChecker.isSolid(hitbox, nextX, y, cd, lw, lh, camera)) {

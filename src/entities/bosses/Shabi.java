@@ -29,13 +29,13 @@ public class Shabi extends Boss {
 	private final int attackDamage = 1;
 	
 	private int tick = 0;
-	private int action = 0; // 0:idle, 1:patrol, 2: jump + move 3:jump + spawn fire, 3:spawn fire
+	private int action = 0; // 0:idle, 1:patrol, 2:jump + move, 3:jump + spawn fire, 4:spawn fire
 	private int[] actionInterval = {100,200,10,150,100};
 
 	public Shabi(float x, float y) {
 		super(BossesKillStatus.SHABI, ResourceLoader.SHABI_SPRITES, 
 				x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 15); //maxhealth = 15
-		this.walkSpeed = 0.5f * Settings.getCurrentScale();
+		this.currentSpeed = 0.5f * Settings.getCurrentScale();
 		this.jumpSpeed = -2f * Settings.getCurrentScale();
 		this.gravity = 0.03f * Settings.getCurrentScale();
 		facingLeft = true;
@@ -135,7 +135,7 @@ public class Shabi extends Boss {
 	}
 	
 	private void patrol(List<Integer> cd, int lw, int lh, Camera camera) {
-		float trueXSpeed = facingLeft ? -walkSpeed : walkSpeed;
+		float trueXSpeed = facingLeft ? -currentSpeed : currentSpeed;
 		float nextX = x + trueXSpeed;
 
 		if (CollisionChecker.isSolid(hitbox, nextX, y, cd, lw, lh, camera)) {

@@ -118,9 +118,13 @@ public class EntityConstants {
 	
 	public enum AliceState implements EntityAnimation {
 		IDLE(0, 4, true),
-		WALKING(1, 2, true),
-		ATTACK1(2, 4, false),
-		ATTACK2(3, 4, false);
+		WALKING(1, 4, true),
+		JUMPING(0, 4, false),
+		FALLING(1, 4, false),
+		ATTACK1(2, 4, true),
+		ATTACK2(3, 4, false),
+		WARNING(4, 4, false),
+		DEATH(5, 4, false);
 
 		private final int id;
 		private final int animationAmount;

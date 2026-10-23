@@ -53,7 +53,7 @@ public final class ResourceLoader {
 	public static final SpriteSheet SHADOWFIRE_SPRITES = new SpriteSheet("magic.png", 2, 2, 40, 40);
 	
 	public static final SpriteSheet SHABI_SPRITES = new SpriteSheet("shabi.png", 6, 4, 96, 96);
-	public static final SpriteSheet ALICE_SPRITES = new SpriteSheet("alice.png", 4, 4, 96, 96);
+	public static final SpriteSheet ALICE_SPRITES = new SpriteSheet("alice.png", 6, 4, 96, 96);
 	public static final SpriteSheet NIGHTMARE_SPRITES = new SpriteSheet("nightmare.png", 2, 4, 128, 128);
 
 	public static List<String> levelFiles = new ArrayList<>(List.of(

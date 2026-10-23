@@ -16,7 +16,7 @@ public abstract class Boss extends MovingEntity implements Attackable {
 	protected BossesKillStatus bossId;
 	protected boolean hit = false;
 	protected float xSpeed = 0;
-	protected float walkSpeed;
+	protected float currentSpeed;
 	protected float jumpSpeed;
 	protected boolean dying = false;
 	
