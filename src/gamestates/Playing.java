@@ -17,9 +17,9 @@ import levels.LevelManager;
 import helpers.Settings;
 
 public class Playing extends State implements StateMethods {
+	private PlayingUI playingUI;
 	private Player player;
 	private Camera camera;
-	private PlayingUI playingUI;
 	
 	private LevelManager levelManager;
 	private List<Integer> collisionData;
@@ -124,7 +124,7 @@ public class Playing extends State implements StateMethods {
 
 				if (isAuto || isInteract) {
 					player.setUp(false);
-					levelManager.loadLevel(trigger.getTargetLevel(), trigger.getSpawnX(), trigger.getSpawnY());
+					game.loadLevelWithFade(trigger.getTargetLevel(), trigger.getSpawnX(), trigger.getSpawnY());
 					camera.setLevelBounds();
 					break;
 				}

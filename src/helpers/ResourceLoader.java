@@ -39,6 +39,7 @@ public final class ResourceLoader {
 	
 	public static final String ICON = "icon.png";
 	public static final String TITLESCREEN = "titlescreen.png";
+	public static final String BLACKSCREEN = "330049.png";
 	public static BufferedImage[][] fontCharacters;
 	
 	public static final SpriteSheet GUI_ITEMS = new SpriteSheet("gui.png", 9, 10, 32, 32);

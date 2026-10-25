@@ -11,7 +11,7 @@ import helpers.BossesKillStatus;
 import static helpers.ScalarValues.*;
 
 public class PlayingUI implements GUI_Methods {
-	private Playing playing;
+	private final Playing playing;
 	
 	private final BufferedImage[][] fontCharacters;
 	
@@ -38,29 +38,29 @@ public class PlayingUI implements GUI_Methods {
 		boolean isHit = playing.getPlayer().isHit();
 		
 		// silver icon
-		g2.drawImage(fontCharacters[5][3], x10, x20, x32, x32, null);
+		g2.drawImage(fontCharacters[5][3], getX10(), getX20(), getX32(), getX32(), null);
 
 		BufferedImage heartIcon = isHit ? fontCharacters[2][2] : fontCharacters[2][1];
 		BufferedImage[] hpAmount = isHit ? fontCharacters[0] : fontCharacters[1];
 
-		g2.drawImage(heartIcon, x32, x10, x32, x32, null);
+		g2.drawImage(heartIcon, getX32(), getX10(), getX32(), getX32(), null);
 
 		for (int i = 0; i < hp.length(); i++) {
 			int numIndex = hp.charAt(i) - '0';
-			g2.drawImage(hpAmount[numIndex], x64 + (i * x20), x10, x32, x32, null);
+			g2.drawImage(hpAmount[numIndex], getX64() + (i * getX20()), getX10(), getX32(), getX32(), null);
 		}
 		
 		int attackDamage = playing.getPlayer().getDamage();
 		for (int i = 0; i < attackDamage; i++) {
 			// attack icon
-			g2.drawImage(fontCharacters[2][6], x32 + (i * x10), x32, x16, x16, null);
+			g2.drawImage(fontCharacters[2][6], getX32() + (i * getX10()), getX32(), getX16(), getX16(), null);
 		}
 	}
 	
 	private void drawPlayerScore(Graphics2D g2) {
 		for (int i = 0; i < 4; i++) {
 			if (BossesKillStatus.getBossAtId(i).isKilled())
-				g2.drawImage(fontCharacters[5][4+i], x10 + i * x32, screenHeight - x32, x32, x32, null);
+				g2.drawImage(fontCharacters[5][4+i], getX10() + i * getX32(), screenHeight - getX32(), getX32(), getX32(), null);
 		}
 	}
 
@@ -71,21 +71,21 @@ public class PlayingUI implements GUI_Methods {
 		String hp = Integer.toString(playing.getActiveBoss().getCurrentHealth());
 		boolean isHit = playing.getActiveBoss().isHit();
 		
-		int startXPos = screenWidth - x128 + x20;
-		int yPos = screenHeight - x32 - x10;
+		int startXPos = screenWidth - getX128() + getX20();
+		int yPos = screenHeight - getX32() - getX10();
 		
 		// boss icon
-		g2.drawImage(fontCharacters[5][boss.getBossId().getIconCol()], startXPos + x10, yPos, x32, x32, null);
+		g2.drawImage(fontCharacters[5][boss.getBossId().getIconCol()], startXPos + getX10(), yPos, getX32(), getX32(), null);
 		
 		BufferedImage heartIcon = isHit ? fontCharacters[2][2] : fontCharacters[2][1];
 		BufferedImage[] hpAmount = isHit ? fontCharacters[0] : fontCharacters[1];
 		
-		g2.drawImage(heartIcon, startXPos + x32, screenHeight - x32, x32, x32, null);
+		g2.drawImage(heartIcon, startXPos + getX32(), screenHeight - getX32(), getX32(), getX32(), null);
 
-		startXPos += x64 - x10;
+		startXPos += getX64() - getX10();
 		for (int i = 0; i < hp.length(); i++) {
 			int numIndex = hp.charAt(i) - '0';
-			g2.drawImage(hpAmount[numIndex], startXPos + (i * x20), yPos, x32, x32, null);
+			g2.drawImage(hpAmount[numIndex], startXPos + (i * getX20()), yPos, getX32(), getX32(), null);
 		}
 	}
 }

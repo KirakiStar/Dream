@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import gamestates.Gamestate;
 import gamestates.Playing;
 import gamestates.TitleScreen;
+import display.ScreenTransition;
 import helpers.ResourceLoader;
 
 public class Game{
@@ -14,6 +15,8 @@ public class Game{
 	
 	private TitleScreen titleScreen;
 	private Playing playing;
+	
+	private ScreenTransition transition;
 	
 	public Game() {
 		init();
@@ -29,6 +32,7 @@ public class Game{
 		ResourceLoader.fontCharacters = ResourceLoader.loadSpriteSheet(ResourceLoader.GUI_ITEMS);
 		titleScreen = new TitleScreen(this);
 		playing = new Playing(this);
+		transition = new ScreenTransition(ResourceLoader.BLACKSCREEN);
 	}
 	
 	private void startGameLoop() {
@@ -37,9 +41,13 @@ public class Game{
 	}
 	
 	public void update() {
-		switch (Gamestate.state) {
-			case TITLESCREEN -> titleScreen.update();
-			case PLAYING -> playing.update();
+		transition.update();
+
+		if (!transition.isTransitioning()) {
+			switch (Gamestate.state) {
+				case TITLESCREEN -> titleScreen.update();
+				case PLAYING -> playing.update();
+			}
 		}
 	}
 	
@@ -48,6 +56,24 @@ public class Game{
 			case TITLESCREEN -> titleScreen.draw(g2);
 			case PLAYING -> playing.draw(g2);
 		}
+		transition.draw(g2);
+	}
+	
+	public void changeStateWithFade(Gamestate newState) {
+		transition.startTransition(() -> {
+			Gamestate.state = newState;
+			if (newState == Gamestate.PLAYING) {
+				resetPlaying();
+			}
+		});
+	}
+	
+	public void loadLevelWithFade(int levelIndex, float spawnX, float spawnY) {
+		transition.startTransition(() -> {
+			if (playing != null && playing.getLevelManager() != null) {
+				playing.getLevelManager().loadLevel(levelIndex, spawnX, spawnY);
+			}
+		});
 	}
 	
 	public GamePanel getGamePanel() { return gamePanel; }

@@ -25,8 +25,12 @@ public final class Settings {
 		gameHeight = getTileSize() * GAME_HEIGHT_IN_TILES;
 	}
 	
-	public static void setNewScale(int nextIndex) { calNewScale(scaleIndex + nextIndex); }
+	public static void setNewScale(int nextIndex) {
+		calNewScale(scaleIndex + nextIndex);
+		ScalarValues.setScalars();
+	}
 
+	public static int getScaleIndex() { return scaleIndex; }
 	public static float getCurrentScale() { return currentScale; }
 	public static int getTileSize() { return tileSize; }
 	public static int getGameWidth() { return gameWidth; }
