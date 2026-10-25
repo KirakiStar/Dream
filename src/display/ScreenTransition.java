@@ -10,7 +10,8 @@ import helpers.Settings;
 public class ScreenTransition {
 	private final BufferedImage blackImg;
 	private float alpha = 0f;
-	private final float fadeSpeed = 0.2f;
+	private final float defaultFadeSpeed = 0.2f;
+	private float currentFadeSpeed = defaultFadeSpeed;
 	private boolean fadingOut = false;
 	private boolean fadingIn = false;
 	private Runnable onFadeComplete;
@@ -18,8 +19,13 @@ public class ScreenTransition {
 	public ScreenTransition(String fileName) {
 		this.blackImg = ResourceLoader.ImagesLoader(fileName);
 	}
-
+	
 	public void startTransition(Runnable onComplete) {
+		startTransition(onComplete, defaultFadeSpeed);
+	}
+
+	public void startTransition(Runnable onComplete, float speed) {
+		this.currentFadeSpeed = speed;
 		this.fadingOut = true;
 		this.fadingIn = false;
 		this.onFadeComplete = onComplete;
@@ -27,7 +33,7 @@ public class ScreenTransition {
 
 	public void update() {
 		if (fadingOut) {
-			alpha += fadeSpeed;
+			alpha += currentFadeSpeed;
 			if (alpha >= 1f) {
 				alpha = 1f;
 				fadingOut = false;
@@ -37,7 +43,7 @@ public class ScreenTransition {
 				fadingIn = true;
 			}
 		} else if (fadingIn) {
-			alpha -= fadeSpeed;
+			alpha -= currentFadeSpeed;
 			if (alpha <= 0f) {
 				alpha = 0f;
 				fadingIn = false;

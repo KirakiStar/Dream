@@ -124,7 +124,16 @@ public class Playing extends State implements StateMethods {
 
 				if (isAuto || isInteract) {
 					player.setUp(false);
-					game.loadLevelWithFade(trigger.getTargetLevel(), trigger.getSpawnX(), trigger.getSpawnY());
+
+					if (trigger.getTargetLevel() == -1) {
+						game.changeStateWithFade(Gamestate.CUTSCENE, 0.03f);
+						game.getCutscene().startCutscene(helpers.ResourceLoader.ENDING_CUTSCENE, () -> {
+							System.exit(0);
+						});
+					} else {
+						game.loadLevelWithFade(trigger.getTargetLevel(), trigger.getSpawnX(), trigger.getSpawnY());
+					}
+
 					camera.setLevelBounds();
 					break;
 				}

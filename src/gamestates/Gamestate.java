@@ -1,7 +1,9 @@
 package gamestates;
 
 public enum Gamestate {
-	PLAYING, TITLESCREEN;
+	TITLESCREEN,
+	PLAYING,
+	CUTSCENE;
 	
 	public static Gamestate state = TITLESCREEN;
 }

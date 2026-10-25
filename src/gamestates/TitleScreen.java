@@ -37,7 +37,7 @@ public class TitleScreen extends State implements StateMethods{
 		
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_Z, KeyEvent.VK_ENTER, KeyEvent.VK_SPACE -> {
-				game.changeStateWithFade(Gamestate.PLAYING);
+				title.triggerStart();
 			}
 			case KeyEvent.VK_RIGHT, KeyEvent.VK_D -> {
 				Settings.setNewScale(1);

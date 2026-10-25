@@ -1,7 +1,7 @@
 package helpers;
 
 public final class Settings {
-	private static final float[] SCALE = {1f, 1.5f, 2f, 2.5f};
+	private static final float[] SCALE = {1f, 1.5f, 2f, 2.5f, 3f};
 	private static int scaleIndex = 2;
 
 	private final static int DEFAULT_TILE_SIZE = 32;

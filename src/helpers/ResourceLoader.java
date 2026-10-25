@@ -42,6 +42,9 @@ public final class ResourceLoader {
 	public static final String BLACKSCREEN = "330049.png";
 	public static BufferedImage[][] fontCharacters;
 	
+	public static final String[] INTRO_CUTSCENE = {"house2.png", "house1.png"};
+	public static final String[] ENDING_CUTSCENE = {"nightmare.png"};
+	
 	public static final SpriteSheet GUI_ITEMS = new SpriteSheet("gui.png", 9, 10, 32, 32);
 	public static final SpriteSheet TS_BUTTONS = new SpriteSheet("buttons.png", 5, 1, 128, 64);
 	public static final SpriteSheet PLAYER_SPRITES = new SpriteSheet("silver.png", 11, 4, 64, 64);
@@ -58,7 +61,7 @@ public final class ResourceLoader {
 	public static final SpriteSheet ALICE_SPRITES = new SpriteSheet("alice.png", 6, 4, 96, 96);
 	public static final SpriteSheet NIGHTMARE_SPRITES = new SpriteSheet("nightmare.png", 3, 4, 128, 128);
 
-	public static List<String> levelFiles = new ArrayList<>(List.of(
+	public static final List<String> levelFiles = new ArrayList<>(List.of(
 													"house1", "level1", "level1_1", "level1_2", 
 													"level2_1", "level2_2", "level2_3", 
 													"level3_1", "level3_2", "backAt1", "house2"));

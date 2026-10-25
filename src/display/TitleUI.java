@@ -42,7 +42,7 @@ public class TitleUI implements GUI_Methods {
 			blinkTick++;
 			if (blinkTick >= tickBeforeStart) {
 				title.getGame().resetPlaying();
-				gamestates.Gamestate.state = gamestates.Gamestate.PLAYING;
+				title.getGame().changeStateWithFade(gamestates.Gamestate.PLAYING, 0.05f);
 				starting = false;
 				blinkTick = 0;
 			}

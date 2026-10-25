@@ -17,6 +17,7 @@ public class Inputs implements KeyListener{
 		switch (Gamestate.state) {
 			case TITLESCREEN -> gamePanel.getGame().getTitleScreen().keyPressed(e);
 			case PLAYING -> gamePanel.getGame().getPlaying().keyPressed(e);
+			case CUTSCENE -> gamePanel.getGame().getCutscene().keyPressed(e);
 		}
 	}
 
