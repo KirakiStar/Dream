@@ -36,7 +36,7 @@ public class Mitten extends Enemy {
 		Random random = new Random();
 		randomAction = random.nextInt(4);
 		tick = random.nextInt(jumpInterval); //tick offset
-		maxWalkDistance = random.nextInt(50,70) * Settings.getCurrentScale();
+		maxWalkDistance = random.nextFloat(30,50) * Settings.getCurrentScale();
 		mittenState = IDLE;
 	}
 	

@@ -42,6 +42,7 @@ public final class ResourceLoader {
 	public static BufferedImage[][] fontCharacters;
 	
 	public static final SpriteSheet GUI_ITEMS = new SpriteSheet("gui.png", 9, 10, 32, 32);
+	public static final SpriteSheet TS_BUTTONS = new SpriteSheet("buttons.png", 5, 1, 128, 64);
 	public static final SpriteSheet PLAYER_SPRITES = new SpriteSheet("silver.png", 11, 4, 64, 64);
 	public static final SpriteSheet ITEM_SPRITES = new SpriteSheet("items.png", 5, 4, 64, 64);
 	
@@ -61,18 +62,20 @@ public final class ResourceLoader {
 													"level2_1", "level2_2", "level2_3", 
 													"level3_1", "level3_2", "backAt1", "house2"));
 
-	public static void loadFonts() {
-		int rows = GUI_ITEMS.getRow();
-		int columns = GUI_ITEMS.getColumn();
-		int imgWidth = GUI_ITEMS.getWidth();
-		int imgHeight = GUI_ITEMS.getHeight();
-		BufferedImage img = ImagesLoader(GUI_ITEMS.getFileName());
-		fontCharacters = new BufferedImage[rows][columns];
+	public static BufferedImage[][] loadSpriteSheet(SpriteSheet name) {
+		int rows = name.getRow();
+		int columns = name.getColumn();
+		int imgWidth = name.getWidth();
+		int imgHeight = name.getHeight();
+		BufferedImage img = ImagesLoader(name.getFileName());
+		BufferedImage[][] temp = new BufferedImage[rows][columns];
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				fontCharacters[i][j] = img.getSubimage(j * imgWidth, i * imgHeight, imgWidth, imgHeight);
+				temp[i][j] = img.getSubimage(j * imgWidth, i * imgHeight, imgWidth, imgHeight);
 			}
 		}
+		
+		return temp;
 	}
 	
 	public static BufferedImage ImagesLoader(String fileName) {

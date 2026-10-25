@@ -9,7 +9,6 @@ import helpers.ResourceLoader;
 import helpers.ResourceLoader.SpriteSheet;
 
 public abstract class Entity {
-	protected SpriteSheet entitySprites;
 	protected int imgWidth;
 	protected int imgHeight;
 	protected float x;
@@ -31,7 +30,6 @@ public abstract class Entity {
 	protected int invincibilityDuration = 30;
 
 	public Entity(SpriteSheet entitySprites, float x, float y, int width, int height, float offsetX, float offsetY, int maxHealth) {
-		this.entitySprites = entitySprites;
 		this.x = x;
 		this.y = y;
 		this.width = (int)(width * Settings.getCurrentScale());
@@ -40,26 +38,13 @@ public abstract class Entity {
 		
 		this.imgWidth = entitySprites.getWidth();
 		this.imgHeight = entitySprites.getHeight();
-		loadAnimations(entitySprites);
+		sprites = ResourceLoader.loadSpriteSheet(entitySprites);
 		initHealth(maxHealth);
 	}
 	
-	protected void initHealth(int maxHealth) {
+	private void initHealth(int maxHealth) {
 		this.maxHealth = maxHealth;
 		this.currentHealth = maxHealth;
-	}
-
-	protected void loadAnimations(SpriteSheet spriteSheet) {
-		String fileName = spriteSheet.getFileName();
-		int rows = spriteSheet.getRow();
-		int columns = spriteSheet.getColumn();
-		BufferedImage img = ResourceLoader.ImagesLoader(fileName);
-		sprites = new BufferedImage[rows][columns];
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < columns; j++) {
-				sprites[i][j] = img.getSubimage(j * imgWidth, i * imgHeight, imgWidth, imgHeight);
-			}
-		}
 	}
 
 	public void update() {

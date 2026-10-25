@@ -8,24 +8,15 @@ import entities.bosses.Boss;
 import helpers.Settings;
 import helpers.ResourceLoader;
 import helpers.BossesKillStatus;
+import static helpers.ScalarValues.*;
 
 public class PlayingUI implements GUI_Methods {
 	private Playing playing;
 	
-	private BufferedImage[][] fontCharacters;
-//	private final int imgRow = 9;
-//	private final int imgCol = 10;
+	private final BufferedImage[][] fontCharacters;
 	
 	private final int screenWidth = Settings.getGameWidth();
 	private final int screenHeight = Settings.getGameHeight();
-	
-	private final int scale = (int) Settings.getCurrentScale();
-	private final int x10 = 10 * scale;
-	private final int x20 = x10 * 2;
-	private final int x16 = 16 * scale;
-	private final int x32 = x16 * 2;
-	private final int x64 = x32 * 2;
-	private final int x128 = x64 * 2;
 
 	public PlayingUI(Playing playing) {
 		this.playing = playing;
@@ -33,15 +24,12 @@ public class PlayingUI implements GUI_Methods {
 	}
 
 	@Override
-	public void update() {
-		
-	}
+	public void update() { }
 
 	@Override
 	public void draw(Graphics2D g2) {
 		drawPlayerStats(g2);
 		drawPlayerScore(g2);
-		drawCollectedDolls(g2);
 		drawBossHealth(g2);
 	}
 	
@@ -74,10 +62,6 @@ public class PlayingUI implements GUI_Methods {
 			if (BossesKillStatus.getBossAtId(i).isKilled())
 				g2.drawImage(fontCharacters[5][4+i], x10 + i * x32, screenHeight - x32, x32, x32, null);
 		}
-	}
-	
-	private void drawCollectedDolls(Graphics2D g2) {
-		
 	}
 
 	private void drawBossHealth(Graphics2D g2) {

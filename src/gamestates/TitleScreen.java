@@ -9,7 +9,7 @@ import helpers.Settings;
 import helpers.ResourceLoader;
 
 public class TitleScreen extends State implements StateMethods{
-	private String titlePng = ResourceLoader.TITLESCREEN;
+	private final String titlePng = ResourceLoader.TITLESCREEN;
 	BufferedImage background;
 	
 	public TitleScreen(Game game) {

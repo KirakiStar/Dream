@@ -26,7 +26,7 @@ public class Game{
 	}
 	
 	private void init() {
-		ResourceLoader.loadFonts();
+		ResourceLoader.fontCharacters = ResourceLoader.loadSpriteSheet(ResourceLoader.GUI_ITEMS);
 		titleScreen = new TitleScreen(this);
 		playing = new Playing(this);
 	}

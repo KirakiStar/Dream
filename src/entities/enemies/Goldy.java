@@ -26,7 +26,7 @@ public class Goldy extends Enemy implements Attackable {
 	
 	private final float startX;
 	private final float walkSpeed = 0.5f * Settings.getCurrentScale();
-	private final float maxWalkDistance;
+	private final float maxWalkDistance = 50f * Settings.getCurrentScale();
 	
 	private Hitbox attackBox;
 	private boolean attacking = false;
@@ -39,7 +39,6 @@ public class Goldy extends Enemy implements Attackable {
 		this.startX = x;
 		Random random = new Random();
 		tick = random.nextInt(attackInterval); //tick offset
-		maxWalkDistance = random.nextInt(50,100) * Settings.getCurrentScale();
 		this.knockbackSpeed = 0.2f * Settings.getCurrentScale();
 		this.goldyState = IDLE;
 		setAttackBox();
