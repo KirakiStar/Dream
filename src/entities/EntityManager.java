@@ -40,11 +40,10 @@ public final class EntityManager {
 			float x = tileX * Settings.getTileSize();
 			float y = tileY * Settings.getTileSize();
 			
-			Random random = new Random();
 			switch (tileID) {
 				case 1 -> entities.add(new Item(x, y));
-				case 2 -> entities.add(new Mitten(x, y, random.nextInt(Mitten.jumpInterval)));
-				case 3 -> entities.add(new Goldy(x, y, random.nextInt(Goldy.attackInterval)));
+				case 2 -> entities.add(new Mitten(x, y));
+				case 3 -> entities.add(new Goldy(x, y));
 				case 4 -> entities.add(new ShadowFire(x, y, Obstacle.SHADOW));
 				case 5 -> entities.add(new Sheep(x, y, false)); // no stalking
 				case 6 -> entities.add(new Sheep(x, y, true)); // stalking

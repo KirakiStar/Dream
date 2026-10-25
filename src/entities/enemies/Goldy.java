@@ -1,6 +1,7 @@
 package entities.enemies;
 
 import java.util.List;
+import java.util.Random;
 import java.awt.Graphics2D;
 
 import display.Camera;
@@ -24,20 +25,22 @@ public class Goldy extends Enemy implements Attackable {
 	private int tick = 0;
 	
 	private final float startX;
-	private float maxWalkDistance = 50 * Settings.getCurrentScale();
 	private final float walkSpeed = 0.5f * Settings.getCurrentScale();
+	private final float maxWalkDistance;
 	
 	private Hitbox attackBox;
 	private boolean attacking = false;
 	private final int attackDamage = 1;
 	private final float attackRange = 64f * Settings.getCurrentScale();
-	public static final int attackInterval = 180;
+	private final int attackInterval = 180;
 
-	public Goldy(float x, float y, int UniqueTickOffset) {
+	public Goldy(float x, float y) {
 		super(ResourceLoader.GOLDY_SPRITES, x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 5); //maxHealth = 5
 		this.startX = x;
+		Random random = new Random();
+		tick = random.nextInt(attackInterval); //tick offset
+		maxWalkDistance = random.nextInt(50,100) * Settings.getCurrentScale();
 		this.knockbackSpeed = 0.2f * Settings.getCurrentScale();
-		tick = UniqueTickOffset;
 		this.goldyState = IDLE;
 		setAttackBox();
 	}

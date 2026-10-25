@@ -24,19 +24,20 @@ public class Mitten extends Enemy {
 	private final int randomAction;// 1:idle, 2:patrol, other:jump
 	
 	private final float startX;
-	private final float maxWalkDistance = 50 * Settings.getCurrentScale();
 	private final float walkSpeed = 0.3f * Settings.getCurrentScale();
+	private final float maxWalkDistance;
 	
 	private final float jumpSpeed = -2f * Settings.getCurrentScale();
-	public static final int jumpInterval = 300;
+	private final int jumpInterval = 300;
 	
-	public Mitten(float x, float y, int UniqueTickOffset) {
-		super(ResourceLoader.MITTEN_SPRITES, x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 3); //maxHealth = 2
+	public Mitten(float x, float y) {
+		super(ResourceLoader.MITTEN_SPRITES, x, y, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, 3); //maxHealth = 3
 		this.startX = x;
-		mittenState = IDLE;
-		tick = UniqueTickOffset;
 		Random random = new Random();
 		randomAction = random.nextInt(4);
+		tick = random.nextInt(jumpInterval); //tick offset
+		maxWalkDistance = random.nextInt(50,70) * Settings.getCurrentScale();
+		mittenState = IDLE;
 	}
 	
 	@Override
