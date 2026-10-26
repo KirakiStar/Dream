@@ -14,20 +14,24 @@ public class Cutscene extends State implements StateMethods {
 	private final List<BufferedImage> cutsceneImages = new ArrayList<>();
 	private int currentIndex = 0;
 	private Runnable onCutsceneFinish;
+	private boolean escapeOnly = false;
 	
 	public Cutscene(Game game) {
 		super(game);
 	}
 	
-	public void startCutscene(String[] filePaths, Runnable onFinish) {
+	public void startCutscene(String[] filePaths, Runnable onFinish, boolean escapeOnly) {
 		cutsceneImages.clear();
 		for (String path : filePaths) {
 			cutsceneImages.add(ResourceLoader.ImagesLoader(path));
 		}
 		currentIndex = 0;
 		this.onCutsceneFinish = onFinish;
-		
-		Gamestate.state = Gamestate.CUTSCENE;
+		this.escapeOnly = escapeOnly;
+	}
+	
+	public void startCutscene(String[] filePaths, Runnable onFinish) {
+		startCutscene(filePaths, onFinish, false);
 	}
 
 	@Override
@@ -54,8 +58,18 @@ public class Cutscene extends State implements StateMethods {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		switch (e.getKeyCode()) {
-			case KeyEvent.VK_SPACE, KeyEvent.VK_ENTER, KeyEvent.VK_Z -> advanceCutscene();
+		if (escapeOnly) {
+			if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+				game.advanceCutsceneWithFade(() -> {
+					if (onCutsceneFinish != null) {
+						onCutsceneFinish.run();
+					}
+				});
+			}
+		} else {
+			switch (e.getKeyCode()) {
+				case KeyEvent.VK_SPACE, KeyEvent.VK_ENTER, KeyEvent.VK_Z -> advanceCutscene();
+			}
 		}
 	}
 

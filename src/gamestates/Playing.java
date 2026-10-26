@@ -126,10 +126,10 @@ public class Playing extends State implements StateMethods {
 					player.setUp(false);
 
 					if (trigger.getTargetLevel() == -1) {
-						game.changeStateWithFade(Gamestate.CUTSCENE, 0.03f);
 						game.getCutscene().startCutscene(helpers.ResourceLoader.ENDING_CUTSCENE, () -> {
 							System.exit(0);
-						});
+						}, true);
+						game.changeStateWithFade(Gamestate.CUTSCENE, 0.03f);
 					} else {
 						game.loadLevelWithFade(trigger.getTargetLevel(), trigger.getSpawnX(), trigger.getSpawnY());
 					}

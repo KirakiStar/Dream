@@ -40,6 +40,7 @@ public class Game{
 		cutscene.startCutscene(ResourceLoader.INTRO_CUTSCENE, () -> {
 			changeStateWithFade(Gamestate.TITLESCREEN, 0.05f);
 		});
+		Gamestate.state = Gamestate.CUTSCENE;
 	}
 	
 	private void startGameLoop() {
