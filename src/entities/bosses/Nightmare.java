@@ -23,7 +23,8 @@ public class Nightmare extends Boss {
 	private static final int HEIGHT = 90;
 	private static final float OFFSET_X = 10f;
 	private static final float OFFSET_Y = 32f;
-	private static final float OFFSET_X_LEFT = 50f;
+	
+	private final float offsetXLeft = 25f * Settings.getCurrentScale();
 	
 	private boolean attacking = true;
 	private final int attackDamage = 1;
@@ -50,7 +51,7 @@ public class Nightmare extends Boss {
 	@Override
 	protected void updateHitbox() {
 		if (facingLeft) {
-			hitbox.update(x + OFFSET_X_LEFT, y);
+			hitbox.update(x + offsetXLeft, y);
 		} else {
 			hitbox.update(x, y);
 		}
@@ -148,8 +149,8 @@ public class Nightmare extends Boss {
 		this.moving = false;
 		this.xSpeed = 0;
 		this.nightmare = IDLE;
-		if (facingLeft) x -= OFFSET_X_LEFT;
-		else x += OFFSET_X_LEFT;
+		if (facingLeft) x -= offsetXLeft;
+		else x += offsetXLeft;
 	}
 	
 	@Override
